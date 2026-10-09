@@ -17,9 +17,18 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        $adminEmail = config('admin.email');
+        $adminPassword = config('admin.password');
+
+        if (is_string($adminEmail) && $adminEmail !== '' && is_string($adminPassword) && $adminPassword !== '') {
+            User::query()->updateOrCreate(
+                ['email' => $adminEmail],
+                [
+                    'name' => config('admin.name', 'Smart Illam Admin'),
+                    'password' => $adminPassword,
+                    'is_admin' => true,
+                ],
+            );
+        }
     }
 }

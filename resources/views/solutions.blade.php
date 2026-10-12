@@ -140,7 +140,7 @@
 
     <section class="solutions-cta-section" style="--solutions-cta-image: url('{{ $solutionImage('cta_image', 'images/solutions/solution-interior.jpg') }}')" aria-labelledby="solutions-cta-title">
         <div><h2 id="solutions-cta-title">{{ $cmsContent['solutions.cta_title'] ?? 'Let’s Design the Perfect Smart Home for You.' }}</h2><p>{{ $cmsContent['solutions.cta_description'] ?? 'Consult with our expert engineers to discover how we can elevate your lifestyle through intelligent technology.' }}</p></div>
-        <div class="solutions-cta-actions"><a class="btn site-navbar__cta" href="{{ url('/#contact') }}">{{ $cmsContent['solutions.cta_primary_button'] ?? 'Book Consultation' }}</a><a class="btn solutions-cta-secondary" href="tel:+919876543210">{{ $cmsContent['solutions.cta_secondary_button'] ?? 'Talk to an Expert' }}</a></div>
+        <div class="solutions-cta-actions"><a class="btn site-navbar__cta" href="{{ route('contact') }}#contact-form">{{ $cmsContent['solutions.cta_primary_button'] ?? 'Book Consultation' }}</a><a class="btn solutions-cta-secondary" href="tel:+919876543210">{{ $cmsContent['solutions.cta_secondary_button'] ?? 'Talk to an Expert' }}</a></div>
     </section>
 
     @include('partials.site-footer')

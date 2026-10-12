@@ -14,7 +14,7 @@
             </div>
             <div class="col-6 col-lg-2">
                 <h2>{{ $cmsContent['contact.footer_address_title'] ?? 'Address' }}</h2>
-                <p class="footer-icon-line"><span aria-hidden="true">⌖</span><span>{{ $cmsContent['contact.address'] ?? 'No 129, ABC Complex, Coimbatore' }}</span></p>
+                <p class="footer-icon-line"><img src="{{ asset('images/icons/footer-location.svg') }}" alt=""><span>{{ $cmsContent['contact.address'] ?? 'No 129, ABC Complex, Coimbatore' }}</span></p>
             </div>
             <div class="col-6 col-lg-2">
                 <h2>{{ $cmsContent['contact.footer_contact_title'] ?? 'Contact Us' }}</h2>

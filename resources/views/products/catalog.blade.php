@@ -22,7 +22,14 @@
             'images/touch-switch/feature-scenes.png', 'images/touch-switch/feature-timing.png',
             'images/touch-switch/feature-power.png',
         ];
-        $touchBenefitIcons = ['✦', '✧', '▯', '♩', 'ϟ', '▦'];
+        $touchBenefitIcons = [
+            'images/icons/touch-switches/premium-finish.png',
+            'images/icons/touch-switches/capacitive-touch.png',
+            'images/icons/touch-switches/app-control.png',
+            'images/icons/touch-switches/voice-assistant.png',
+            'images/icons/touch-switches/energy-efficient.png',
+            'images/icons/touch-switches/scene-automation.png',
+        ];
     @endphp
     <section class="catalog-hero" style="--catalog-hero-image: url('{{ \Illuminate\Support\Str::startsWith($cmsContent['products.'.$slug.'.hero_image'] ?? $product['hero_image'] ?? 'images/product-hero.png', ['http://', 'https://', 'data:']) ? $cmsContent['products.'.$slug.'.hero_image'] : asset($cmsContent['products.'.$slug.'.hero_image'] ?? $product['hero_image'] ?? 'images/product-hero.png') }}')" aria-labelledby="catalog-heading">
         <div class="catalog-hero__content">
@@ -30,7 +37,7 @@
             <h1 id="catalog-heading">{{ $cmsContent['products.'.$slug.'.hero_title'] ?? $product['hero_title'] ?? 'Technology That Disappears Into Your Home.' }}</h1>
             <p>{{ $cmsContent['products.'.$slug.'.hero_description'] ?? $product['hero_description'] ?? 'Elevate your living experience with hardware designed to complement luxury interiors, where intelligence is felt rather than seen.' }}</p>
             <div class="catalog-hero__actions">
-                <a class="btn site-navbar__cta" href="mailto:info@smartillam.in">{{ $productCms('hero_primary_button', 'Book Consultation') }}</a>
+                <a class="btn site-navbar__cta" href="{{ route('contact') }}#contact-form">{{ $productCms('hero_primary_button', 'Book Consultation') }}</a>
                 <a class="btn catalog-hero__secondary" href="#solutions">{{ $productCms('hero_secondary_button', 'Explore Services') }}</a>
             </div>
         </div>
@@ -46,7 +53,7 @@
                         <p class="touch-intro__copy">{!! nl2br(e($productCms('intro_description', 'Experience the perfect combination of premium aesthetics and intelligent automation. Smart Illam Smart Touch Switches provide seamless control over lighting, fans, sockets, and connected devices through touch, smartphone, or voice commands—bringing comfort, elegance, and convenience to every room.'))) !!}</p>
                         <div class="touch-benefits">
                             @foreach ($touchIntroBenefits as $benefit)
-                                <div><span aria-hidden="true">{{ $touchBenefitIcons[$loop->index] ?? '✦' }}</span> {{ $benefit }}</div>
+                                <div><span aria-hidden="true"><img src="{{ asset($touchBenefitIcons[$loop->index] ?? $touchBenefitIcons[0]) }}" alt=""></span> {{ $benefit }}</div>
                             @endforeach
                         </div>
                     </div>
@@ -444,12 +451,6 @@
                 </div>
             </div>
         </section>
-        <section class="curtain-cta" aria-labelledby="curtain-cta-heading">
-            <div class="container curtain-cta__content">
-                <div><p class="section-eyebrow">{{ $productCms('cta_eyebrow', 'A smoother start to every day') }}</p><h2 id="curtain-cta-heading">{{ $productCms('cta_heading', 'Let your curtains move with your routine.') }}</h2></div>
-                <a class="btn site-navbar__cta" href="mailto:info@smartillam.in">{{ $productCms('cta_button', 'Book a Consultation') }}</a>
-            </div>
-        </section>
     @elseif ($slug === 'retrofit-switches')
         <section class="door-intro section-space retrofit-intro" aria-labelledby="retrofit-heading">
             <div class="container door-intro__container">
@@ -728,45 +729,11 @@
         <div class="container consultation-content">
             <h2 id="consultation-heading">{{ $productCms('consultation_heading', 'Make Your Home Respond To You') }}</h2>
             <div>
-                <a class="btn site-navbar__cta" href="mailto:info@smartillam.in">{{ $productCms('consultation_primary_button', 'Book Consultation') }}</a>
+                <a class="btn site-navbar__cta" href="{{ route('contact') }}#contact-form">{{ $productCms('consultation_primary_button', 'Book Consultation') }}</a>
                 <a class="btn consultation-secondary" href="mailto:info@smartillam.in">{{ $productCms('consultation_secondary_button', 'Request a Site Visit') }}</a>
             </div>
         </div>
     </section>
 
-    <footer class="site-footer" id="contact">
-        <div class="container">
-            <div class="row g-4 footer-main">
-                <div class="col-12 col-lg-4 footer-brand">
-                    <img src="{{ asset('images/smartillam-logo.png') }}" alt="Smartillam — Touch It Feel It">
-                </div>
-                <div class="col-6 col-lg-2">
-                    <h2>Quick Links</h2>
-                    <a href="{{ url('/') }}">Home</a>
-                    <a href="#solutions">Solutions</a>
-                    <a href="#consultation">Services</a>
-                    <a href="#contact">Contact Us</a>
-                </div>
-                <div class="col-6 col-lg-2">
-                    <h2>Address</h2>
-                    <p class="footer-icon-line"><span aria-hidden="true">⌖</span><span>No 129, ABC Complex,<br>Coimbatore</span></p>
-                </div>
-                <div class="col-6 col-lg-2">
-                    <h2>Contact Us</h2>
-                    <a class="footer-icon-line" href="mailto:info@smartillam.in"><span aria-hidden="true">✉</span><span>info@smartillam.in</span></a>
-                    <a class="footer-icon-line" href="tel:+919876543210"><span aria-hidden="true">☎</span><span>+91 9876543210</span></a>
-                </div>
-                <div class="col-6 col-lg-2">
-                    <h2>Social Links</h2>
-                    <a class="footer-icon-line" href="https://www.linkedin.com/" aria-label="LinkedIn"><span class="social-icon social-icon--linkedin" aria-hidden="true">in</span><span>LinkedIn</span></a>
-                    <a class="footer-icon-line" href="https://www.facebook.com/" aria-label="Facebook"><span class="social-icon social-icon--facebook" aria-hidden="true">f</span><span>Facebook</span></a>
-                    <a class="footer-icon-line" href="https://www.instagram.com/" aria-label="Instagram"><span class="social-icon social-icon--instagram" aria-hidden="true">◎</span><span>Instagram</span></a>
-                    <a class="footer-icon-line" href="https://x.com/" aria-label="X"><span class="social-icon social-icon--x" aria-hidden="true">X</span><span>Twitter</span></a>
-                </div>
-            </div>
-            <div class="footer-copyright">© {{ date('Y') }} Smart Illam - All Rights Reserved.</div>
-        </div>
-        <a class="back-to-top" href="#page-top" aria-label="Back to top"><img src="{{ asset('images/icons/back-to-top.png') }}" alt=""></a>
-        <a class="whatsapp-link" href="https://wa.me/919876543210" target="_blank" rel="noreferrer" aria-label="Chat with Smart Illam on WhatsApp"><img src="{{ asset('images/icons/whatsapp.png') }}" alt=""></a>
-    </footer>
+    @include('partials.site-footer')
 @endsection

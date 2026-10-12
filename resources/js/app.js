@@ -391,6 +391,152 @@ document.querySelectorAll('.admin-content-form').forEach((form) => {
         });
     });
 
+    form.querySelectorAll('[data-icon-repeater]').forEach((repeater) => {
+        const contentInput = repeater.querySelector('[data-admin-content-input]');
+        const rowsContainer = repeater.querySelector('[data-icon-rows]');
+        const rowTemplate = repeater.querySelector('[data-icon-row-template]');
+        const addButton = repeater.querySelector('[data-icon-add]');
+        const fieldIndex = repeater.dataset.fieldIndex;
+        const nameKey = repeater.dataset.nameKey || 'name';
+
+        if (!contentInput || !rowsContainer || !rowTemplate || !addButton) {
+            return;
+        }
+
+        const showPreview = (row, imageUrl) => {
+            const preview = row.querySelector('[data-icon-preview]');
+            const emptyPreview = row.querySelector('[data-icon-preview-empty]');
+
+            if (!imageUrl) {
+                preview?.remove();
+                if (!emptyPreview) {
+                    const empty = document.createElement('span');
+                    empty.dataset.iconPreviewEmpty = '';
+                    empty.setAttribute('aria-hidden', 'true');
+                    empty.textContent = '✧';
+                    row.querySelector('.admin-icon-row__preview')?.append(empty);
+                }
+
+                return;
+            }
+
+            emptyPreview?.remove();
+            const image = preview || document.createElement('img');
+            image.dataset.iconPreview = '';
+            image.alt = '';
+            image.src = imageUrl;
+
+            if (!preview) {
+                row.querySelector('.admin-icon-row__preview')?.append(image);
+            }
+        };
+
+        const syncIconRows = () => {
+            const rows = [...rowsContainer.querySelectorAll('[data-icon-row]')];
+            const namedRows = rows.filter((row) => row.querySelector('[data-icon-name]')?.value.trim());
+            const items = namedRows.map((row, index) => {
+                const nameInput = row.querySelector('[data-icon-name]');
+                const imageUrlInput = row.querySelector('[data-icon-url]');
+                const uploadInput = row.querySelector('[data-icon-upload]');
+                const image = uploadInput?.dataset.previewImage || imageUrlInput?.value.trim() || row.dataset.imagePath || '';
+
+                if (uploadInput) {
+                    uploadInput.name = `icon_uploads[${fieldIndex}][${index}]`;
+                }
+                if (imageUrlInput) {
+                    imageUrlInput.name = `icon_urls[${fieldIndex}][${index}]`;
+                }
+
+                const item = { [nameKey]: nameInput?.value.trim() || '', image };
+                const descriptionInput = row.querySelector('[data-icon-description]');
+                if (descriptionInput) {
+                    item.description = descriptionInput.value.trim();
+                }
+                return item;
+            });
+
+            rows.filter((row) => !namedRows.includes(row)).forEach((row) => {
+                row.querySelector('[data-icon-upload]')?.removeAttribute('name');
+                row.querySelector('[data-icon-url]')?.removeAttribute('name');
+            });
+
+            contentInput.value = JSON.stringify(items);
+            contentInput.dispatchEvent(new Event('input', { bubbles: true }));
+            addButton.disabled = rows.length >= 24;
+        };
+
+        repeater.addEventListener('input', (event) => {
+            const row = event.target.closest('[data-icon-row]');
+
+            if (!row) {
+                return;
+            }
+
+            if (event.target.matches('[data-icon-url]')) {
+                showPreview(row, event.target.value.trim() || row.dataset.imagePath || '');
+            }
+
+            if (event.target.matches('[data-icon-name], [data-icon-description], [data-icon-url]')) {
+                syncIconRows();
+            }
+        });
+
+        repeater.addEventListener('change', (event) => {
+            const row = event.target.closest('[data-icon-row]');
+
+            if (!row) {
+                return;
+            }
+
+            if (event.target.matches('[data-icon-upload]')) {
+                const file = event.target.files?.[0];
+
+                if (!file) {
+                    delete event.target.dataset.previewImage;
+                    showPreview(row, row.querySelector('[data-icon-url]')?.value.trim() || row.dataset.imagePath || '');
+                    syncIconRows();
+
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.addEventListener('load', () => {
+                    event.target.dataset.previewImage = reader.result;
+                    const imageUrlInput = row.querySelector('[data-icon-url]');
+                    if (imageUrlInput) {
+                        imageUrlInput.value = '';
+                    }
+                    showPreview(row, reader.result);
+                    syncIconRows();
+                });
+                reader.readAsDataURL(file);
+            } else if (event.target.matches('[data-icon-url]')) {
+                showPreview(row, event.target.value.trim() || row.dataset.imagePath || '');
+                syncIconRows();
+            }
+        });
+
+        repeater.addEventListener('click', (event) => {
+            if (event.target.matches('[data-icon-remove]')) {
+                event.target.closest('[data-icon-row]')?.remove();
+                syncIconRows();
+            }
+        });
+
+        addButton.addEventListener('click', () => {
+            if (rowsContainer.querySelectorAll('[data-icon-row]').length >= 24) {
+                return;
+            }
+
+            rowsContainer.append(rowTemplate.content.cloneNode(true));
+            const newRow = rowsContainer.lastElementChild;
+            newRow?.querySelector('[data-icon-name]')?.focus();
+            syncIconRows();
+        });
+
+        syncIconRows();
+    });
+
     form.addEventListener('submit', () => {
         form.querySelectorAll('[data-admin-content-input], [data-admin-image-url]').forEach((input) => {
             const field = input.closest('.admin-field');
@@ -403,5 +549,11 @@ document.querySelectorAll('.admin-content-form').forEach((form) => {
                 input.disabled = true;
             }
         });
+    });
+});
+document.querySelectorAll('.back-to-top').forEach((backToTopButton) => {
+    backToTopButton.addEventListener('click', (event) => {
+        event.preventDefault();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 });

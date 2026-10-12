@@ -25,7 +25,7 @@
                     <div class="admin-card-heading"><span class="admin-card-number">01</span><div><h2>Edit website pages</h2><p>Choose a page, change its text and images below, then save your updates here.</p></div></div>
                     <nav class="admin-page-tabs" aria-label="Choose a page to edit" role="tablist">
                         @foreach ($pages as $pageKey => $page)
-                            <button class="admin-page-tab{{ $selectedPage === $pageKey ? ' is-active' : '' }}" type="button" role="tab" id="admin-tab-{{ $pageKey }}" aria-controls="admin-panel-{{ $pageKey }}" aria-selected="{{ $selectedPage === $pageKey ? 'true' : 'false' }}" data-admin-page-tab="{{ $pageKey }}" data-admin-preview-options="{{ json_encode($previewChoices[$pageKey]) }}"><span aria-hidden="true">{{ ['products' => '✦', 'blog' => '▤', 'about' => '◉', 'contact' => '✉'][$pageKey] ?? '⌂' }}</span>{{ $page['label'] }}</button>
+                            <button class="admin-page-tab{{ $selectedPage === $pageKey ? ' is-active' : '' }}" type="button" role="tab" id="admin-tab-{{ $pageKey }}" aria-controls="admin-panel-{{ $pageKey }}" aria-selected="{{ $selectedPage === $pageKey ? 'true' : 'false' }}" data-admin-page-tab="{{ $pageKey }}" data-admin-preview-options="{{ json_encode($previewChoices[$pageKey]) }}"><span aria-hidden="true">{{ ['home' => '⌂', 'solutions' => '◈', 'services' => '◇', 'products' => '✦', 'blog' => '▤', 'about' => '◉', 'contact' => '✉'][$pageKey] ?? '⌂' }}</span>{{ $page['label'] }}</button>
                         @endforeach
                     </nav>
                 </section>
@@ -51,7 +51,7 @@
                                 <summary>{{ $group['label'] }}</summary>
                                 <div class="admin-fields-grid">
                                     @foreach ($group['fields'] as $field)
-                                        <div class="admin-field{{ $field['type'] === 'textarea' && $field['key'] !== 'products.smart-touch-switches.feature_names' ? ' admin-field-wide' : '' }}{{ $field['type'] === 'image' && $field['key'] !== 'products.smart-touch-switches.feature_image_1' ? ' admin-field-image' : '' }}{{ $field['key'] === 'products.smart-touch-switches.feature_names' ? ' admin-field-feature-names' : '' }}{{ $field['key'] === 'products.smart-touch-switches.feature_image_1' ? ' admin-field-feature-primary' : '' }}" data-admin-field-index="{{ $field['index'] }}" data-admin-field-type="{{ $field['type'] }}">
+                                        <div class="admin-field{{ in_array($field['type'], ['textarea', 'icon_repeater'], true) && $field['key'] !== 'products.smart-touch-switches.feature_names' ? ' admin-field-wide' : '' }}{{ $field['type'] === 'image' && $field['key'] !== 'products.smart-touch-switches.feature_image_1' ? ' admin-field-image' : '' }}{{ $field['key'] === 'products.smart-touch-switches.feature_names' ? ' admin-field-feature-names' : '' }}{{ $field['key'] === 'products.smart-touch-switches.feature_image_1' ? ' admin-field-feature-primary' : '' }}" data-admin-field-index="{{ $field['index'] }}" data-admin-field-type="{{ $field['type'] }}">
                                             @if ($field['type'] === 'image')<label>{{ $field['label'] }}</label>@else<label for="field-{{ $field['index'] }}">{{ $field['label'] }}</label>@endif
                                             @if ($field['type'] === 'image')
                                                 <div class="admin-image-editor">
@@ -66,6 +66,68 @@
                                                         <small>PNG, JPG, or WebP · up to 5 MB for uploads. If both options are set, the device upload is used.</small>
                                                         <label class="admin-clear-field"><input type="checkbox" name="clear_images[{{ $field['index'] }}]" value="1"><span>Use the original website image</span></label>
                                                     </div>
+                                                </div>
+                                            @elseif ($field['type'] === 'icon_repeater')
+                                                @php
+                                                    $iconItems = json_decode($field['value'], true);
+                                                    if (! is_array($iconItems)) {
+                                                        if ($field['key'] === 'services.values') {
+                                                            $cmsDefaults = config('cms.defaults', []);
+                                                            $iconItems = json_decode($cmsDefaults['services.values'] ?? '', true) ?? [];
+                                                            foreach (preg_split('/\r\n|\r|\n/', $field['value'], -1, PREG_SPLIT_NO_EMPTY) as $itemIndex => $legacyValue) {
+                                                                [$legacyName, $legacyDescription] = array_pad(explode('|', $legacyValue, 2), 2, '');
+                                                                $iconItems[$itemIndex]['name'] = $legacyName;
+                                                                $iconItems[$itemIndex]['description'] = $legacyDescription;
+                                                            }
+                                                        } else {
+                                                            $defaultPillarIcons = ['lighting.png', 'climate.png', 'security.png', 'cctv.png', 'smart-locks.png', 'curtains.png', 'voice-control.png', 'home-theatre.png', 'audio.png', 'video-door.png', 'energy.png', 'mobile-app.png'];
+                                                            $iconItems = collect(preg_split('/\r\n|\r|\n/', $field['value'], -1, PREG_SPLIT_NO_EMPTY))
+                                                                ->values()
+                                                                ->map(fn ($name, $index): array => ['name' => $name, 'image' => isset($defaultPillarIcons[$index]) ? 'images/solutions/pillars/'.$defaultPillarIcons[$index] : ''])
+                                                                ->all();
+                                                        }
+                                                    }
+                                                    $iconItems = array_values(array_filter($iconItems, fn ($item): bool => is_array($item) && isset($item['name'])));
+                                                    $iconItemsJson = json_encode($iconItems, JSON_UNESCAPED_SLASHES);
+                                                @endphp
+                                                <div class="admin-icon-repeater" data-icon-repeater data-field-index="{{ $field['index'] }}" data-name-key="{{ $field['name_key'] ?? 'name' }}" data-description-key="{{ $field['description_key'] ?? '' }}" data-section-label="{{ $field['section_label'] ?? 'Core Automation Pillars' }}">
+                                                    <input type="hidden" name="content[{{ $field['index'] }}]" value="{{ $iconItemsJson }}" data-admin-content-input data-admin-original="{{ $iconItemsJson }}">
+                                                    <div class="admin-icon-repeater__rows" data-icon-rows>
+                                                        @foreach ($iconItems as $iconItem)
+                                                            <div class="admin-icon-row" data-icon-row data-image-path="{{ $iconItem['image'] ?? '' }}">
+                                                                <div class="admin-icon-row__preview">
+                                                                    @if (!empty($iconItem['image']))
+                                                                        <img src="{{ \Illuminate\Support\Str::startsWith($iconItem['image'], ['http://', 'https://', 'data:']) ? $iconItem['image'] : asset($iconItem['image']) }}" alt="" data-icon-preview>
+                                                                    @else
+                                                                        <span data-icon-preview-empty aria-hidden="true">✧</span>
+                                                                    @endif
+                                                                </div>
+                                                                <div class="admin-icon-row__fields">
+                                                                    <label>{{ $field['item_label'] ?? 'Icon' }} name<input type="text" value="{{ $iconItem['name'] }}" maxlength="120" data-icon-name></label>
+                                                                    @if (!empty($field['description_key']))<label>Description<textarea rows="2" maxlength="500" data-icon-description>{{ $iconItem['description'] ?? '' }}</textarea></label>@endif
+                                                                    <label>Upload icon<input type="file" accept="image/png,image/jpeg,image/webp" data-icon-upload></label>
+                                                                    <label>Or paste an image URL<input type="url" value="{{ \Illuminate\Support\Str::startsWith($iconItem['image'] ?? '', ['http://', 'https://']) ? $iconItem['image'] : '' }}" placeholder="https://example.com/icon.png" data-icon-url></label>
+                                                                    <small>Use a transparent PNG or WebP icon. Uploads up to 200 KB.</small>
+                                                                </div>
+                                                                <button class="admin-icon-row__remove" type="button" data-icon-remove aria-label="Remove {{ $iconItem['name'] }}">Remove</button>
+                                                            </div>
+                                                        @endforeach
+                                                    </div>
+                                                    <button class="admin-icon-repeater__add" type="button" data-icon-add>Add icon</button>
+                                                    <template data-icon-row-template>
+                                                        <div class="admin-icon-row" data-icon-row data-image-path="">
+                                                            <div class="admin-icon-row__preview"><span data-icon-preview-empty aria-hidden="true">✧</span></div>
+                                                            <div class="admin-icon-row__fields">
+                                                                <label>Icon name<input type="text" maxlength="120" data-icon-name></label>
+                                                                @if (!empty($field['description_key']))<label>Description<textarea rows="2" maxlength="500" data-icon-description></textarea></label>@endif
+                                                                <label>Upload icon<input type="file" accept="image/png,image/jpeg,image/webp" data-icon-upload></label>
+                                                                <label>Or paste an image URL<input type="url" placeholder="https://example.com/icon.png" data-icon-url></label>
+                                                                <small>Use a transparent PNG or WebP icon. Uploads up to 200 KB.</small>
+                                                            </div>
+                                                            <button class="admin-icon-row__remove" type="button" data-icon-remove aria-label="Remove icon">Remove</button>
+                                                        </div>
+                                                    </template>
+                                                    <p class="admin-icon-repeater__hint">Add or remove entries here. Each one appears in the {{ $field['section_label'] ?? 'Core Automation Pillars' }} section with its name.</p>
                                                 </div>
                                             @elseif ($field['type'] === 'textarea')
                                                 <textarea id="field-{{ $field['index'] }}" name="content[{{ $field['index'] }}]" rows="{{ $field['key'] === 'products.smart-touch-switches.feature_names' ? 9 : 3 }}" data-admin-content-input data-admin-original="{{ $field['value'] }}" placeholder="Leave blank to keep the current website text">{{ old('content.'.$field['index'], $field['value']) }}</textarea>

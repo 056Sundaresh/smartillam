@@ -20,10 +20,9 @@ class ContentController extends Controller
         $fields = collect(config('cms.pages'))->flatMap(
             fn (array $page): array => collect($page['groups'])->flatMap(fn (array $group): array => $group['fields'])->all(),
         )->values();
-        $validated = $request->validate([
+        $rules = [
             'page' => ['required', 'string', 'in:'.implode(',', array_keys(config('cms.pages')))],
             'content' => ['nullable', 'array'],
-            'content.*' => ['nullable', 'string', 'max:20000'],
             'clear' => ['nullable', 'array'],
             'clear.*' => ['nullable', 'boolean'],
             'image_urls' => ['nullable', 'array'],
@@ -34,7 +33,15 @@ class ContentController extends Controller
             'clear_images.*' => ['nullable', 'boolean'],
             'reset_images' => ['nullable', 'array'],
             'reset_images.*' => ['nullable', 'boolean'],
-        ]);
+        ];
+
+        foreach ($fields as $index => $field) {
+            $rules["content.{$index}"] = $field['type'] === 'icon_repeater'
+                ? ['nullable', 'json', 'max:20000000']
+                : ['nullable', 'string', 'max:20000'];
+        }
+
+        $validated = $request->validate($rules);
         $draft = $request->session()->get('cms-preview-draft', []);
 
         foreach ($validated['content'] ?? [] as $index => $value) {
@@ -206,6 +213,9 @@ class ContentController extends Controller
         unset($field, $group, $page);
 
         $previewChoices = [
+            'home' => [['label' => 'Home page', 'url' => route('home')]],
+            'solutions' => [['label' => 'Solutions page', 'url' => route('solutions')]],
+            'services' => [['label' => 'Services page', 'url' => route('services')]],
             'products' => [],
             'blog' => [['label' => 'Blog landing page', 'url' => route('blog')]],
             'about' => [['label' => 'About page', 'url' => route('about')]],
@@ -244,6 +254,12 @@ class ContentController extends Controller
             'images' => ['nullable', 'array'],
             'image_urls' => ['nullable', 'array'],
             'clear_images' => ['nullable', 'array'],
+            'icon_uploads' => ['nullable', 'array'],
+            'icon_uploads.*' => ['nullable', 'array'],
+            'icon_uploads.*.*' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:200'],
+            'icon_urls' => ['nullable', 'array'],
+            'icon_urls.*' => ['nullable', 'array'],
+            'icon_urls.*.*' => ['nullable', 'url:http,https', 'max:2048'],
         ];
 
         foreach ($fields as $index => $field) {
@@ -256,6 +272,7 @@ class ContentController extends Controller
                 $rules["content.{$index}"] = match ($field['type']) {
                     'email' => ['nullable', 'email', 'max:255'],
                     'url' => ['nullable', 'url:https', 'max:2048'],
+                    'icon_repeater' => ['nullable', 'json', 'max:20000000'],
                     default => ['nullable', 'string', 'max:20000'],
                 };
             }
@@ -265,6 +282,7 @@ class ContentController extends Controller
         $changes = [];
         $imageUrls = $validated['image_urls'] ?? [];
         $imagesToClear = $validated['clear_images'] ?? [];
+        $iconUrls = $validated['icon_urls'] ?? [];
 
         foreach ($fields as $index => $field) {
             if ($field['type'] === 'image') {
@@ -286,6 +304,90 @@ class ContentController extends Controller
             }
 
             $value = $validated['content'][$index] ?? null;
+
+            if ($field['type'] === 'icon_repeater' && isset($validated['clear'][$index])) {
+                $changes[$field['key']] = null;
+
+                continue;
+            }
+
+            if ($field['type'] === 'icon_repeater' && is_string($value) && $value !== '') {
+                $iconItems = json_decode($value, true);
+
+                if (! is_array($iconItems) || ! array_is_list($iconItems)) {
+                    throw \Illuminate\Validation\ValidationException::withMessages([
+                        "content.{$index}" => 'Pillar icons must be a list of named icons.',
+                    ]);
+                }
+
+                if (count($iconItems) > 24) {
+                    throw \Illuminate\Validation\ValidationException::withMessages([
+                        "content.{$index}" => 'You can add up to 24 pillar icons.',
+                    ]);
+                }
+
+                $normalizedItems = [];
+
+                foreach ($iconItems as $itemIndex => $iconItem) {
+                    $nameKey = $field['name_key'] ?? 'name';
+                    if (! is_array($iconItem) || ! is_string($iconItem[$nameKey] ?? null) || ! is_string($iconItem['image'] ?? null)) {
+                        throw \Illuminate\Validation\ValidationException::withMessages([
+                            "content.{$index}" => 'Each pillar icon needs a name and an image.',
+                        ]);
+                    }
+
+                    $name = trim($iconItem[$nameKey]);
+                    $image = trim($iconUrls[$index][$itemIndex] ?? $iconItem['image']);
+
+                    if ($name === '' || mb_strlen($name) > 120) {
+                        throw \Illuminate\Validation\ValidationException::withMessages([
+                            "content.{$index}" => 'Each pillar icon needs a name up to 120 characters.',
+                        ]);
+                    }
+
+                    if ($request->hasFile("icon_uploads.{$index}.{$itemIndex}")) {
+                        $uploadedIcon = $request->file("icon_uploads.{$index}.{$itemIndex}");
+                        $iconDirectory = public_path('images/cms');
+                        $storedName = $uploadedIcon->hashName();
+
+                        File::ensureDirectoryExists($iconDirectory);
+                        $uploadedIcon->move($iconDirectory, $storedName);
+                        $image = 'images/cms/'.$storedName;
+                    } elseif (str_starts_with($image, 'data:image/')) {
+                        throw \Illuminate\Validation\ValidationException::withMessages([
+                            "content.{$index}" => 'Please upload the selected pillar icon again before saving.',
+                        ]);
+                    }
+
+                    if ($image !== '' && ! str_starts_with($image, 'images/') && filter_var($image, FILTER_VALIDATE_URL) === false) {
+                        throw \Illuminate\Validation\ValidationException::withMessages([
+                            "content.{$index}" => 'Pillar icons must use a valid image URL or an uploaded image.',
+                        ]);
+                    }
+
+                    $normalizedItem = [$nameKey => $name, 'image' => $image];
+                    if (isset($field['description_key'])) {
+                        $descriptionValue = $iconItem[$field['description_key']] ?? '';
+                        if (! is_string($descriptionValue)) {
+                            throw \Illuminate\Validation\ValidationException::withMessages([
+                                "content.{$index}" => 'Each card description must be text.',
+                            ]);
+                        }
+                        $description = trim($descriptionValue);
+                        if (mb_strlen($description) > 500) {
+                            throw \Illuminate\Validation\ValidationException::withMessages([
+                                "content.{$index}" => 'Descriptions must be 500 characters or fewer.',
+                            ]);
+                        }
+                        $normalizedItem[$field['description_key']] = $description;
+                    }
+                    $normalizedItems[] = $normalizedItem;
+                }
+
+                $changes[$field['key']] = json_encode($normalizedItems, JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR);
+
+                continue;
+            }
 
             if (isset($validated['clear'][$index])) {
                 $changes[$field['key']] = null;

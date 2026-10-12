@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Contact Smart Illam | Smart Home Consultation')
+@section('title', $cmsContent['contact.page_title'] ?? 'Contact Smart Illam | Smart Home Consultation')
 @section('body-class', 'contact-page')
 
 @section('content')

@@ -4,39 +4,43 @@
 @section('body-class', 'home-page')
 
 @section('content')
+    @php
+        $homeImage = $cmsContent['home.feature_image'] ?? 'images/home/home-smart-living-room.svg';
+        $homeImageUrl = \Illuminate\Support\Str::startsWith($homeImage, ['http://', 'https://', 'data:']) ? $homeImage : asset($homeImage);
+        $homeBenefits = preg_split('/\r\n|\r|\n/', $cmsContent['home.feature_benefits'] ?? '', -1, PREG_SPLIT_NO_EMPTY);
+        $homeHeroTitle = $cmsContent['home.hero_title'] ?? 'Smart Living Insights & Home Automation Guides';
+        $homePhilosophyTitle = $cmsContent['home.philosophy_title'] ?? 'Invisible Intelligence.';
+    @endphp
     <section class="home-panel" id="home" aria-labelledby="page-title">
         <div class="home-panel__heading">
-            <p class="home-eyebrow">Smart Illam</p>
-            <h1 id="page-title">Smart Living Insights &amp;<br class="desktop-break"> Home Automation Guides</h1>
-            <p class="home-panel__intro">Stay informed with expert insights, practical tips, industry trends, and the latest innovations in smart home automation.</p>
+            <p class="home-eyebrow">{{ $cmsContent['home.hero_eyebrow'] ?? 'Smart Illam' }}</p>
+            <h1 id="page-title">{!! nl2br(e($homeHeroTitle)) !!}</h1>
+            <p class="home-panel__intro">{{ $cmsContent['home.hero_description'] ?? 'Stay informed with expert insights, practical tips, industry trends, and the latest innovations in smart home automation.' }}</p>
         </div>
 
         <article class="home-feature-card" id="solutions">
             <div class="home-feature-card__image">
-                <img src="{{ asset('images/home/home-smart-living-room.svg') }}" alt="Modern smart home living room with a connected control panel" fetchpriority="high">
+                <img src="{{ $homeImageUrl }}" alt="{{ $cmsContent['home.feature_image_alt'] ?? 'Modern smart home living room with a connected control panel' }}" fetchpriority="high">
             </div>
             <div class="home-feature-card__content">
-                <p class="home-eyebrow">Thoughtful technology</p>
-                <h2>Technology That Simplifies Everyday Living</h2>
-                <p>We don't just install devices; we craft intelligent environments tailored to your lifestyle. Our mission is to blend technology into the background, providing you with effortless control and peace of mind.</p>
+                <p class="home-eyebrow">{{ $cmsContent['home.feature_eyebrow'] ?? 'Thoughtful technology' }}</p>
+                <h2>{{ $cmsContent['home.feature_title'] ?? 'Technology That Simplifies Everyday Living' }}</h2>
+                <p>{{ $cmsContent['home.feature_description'] ?? 'We don’t just install devices; we craft intelligent environments tailored to your lifestyle. Our mission is to blend technology into the background, providing you with effortless control and peace of mind.' }}</p>
                 <ul class="home-benefit-list">
-                    <li><span aria-hidden="true">✓</span> Customized Solutions</li>
-                    <li><span aria-hidden="true">✓</span> Complete Integration</li>
-                    <li><span aria-hidden="true">✓</span> Enhanced Security</li>
-                    <li><span aria-hidden="true">✓</span> Energy Efficiency</li>
-                    <li><span aria-hidden="true">✓</span> Professional Installation</li>
-                    <li><span aria-hidden="true">✓</span> After-Sales Support</li>
+                    @foreach ($homeBenefits as $benefit)
+                        <li><span aria-hidden="true">✓</span> {{ $benefit }}</li>
+                    @endforeach
                 </ul>
-                <a class="home-text-link" href="#contact">Discover what’s possible <span aria-hidden="true">↗</span></a>
+                <a class="home-text-link" href="#contact">{{ $cmsContent['home.feature_link'] ?? 'Discover what’s possible' }} <span aria-hidden="true">↗</span></a>
             </div>
         </article>
     </section>
 
     <section class="home-demo-section" aria-labelledby="virtual-demo-title">
         <div class="home-section-heading">
-            <p class="home-eyebrow">See your smart home in action</p>
-            <h2 id="virtual-demo-title">Try a Virtual Demo</h2>
-            <p>Explore how connected controls can make everyday living more comfortable and convenient.</p>
+            <p class="home-eyebrow">{{ $cmsContent['home.demo_eyebrow'] ?? 'See your smart home in action' }}</p>
+            <h2 id="virtual-demo-title">{{ $cmsContent['home.demo_title'] ?? 'Try a Virtual Demo' }}</h2>
+            <p>{{ $cmsContent['home.demo_description'] ?? 'Explore how connected controls can make everyday living more comfortable and convenient.' }}</p>
         </div>
         <div class="home-demo-visuals">
             <img class="home-demo-visuals__phone" src="{{ asset('images/home/home-virtual-demo-mobile.svg') }}" alt="Smart Illam mobile app showing living room climate, lighting, blinds and appliance controls" loading="lazy">
@@ -46,8 +50,8 @@
 
     <section class="home-promise-section" aria-labelledby="promise-title">
         <div class="home-section-heading">
-            <h2 id="promise-title">Our Promise to Your Home</h2>
-            <p>Creating intelligent living spaces with seamless automation, premium technology, and personalized solutions.</p>
+            <h2 id="promise-title">{{ $cmsContent['home.promise_title'] ?? 'Our Promise to Your Home' }}</h2>
+            <p>{{ $cmsContent['home.promise_description'] ?? 'Creating intelligent living spaces with seamless automation, premium technology, and personalized solutions.' }}</p>
         </div>
         <div class="home-promise-grid">
             <article class="home-promise-card home-promise-card--voice">
@@ -71,9 +75,9 @@
     <section class="home-philosophy-section" aria-labelledby="philosophy-title">
         <div class="home-philosophy-inner">
             <div class="home-philosophy-copy">
-                <p class="home-eyebrow">The Philosophy</p>
-                <h2 id="philosophy-title">Invisible<br><span>Intelligence.</span></h2>
-                <p>We believe the best technology is the one you don't see. Smart Illam integrates seamlessly into your life, anticipating your needs before you even realize them. It's not about gadgets; it's about grace.</p>
+                <p class="home-eyebrow">{{ $cmsContent['home.philosophy_eyebrow'] ?? 'The Philosophy' }}</p>
+                <h2 id="philosophy-title">{!! nl2br(e($homePhilosophyTitle)) !!}</h2>
+                <p>{{ $cmsContent['home.philosophy_description'] ?? 'We believe the best technology is the one you don’t see. Smart Illam integrates seamlessly into your life, anticipating your needs before you even realize them. It’s not about gadgets; it’s about grace.' }}</p>
                 <div class="home-philosophy-points">
                     <div><strong>150+</strong><span>Homes Automated</span></div>
                     <div><strong>98%</strong><span>Client Satisfaction</span></div>
@@ -88,8 +92,8 @@
     <section class="home-devices-section" id="products" aria-labelledby="devices-title">
         <div class="home-devices-inner">
             <div class="home-devices-heading">
-                <h2 id="devices-title">Smart Devices for<br>Living</h2>
-                <p>Smart gadgets designed for connected homes, bringing intelligence and convenience to living.</p>
+                <h2 id="devices-title">{{ $cmsContent['home.devices_title'] ?? 'Smart Devices for Living' }}</h2>
+                <p>{{ $cmsContent['home.devices_description'] ?? 'Smart gadgets designed for connected homes, bringing intelligence and convenience to living.' }}</p>
             </div>
             <div class="home-device-cards">
                 <article class="home-device-card"><img src="{{ asset('images/home/device-alexa-card.png') }}" alt="Amazon Alexa Echo — voice-controlled smart assistant" loading="lazy"></article>
@@ -102,7 +106,7 @@
 
     <section class="home-work-section" id="services" aria-labelledby="work-title">
         <div class="home-work-inner">
-            <div class="home-work-heading"><h2 id="work-title">How We Work</h2><p>Every project begins with understanding your unique requirements.</p></div>
+            <div class="home-work-heading"><h2 id="work-title">{{ $cmsContent['home.work_title'] ?? 'How We Work' }}</h2><p>{{ $cmsContent['home.work_description'] ?? 'Every project begins with understanding your unique requirements.' }}</p></div>
             <div class="home-work-steps">
                 <article class="home-work-step">
                     <p class="home-work-step__description">We begin by understanding your business needs through detailed discussions and a site visit. Our team gathers all technical and functional requirements, identifies any customization needs, and finalizes the project scope.</p>
@@ -141,8 +145,8 @@
     <section class="home-results-section" aria-labelledby="results-title">
         <div class="home-results-inner">
             <div class="home-results-heading">
-                <div><p class="home-eyebrow">Built on Trust</p><h2 id="results-title">Proven Results.<br>Satisfied Clients.</h2></div>
-                <p>Discover how Smart Illam is helping homeowners create safer, smarter and more connected lifestyles.</p>
+                <div><p class="home-eyebrow">{{ $cmsContent['home.results_eyebrow'] ?? 'Built on Trust' }}</p><h2 id="results-title">{{ $cmsContent['home.results_title'] ?? 'Proven Results. Satisfied Clients.' }}</h2></div>
+                <p>{{ $cmsContent['home.results_description'] ?? 'Discover how Smart Illam is helping homeowners create safer, smarter and more connected lifestyles.' }}</p>
             </div>
             <div class="home-results-grid">
                 <article class="home-results-stat">
@@ -155,7 +159,7 @@
                 </div>
                 <blockquote class="home-testimonial">
                     <span class="home-testimonial__quote" aria-hidden="true">“</span>
-                    <p>Smart Illam completely transformed our home. Lighting, security, and entertainment are now just one tap away. The installation was smooth, and the support team was exceptional.</p>
+                    <p>{{ $cmsContent['home.testimonial'] ?? 'Smart Illam completely transformed our home. Lighting, security, and entertainment are now just one tap away. The installation was smooth, and the support team was exceptional.' }}</p>
                     <footer><span><strong>Ramesh Kumar</strong><small>Chennai</small></span><span class="home-testimonial__arrows" aria-hidden="true"><i>←</i><i>→</i></span></footer>
                 </blockquote>
             </div>

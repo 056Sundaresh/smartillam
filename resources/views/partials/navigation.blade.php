@@ -7,11 +7,11 @@
             <button class="navbar-toggler site-navbar__toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavigation" aria-controls="mainNavigation" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse site-navbar__collapse" id="mainNavigation">
                 <ul class="navbar-nav site-navbar__links">
-                    <li class="nav-item"><a class="nav-link" href="{{ url('/') }}">Home</a></li>
-                    <li class="nav-item"><a class="nav-link{{ request()->routeIs('solutions') ? ' active' : '' }}" href="{{ route('solutions') }}" @if (request()->routeIs('solutions')) aria-current="page" @endif>Solutions</a></li>
-                    <li class="nav-item"><a class="nav-link{{ request()->routeIs('services') ? ' active' : '' }}" href="{{ route('services') }}" @if (request()->routeIs('services')) aria-current="page" @endif>Services</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url('/') }}">{{ $cmsContent['home.nav_home'] ?? 'Home' }}</a></li>
+                    <li class="nav-item"><a class="nav-link{{ request()->routeIs('solutions') ? ' active' : '' }}" href="{{ route('solutions') }}" @if (request()->routeIs('solutions')) aria-current="page" @endif>{{ $cmsContent['home.nav_solutions'] ?? 'Solutions' }}</a></li>
+                    <li class="nav-item"><a class="nav-link{{ request()->routeIs('services') ? ' active' : '' }}" href="{{ route('services') }}" @if (request()->routeIs('services')) aria-current="page" @endif>{{ $cmsContent['home.nav_services'] ?? 'Services' }}</a></li>
                     <li class="nav-item dropdown site-navbar__dropdown">
-                        <button class="nav-link site-navbar__product dropdown-toggle{{ request()->routeIs('products.*') ? ' active' : '' }}" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false" @if (request()->routeIs('products.*')) aria-current="page" @endif>Products</button>
+                        <button class="nav-link site-navbar__product dropdown-toggle{{ request()->routeIs('products.*') ? ' active' : '' }}" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false" @if (request()->routeIs('products.*')) aria-current="page" @endif>{{ $cmsContent['home.nav_products'] ?? 'Products' }}</button>
                         <div class="dropdown-menu site-products-menu">
                             <a class="site-products-menu__feature" data-product-feature href="{{ route('products.smart-touch-switches') }}" aria-label="Browse Smart Home Automation products">
                                 <img data-product-feature-image src="{{ asset('images/smart-home-automation-feature.png') }}" alt="Smart home automation in a modern living room" loading="lazy">
@@ -41,11 +41,11 @@
                             </div>
                         </div>
                     </li>
-                    <li class="nav-item"><a class="nav-link{{ request()->routeIs('blog') ? ' active' : '' }}" href="{{ route('blog') }}" @if (request()->routeIs('blog')) aria-current="page" @endif>Blog</a></li>
-                    <li class="nav-item"><a class="nav-link{{ request()->routeIs('about') ? ' active' : '' }}" href="{{ route('about') }}" @if (request()->routeIs('about')) aria-current="page" @endif>About</a></li>
-                    <li class="nav-item"><a class="nav-link{{ request()->routeIs('contact') ? ' active' : '' }}" href="{{ route('contact') }}" @if (request()->routeIs('contact')) aria-current="page" @endif>Contact</a></li>
+                    <li class="nav-item"><a class="nav-link{{ request()->routeIs('blog') ? ' active' : '' }}" href="{{ route('blog') }}" @if (request()->routeIs('blog')) aria-current="page" @endif>{{ $cmsContent['home.nav_blog'] ?? 'Blog' }}</a></li>
+                    <li class="nav-item"><a class="nav-link{{ request()->routeIs('about') ? ' active' : '' }}" href="{{ route('about') }}" @if (request()->routeIs('about')) aria-current="page" @endif>{{ $cmsContent['home.nav_about'] ?? 'About' }}</a></li>
+                    <li class="nav-item"><a class="nav-link{{ request()->routeIs('contact') ? ' active' : '' }}" href="{{ route('contact') }}" @if (request()->routeIs('contact')) aria-current="page" @endif>{{ $cmsContent['home.nav_contact'] ?? 'Contact' }}</a></li>
                 </ul>
-                <a class="btn site-navbar__cta" href="{{ request()->routeIs('services') ? route('contact').'#contact-form' : url('/#consultation') }}">Book Consultation</a>
+                <a class="btn site-navbar__cta" href="{{ request()->routeIs('services') ? route('contact').'#contact-form' : url('/#consultation') }}">{{ $cmsContent['home.nav_consultation'] ?? 'Book Consultation' }}</a>
                 <a class="admin-entry-button" href="{{ route('admin.login') }}">Admin</a>
             </div>
         </div>

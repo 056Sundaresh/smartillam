@@ -3962,7 +3962,7 @@ body {
 }
 
 .blog-topic-section {
-    padding: 22px 0;
+    padding: 34px 0;
     border-bottom: 1px solid #eceef0;
     background: #fff;
 }
@@ -7273,5 +7273,37 @@ body {
     .scene-cards,
     .lifestyle-cards {
         grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    body.motion-enabled .motion-reveal {
+        opacity: 0;
+        transform: translate3d(0, 20px, 0);
+        transition: opacity 560ms ease, transform 560ms ease;
+        transition-delay: var(--motion-delay, 0ms);
+    }
+
+    body.motion-enabled .motion-reveal.is-visible {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+
+    body.motion-enabled .motion-hover {
+        transition: transform 240ms ease, box-shadow 240ms ease;
+    }
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    body.motion-enabled .motion-hover:hover {
+        transform: translateY(-4px);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .motion-reveal,
+    .motion-hover {
+        animation: none !important;
+        transition: none !important;
     }
 }

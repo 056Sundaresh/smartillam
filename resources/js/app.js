@@ -557,3 +557,53 @@ document.querySelectorAll('.back-to-top').forEach((backToTopButton) => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 });
+
+const motionSelectors = [
+    'main > section',
+    '.home-feature-card',
+    '.home-promise-card',
+    '.home-device-card',
+    '.home-work-step',
+    '.home-results-stat',
+    '.home-results-feature',
+    '.home-testimonial',
+    '.solution-detail',
+    '.protocol-badges > *',
+    '.automation-pillar',
+    '.scene-cards > *',
+    '.lifestyle-cards > *',
+    '.services-specialty-card',
+    '.services-journey__steps li',
+    '.values-card',
+    '.contact-detail-card',
+    '.blog-article-card',
+    '.catalog-solutions .solution-card',
+].join(', ');
+const motionTargets = [...document.querySelectorAll(motionSelectors)];
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+if (motionTargets.length > 0 && !document.body.classList.contains('admin-page') && !prefersReducedMotion && 'IntersectionObserver' in window) {
+    document.body.classList.add('motion-enabled');
+
+    const motionObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.12, rootMargin: '0px 0px -32px 0px' });
+
+    motionTargets.forEach((target) => {
+        const siblings = [...target.parentElement.children].filter((sibling) => sibling.matches(motionSelectors));
+        const siblingIndex = siblings.indexOf(target);
+
+        target.classList.add('motion-reveal');
+        target.style.setProperty('--motion-delay', `${Math.min(siblingIndex, 4) * 75}ms`);
+        motionObserver.observe(target);
+    });
+
+    document.querySelectorAll('.home-device-card, .automation-pillar, .services-specialty-card, .values-card').forEach((card) => {
+        card.classList.add('motion-hover');
+    });
+}

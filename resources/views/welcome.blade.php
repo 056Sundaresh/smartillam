@@ -5,11 +5,37 @@
 
 @section('content')
     @php
+        $homeDefaults = array_filter(
+            config('cms.defaults', []),
+            static fn (string $key): bool => str_starts_with($key, 'home.'),
+            ARRAY_FILTER_USE_KEY,
+        );
+        $homeContent = array_replace($homeDefaults, $cmsContent);
         $homeImage = $cmsContent['home.feature_image'] ?? 'images/home/home-smart-living-room.svg';
         $homeImageUrl = \Illuminate\Support\Str::startsWith($homeImage, ['http://', 'https://', 'data:']) ? $homeImage : asset($homeImage);
         $homeBenefits = preg_split('/\r\n|\r|\n/', $cmsContent['home.feature_benefits'] ?? '', -1, PREG_SPLIT_NO_EMPTY);
         $homeHeroTitle = $cmsContent['home.hero_title'] ?? 'Smart Living Insights & Home Automation Guides';
         $homePhilosophyTitle = $cmsContent['home.philosophy_title'] ?? 'Invisible Intelligence.';
+        $homeImageUrlFor = static function (string $key, string $fallback) use ($homeContent): string {
+            $image = $homeContent[$key] ?? $fallback;
+
+            return \Illuminate\Support\Str::startsWith($image, ['http://', 'https://', 'data:']) ? $image : asset($image);
+        };
+        $homeWorkImageNames = ['consultation', 'proposal', 'confirmation', 'installation', 'testing', 'training'];
+        $homeWorkSteps = [];
+        for ($step = 1; $step <= 6; $step++) {
+            $homeWorkSteps[] = [
+                'title' => $homeContent["home.work_step_{$step}_title"] ?? '',
+                'description' => $homeContent["home.work_step_{$step}_description"] ?? '',
+                'image' => $homeImageUrlFor("home.work_step_{$step}_image", 'images/home/home-work-'.$homeWorkImageNames[$step - 1].'.svg'),
+                'image_alt' => $homeContent["home.work_step_{$step}_image_alt"] ?? '',
+            ];
+        }
+        $homeDeviceCards = [
+            ['image' => 'home.device_image_1', 'fallback' => 'images/home/device-alexa-card.png', 'alt' => 'home.device_image_1_alt', 'fallback_alt' => 'Amazon Alexa Echo — voice-controlled smart assistant'],
+            ['image' => 'home.device_image_2', 'fallback' => 'images/home/device-nest-card.png', 'alt' => 'home.device_image_2_alt', 'fallback_alt' => 'Google Nest Hub — control your smart home effortlessly'],
+            ['image' => 'home.device_image_3', 'fallback' => 'images/home/device-homepod-card.png', 'alt' => 'home.device_image_3_alt', 'fallback_alt' => 'Apple HomePod — premium smart speaker with Siri integration'],
+        ];
     @endphp
     <section class="home-panel" id="home" aria-labelledby="page-title">
         <div class="home-panel__heading">
@@ -31,7 +57,7 @@
                         <li><span aria-hidden="true">✓</span> {{ $benefit }}</li>
                     @endforeach
                 </ul>
-                <a class="home-text-link" href="#contact">{{ $cmsContent['home.feature_link'] ?? 'Discover what’s possible' }} <span aria-hidden="true">↗</span></a>
+                <a class="home-text-link" href="{{ $homeContent['home.feature_link_url'] ?? '#contact' }}">{{ $cmsContent['home.feature_link'] ?? 'Discover what’s possible' }} <span aria-hidden="true">↗</span></a>
             </div>
         </article>
     </section>
@@ -43,8 +69,8 @@
             <p>{{ $cmsContent['home.demo_description'] ?? 'Explore how connected controls can make everyday living more comfortable and convenient.' }}</p>
         </div>
         <div class="home-demo-visuals">
-            <img class="home-demo-visuals__phone" src="{{ asset('images/home/home-virtual-demo-mobile.svg') }}" alt="Smart Illam mobile app showing living room climate, lighting, blinds and appliance controls" loading="lazy">
-            <img class="home-demo-visuals__house" src="{{ asset('images/home/home-virtual-demo-house.svg') }}" alt="Modern illuminated smart home at night" loading="lazy">
+            <img class="home-demo-visuals__phone" src="{{ $homeImageUrlFor('home.demo_mobile_image', 'images/home/home-virtual-demo-mobile.svg') }}" alt="{{ $homeContent['home.demo_mobile_image_alt'] ?? 'Smart Illam mobile app showing living room climate, lighting, blinds and appliance controls' }}" loading="lazy">
+            <img class="home-demo-visuals__house" src="{{ $homeImageUrlFor('home.demo_house_image', 'images/home/home-virtual-demo-house.svg') }}" alt="{{ $homeContent['home.demo_house_image_alt'] ?? 'Modern illuminated smart home at night' }}" loading="lazy">
         </div>
     </section>
 
@@ -55,19 +81,19 @@
         </div>
         <div class="home-promise-grid">
             <article class="home-promise-card home-promise-card--voice">
-                <img src="{{ asset('images/home/home-voice-ai-card.svg') }}" alt="Voice and AI working in sync, with smart recommendations for comfort, efficiency and security" loading="lazy">
+                <img src="{{ $homeImageUrlFor('home.promise_voice_image', 'images/home/home-voice-ai-card.svg') }}" alt="{{ $homeContent['home.promise_voice_image_alt'] ?? 'Voice and AI working in sync, with smart recommendations for comfort, efficiency and security' }}" loading="lazy">
             </article>
             <div class="home-promise-stack">
                 <article class="home-promise-card home-promise-card--reliability">
-                    <img src="{{ asset('images/home/home-reliability-card.svg') }}" alt="Intuitive design, smart reliability and thoughtful technology" loading="lazy">
+                    <img src="{{ $homeImageUrlFor('home.promise_reliability_image', 'images/home/home-reliability-card.svg') }}" alt="{{ $homeContent['home.promise_reliability_image_alt'] ?? 'Intuitive design, smart reliability and thoughtful technology' }}" loading="lazy">
                 </article>
                 <article class="home-promise-card home-promise-card--console">
-                    <img src="{{ asset('images/home/home-device-alexa.svg') }}" alt="Smart home voice assistant speaker" loading="lazy">
+                    <img src="{{ $homeImageUrlFor('home.promise_console_image', 'images/home/home-device-alexa.svg') }}" alt="{{ $homeContent['home.promise_console_image_alt'] ?? 'Smart home voice assistant speaker' }}" loading="lazy">
                 </article>
             </div>
             <article class="home-promise-card home-promise-card--device">
-                <img src="{{ asset('images/home/home-orris-device.svg') }}" alt="Orris smart home voice assistant device" loading="lazy">
-                <div><h3>Elevating Everyday</h3><p>Living Through<br>Intelligent Design</p></div>
+                <img src="{{ $homeImageUrlFor('home.promise_device_image', 'images/home/home-orris-device.svg') }}" alt="{{ $homeContent['home.promise_device_image_alt'] ?? 'Orris smart home voice assistant device' }}" loading="lazy">
+                <div><h3>{{ $homeContent['home.promise_device_heading'] ?? 'Elevating Everyday' }}</h3><p>{{ $homeContent['home.promise_device_line_one'] ?? 'Living Through' }}<br>{{ $homeContent['home.promise_device_line_two'] ?? 'Intelligent Design' }}</p></div>
             </article>
         </div>
     </section>
@@ -79,13 +105,12 @@
                 <h2 id="philosophy-title">{!! nl2br(e($homePhilosophyTitle)) !!}</h2>
                 <p>{{ $cmsContent['home.philosophy_description'] ?? 'We believe the best technology is the one you don’t see. Smart Illam integrates seamlessly into your life, anticipating your needs before you even realize them. It’s not about gadgets; it’s about grace.' }}</p>
                 <div class="home-philosophy-points">
-                    <div><strong>150+</strong><span>Homes Automated</span></div>
-                    <div><strong>98%</strong><span>Client Satisfaction</span></div>
-                    <div><strong>24*7</strong><span>Support</span></div>
-                    <div><strong>12+</strong><span>Years of Experience</span></div>
+                    @for ($stat = 1; $stat <= 4; $stat++)
+                        <div><strong>{{ $homeContent["home.philosophy_stat_{$stat}_value"] ?? '' }}</strong><span>{{ $homeContent["home.philosophy_stat_{$stat}_label"] ?? '' }}</span></div>
+                    @endfor
                 </div>
             </div>
-            <div class="home-philosophy-image"><img src="{{ asset('images/home/home-philosophy-background.svg') }}" alt="Modern home interior with layered lighting and smart controls" loading="lazy"></div>
+            <div class="home-philosophy-image"><img src="{{ $homeImageUrlFor('home.philosophy_image', 'images/home/home-philosophy-background.svg') }}" alt="{{ $cmsContent['home.philosophy_image_alt'] ?? 'Modern home interior with layered lighting and smart controls' }}" loading="lazy"></div>
         </div>
     </section>
 
@@ -96,11 +121,11 @@
                 <p>{{ $cmsContent['home.devices_description'] ?? 'Smart gadgets designed for connected homes, bringing intelligence and convenience to living.' }}</p>
             </div>
             <div class="home-device-cards">
-                <article class="home-device-card"><img src="{{ asset('images/home/device-alexa-card.png') }}" alt="Amazon Alexa Echo — voice-controlled smart assistant" loading="lazy"></article>
-                <article class="home-device-card"><img src="{{ asset('images/home/device-nest-card.png') }}" alt="Google Nest Hub — control your smart home effortlessly" loading="lazy"></article>
-                <article class="home-device-card"><img src="{{ asset('images/home/device-homepod-card.png') }}" alt="Apple HomePod — premium smart speaker with Siri integration" loading="lazy"></article>
+                @foreach ($homeDeviceCards as $deviceCard)
+                    <article class="home-device-card"><img src="{{ $homeImageUrlFor($deviceCard['image'], $deviceCard['fallback']) }}" alt="{{ $homeContent[$deviceCard['alt']] ?? $deviceCard['fallback_alt'] }}" loading="lazy"></article>
+                @endforeach
             </div>
-            <a class="home-products-link" href="#contact">View All Products <span aria-hidden="true">↗</span></a>
+            <a class="home-products-link" href="{{ $homeContent['home.devices_link_url'] ?? '#contact' }}">{{ $homeContent['home.devices_link'] ?? 'View All Products' }} <span aria-hidden="true">↗</span></a>
         </div>
     </section>
 
@@ -108,36 +133,19 @@
         <div class="home-work-inner">
             <div class="home-work-heading"><h2 id="work-title">{{ $cmsContent['home.work_title'] ?? 'How We Work' }}</h2><p>{{ $cmsContent['home.work_description'] ?? 'Every project begins with understanding your unique requirements.' }}</p></div>
             <div class="home-work-steps">
-                <article class="home-work-step">
-                    <p class="home-work-step__description">We begin by understanding your business needs through detailed discussions and a site visit. Our team gathers all technical and functional requirements, identifies any customization needs, and finalizes the project scope.</p>
-                    <div class="home-work-step__visual"><img src="{{ asset('images/home/home-work-consultation.svg') }}" alt="Consultation meeting to understand a smart home project" loading="lazy"></div>
-                    <div class="home-work-step__title"><span>01</span><h3>Consultation &amp;<br>Requirement Analysis</h3></div>
-                </article>
-                <article class="home-work-step">
-                    <div class="home-work-step__title"><span>02</span><h3>Solution Proposal<br>&amp; Quotation</h3></div>
-                    <div class="home-work-step__visual"><img src="{{ asset('images/home/home-work-proposal.svg') }}" alt="Smart home proposal and quotation displayed on a tablet" loading="lazy"></div>
-                    <p class="home-work-step__description">Based on your requirements, we provide a detailed quotation with the recommended solution, project scope, estimated cost, and implementation timeline for your approval.</p>
-                </article>
-                <article class="home-work-step">
-                    <p class="home-work-step__description">Once the quotation is approved, the project is confirmed, and we schedule the implementation according to the agreed timeline.</p>
-                    <div class="home-work-step__visual"><img src="{{ asset('images/home/home-work-confirmation.svg') }}" alt="Confirming a smart home project together" loading="lazy"></div>
-                    <div class="home-work-step__title"><span>03</span><h3>Order Confirmation</h3></div>
-                </article>
-                <article class="home-work-step">
-                    <div class="home-work-step__title"><span>04</span><h3>Professional<br>Installation</h3></div>
-                    <div class="home-work-step__visual"><img src="{{ asset('images/home/home-work-installation.svg') }}" alt="Technician setting up smart home controls" loading="lazy"></div>
-                    <p class="home-work-step__description">Our experienced technicians install the complete solution with precision, ensuring all devices and systems are configured for optimal performance.</p>
-                </article>
-                <article class="home-work-step">
-                    <p class="home-work-step__description">We perform comprehensive testing to verify that every feature functions correctly, ensuring the system meets all performance and quality standards.</p>
-                    <div class="home-work-step__visual"><img src="{{ asset('images/home/home-work-testing.svg') }}" alt="Technician testing smart home controls" loading="lazy"></div>
-                    <div class="home-work-step__title"><span>05</span><h3>Testing &amp;<br>Quality Assurance</h3></div>
-                </article>
-                <article class="home-work-step">
-                    <div class="home-work-step__title"><span>06</span><h3>Training &amp;<br>Ongoing Support</h3></div>
-                    <div class="home-work-step__visual"><img src="{{ asset('images/home/home-work-training.svg') }}" alt="Smart home team demonstrating the controls to a homeowner" loading="lazy"></div>
-                    <p class="home-work-step__description">After successful installation, we provide hands-on training for your team and offer continuous technical support to ensure smooth and hassle-free operation.</p>
-                </article>
+                @foreach ($homeWorkSteps as $index => $step)
+                    <article class="home-work-step">
+                        @if ($index % 2 === 0)
+                            <p class="home-work-step__description">{{ $step['description'] }}</p>
+                            <div class="home-work-step__visual"><img src="{{ $step['image'] }}" alt="{{ $step['image_alt'] }}" loading="lazy"></div>
+                            <div class="home-work-step__title"><span>{{ sprintf('%02d', $index + 1) }}</span><h3>{!! nl2br(e($step['title'])) !!}</h3></div>
+                        @else
+                            <div class="home-work-step__title"><span>{{ sprintf('%02d', $index + 1) }}</span><h3>{!! nl2br(e($step['title'])) !!}</h3></div>
+                            <div class="home-work-step__visual"><img src="{{ $step['image'] }}" alt="{{ $step['image_alt'] }}" loading="lazy"></div>
+                            <p class="home-work-step__description">{{ $step['description'] }}</p>
+                        @endif
+                    </article>
+                @endforeach
             </div>
         </div>
     </section>
@@ -150,17 +158,17 @@
             </div>
             <div class="home-results-grid">
                 <article class="home-results-stat">
-                    <p>Making Homes Smarter, One Tap at a time for Comfort, Convenience and Seamless Living</p>
-                    <div><strong>98%</strong><span>Of users report convenience in daily life</span></div>
+                    <p>{{ $homeContent['home.results_stat_intro'] ?? 'Making Homes Smarter, One Tap at a time for Comfort, Convenience and Seamless Living' }}</p>
+                    <div><strong>{{ $homeContent['home.results_stat_value'] ?? '98%' }}</strong><span>{{ $homeContent['home.results_stat_label'] ?? 'Of users report convenience in daily life' }}</span></div>
                 </article>
                 <div class="home-results-feature">
-                    <div class="home-results-banner"><span aria-hidden="true"></span>Secure, Seamless, Effortless</div>
-                    <img src="{{ asset('images/home/home-client-story.svg') }}" alt="Smart Illam client sharing his experience" loading="lazy">
+                    <div class="home-results-banner"><span aria-hidden="true"></span>{{ $homeContent['home.results_banner'] ?? 'Secure, Seamless, Effortless' }}</div>
+                    <img src="{{ $homeImageUrlFor('home.results_image', 'images/home/home-client-story.svg') }}" alt="{{ $homeContent['home.results_image_alt'] ?? 'Smart Illam client sharing his experience' }}" loading="lazy">
                 </div>
                 <blockquote class="home-testimonial">
                     <span class="home-testimonial__quote" aria-hidden="true">“</span>
                     <p>{{ $cmsContent['home.testimonial'] ?? 'Smart Illam completely transformed our home. Lighting, security, and entertainment are now just one tap away. The installation was smooth, and the support team was exceptional.' }}</p>
-                    <footer><span><strong>Ramesh Kumar</strong><small>Chennai</small></span><span class="home-testimonial__arrows" aria-hidden="true"><i>←</i><i>→</i></span></footer>
+                    <footer><span><strong>{{ $homeContent['home.testimonial_name'] ?? 'Ramesh Kumar' }}</strong><small>{{ $homeContent['home.testimonial_location'] ?? 'Chennai' }}</small></span><span class="home-testimonial__arrows" aria-hidden="true"><i>←</i><i>→</i></span></footer>
                 </blockquote>
             </div>
         </div>

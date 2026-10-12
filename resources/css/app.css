@@ -669,15 +669,16 @@ body {
 }
 
 .services-specialty-grid {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    display: flex;
+    flex-wrap: wrap;
     justify-content: center;
-    gap: 24px;
-    max-width: 920px;
+    gap: 36px;
+    max-width: 1116px;
     margin: 0 auto;
 }
 
 .services-specialty-card {
+    flex: 0 1 calc((100% - 108px) / 4);
     position: relative;
     min-height: 190px;
     overflow: hidden;
@@ -985,7 +986,11 @@ body {
     }
 
     .services-specialty-grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 24px;
+    }
+
+    .services-specialty-card {
+        flex-basis: calc((100% - 48px) / 3);
     }
 
     .services-journey__steps {
@@ -1024,11 +1029,11 @@ body {
     }
 
     .services-specialty-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 15px;
     }
 
     .services-specialty-card {
+        flex-basis: calc((100% - 15px) / 2);
         min-height: 200px;
     }
 
@@ -1053,7 +1058,12 @@ body {
 @media (max-width: 480px) {
     .services-specialty-grid,
     .services-values__grid {
+        display: grid;
         grid-template-columns: minmax(0, 1fr);
+    }
+
+    .services-specialty-card {
+        flex-basis: 100%;
     }
 
     .services-specialty-card {
@@ -2161,7 +2171,10 @@ body {
 .curtain-intro__image {
     display: block;
     width: 100%;
-    height: 100%;
+    max-width: 620px;
+    height: auto;
+    aspect-ratio: 706 / 762;
+    margin-inline: auto;
     border: 1px solid #e5e5e5;
     border-radius: 16px;
     object-fit: cover;
@@ -2180,8 +2193,9 @@ body {
 .curtain-detail__image {
     display: block;
     width: 100%;
-    max-width: 706px;
+    max-width: 620px;
     aspect-ratio: 706 / 762;
+    margin-inline: auto;
     border-radius: 12px;
     object-fit: cover;
 }
@@ -2574,7 +2588,8 @@ body {
     .curtain-intro__image {
         height: auto;
         aspect-ratio: 706 / 762;
-        max-height: 560px;
+        max-width: 500px;
+        max-height: 500px;
     }
 
     .curtain-detail {
@@ -2608,7 +2623,8 @@ body {
     }
 
     .curtain-detail__image {
-        max-height: 560px;
+        max-width: 500px;
+        max-height: 500px;
         margin: 0 auto;
     }
 
@@ -5963,10 +5979,10 @@ body {
 
 .home-work-heading {
     display: flex;
-    align-items: flex-end;
+    align-items: flex-start;
     justify-content: space-between;
     gap: 32px;
-    margin-bottom: 80px;
+    margin-bottom: 56px;
 }
 
 .home-work-heading h2 {
@@ -5996,23 +6012,27 @@ body {
 
 .home-work-step {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 250px minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr) 190px minmax(0, 1fr);
     align-items: center;
-    column-gap: 28px;
+    column-gap: 22px;
     row-gap: 0;
-    min-height: 230px;
+    min-height: 200px;
     position: relative;
+}
+
+.home-work-step > * {
+    min-width: 0;
 }
 
 /* S-Curve connecting lines between steps */
 .home-work-step:nth-child(odd):not(:last-child)::after {
     content: '';
     position: absolute;
-    bottom: -68px;
+    bottom: -58px;
     left: 50%;
     transform: translateX(-50%) rotate(180deg);
-    width: 350px;
-    height: 140px;
+    width: 300px;
+    height: 120px;
     background: url('/images/home/work-curve-yellow.png') no-repeat center / contain;
     z-index: 1;
     pointer-events: none;
@@ -6021,11 +6041,11 @@ body {
 .home-work-step:nth-child(even):not(:last-child)::after {
     content: '';
     position: absolute;
-    bottom: -68px;
+    bottom: -58px;
     left: 50%;
     transform: translateX(-50%);
-    width: 350px;
-    height: 140px;
+    width: 300px;
+    height: 120px;
     background: url('/images/home/work-curve-gray.png') no-repeat center / contain;
     z-index: 1;
     pointer-events: none;
@@ -6038,14 +6058,14 @@ body {
     align-items: center;
     justify-content: center;
     width: 100%;
-    height: 230px;
+    height: 200px;
     z-index: 2;
 }
 
 .home-work-step__visual img {
     display: block;
-    width: 184px;
-    height: 184px;
+    width: 160px;
+    height: 160px;
     border-radius: 50%;
     object-fit: cover;
     position: relative;
@@ -6056,8 +6076,8 @@ body {
 .home-work-step:nth-child(odd) .home-work-step__visual::before {
     content: '';
     position: absolute;
-    width: 206px;
-    height: 196px;
+    width: 156px;
+    height: 150px;
     background: url('/images/home/work-blob-gray.png') no-repeat center / contain;
     top: 53%;
     left: 55%;
@@ -6069,8 +6089,8 @@ body {
 .home-work-step:nth-child(even) .home-work-step__visual::before {
     content: '';
     position: absolute;
-    width: 206px;
-    height: 196px;
+    width: 156px;
+    height: 150px;
     background: url('/images/home/work-blob-yellow.png') no-repeat center / contain;
     top: 53%;
     left: 45%;
@@ -6103,12 +6123,14 @@ body {
 }
 
 .home-work-step__title h3 {
+    min-width: 0;
     margin: 0;
     color: #222;
-    font-size: clamp(1.2rem, 1.6vw, 1.45rem);
+    font-size: clamp(1rem, 1.4vw, 1.2rem);
     font-weight: 700;
     line-height: 1.25;
     letter-spacing: -0.01em;
+    overflow-wrap: anywhere;
 }
 
 /* ODD steps (1, 3, 5): Title is in column 3 (right side) */
@@ -6130,9 +6152,9 @@ body {
 .home-work-step__description {
     margin: 0;
     color: #666;
-    font-size: 13.5px;
+    font-size: 12px;
     line-height: 1.65;
-    max-width: 320px;
+    max-width: 270px;
     z-index: 2;
 }
 
@@ -6323,29 +6345,24 @@ body {
     }
 
     .home-work-step {
-        grid-template-columns: minmax(0, 1fr) 210px minmax(0, 1fr);
-        column-gap: 18px;
+        grid-template-columns: minmax(0, 1fr) 150px minmax(0, 1fr);
+        column-gap: 12px;
+        min-height: 180px;
     }
 
     .home-work-step__visual {
-        height: 195px;
+        height: 180px;
     }
 
     .home-work-step__visual img {
-        width: 154px;
-        height: 154px;
+        width: 138px;
+        height: 138px;
     }
 
     .home-work-step:nth-child(odd) .home-work-step__visual::before,
     .home-work-step:nth-child(even) .home-work-step__visual::before {
-        width: 172px;
-        height: 164px;
-    }
-
-    .home-work-step::after {
-        width: 290px;
-        height: 120px;
-        bottom: -62px;
+        width: 136px;
+        height: 130px;
     }
 }
 
@@ -6469,79 +6486,70 @@ body {
     }
 
     .home-work-heading {
-        flex-direction: column;
+        flex-direction: row;
         align-items: flex-start;
-        gap: 12px;
-        margin-bottom: 40px;
+        gap: 10px;
+        margin-bottom: 32px;
     }
 
     .home-work-heading h2 {
-        font-size: clamp(2rem, 8vw, 2.6rem);
+        flex: 0 0 auto;
+        font-size: clamp(1.15rem, 4vw, 1.5rem);
     }
 
     .home-work-heading > p {
-        max-width: 100%;
-        font-size: 14px;
+        max-width: 190px;
+        font-size: 9px;
     }
 
     .home-work-steps {
-        gap: 44px;
+        gap: 24px;
     }
 
     .home-work-step {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        gap: 16px;
-        min-height: 0;
-    }
-
-    .home-work-step::after {
-        display: none;
+        grid-template-columns: minmax(0, 1fr) 96px minmax(0, 1fr);
+        column-gap: 8px;
+        min-height: 132px;
     }
 
     .home-work-step__visual {
-        height: 180px;
+        height: 132px;
     }
 
     .home-work-step__visual img {
-        width: 148px;
-        height: 148px;
+        width: 114px;
+        height: 114px;
     }
 
     .home-work-step:nth-child(odd) .home-work-step__visual::before,
     .home-work-step:nth-child(even) .home-work-step__visual::before {
-        width: 166px;
-        height: 158px;
+        width: 112px;
+        height: 107px;
     }
 
     .home-work-step__title {
-        display: flex !important;
-        flex-direction: row !important;
-        align-items: center !important;
-        justify-content: center !important;
-        text-align: left !important;
-        gap: 14px;
-        padding: 0 !important;
+        gap: 6px;
+        padding: 0 2px !important;
     }
 
     .home-work-step__title span {
-        width: 38px;
-        height: 38px;
-        min-width: 38px;
-        font-size: 15px;
+        width: 24px;
+        height: 24px;
+        min-width: 24px;
+        border-radius: 4px;
+        font-size: 10px;
     }
 
     .home-work-step__title h3 {
-        font-size: 17px;
+        font-size: 10px;
+        line-height: 1.2;
     }
 
     .home-work-step__description {
-        max-width: 100% !important;
-        text-align: center !important;
-        padding: 0 10px !important;
-        font-size: 13.5px;
+        max-width: 100%;
+        padding: 0 2px !important;
+        font-size: 8px;
+        line-height: 1.4;
     }
 
     .home-results-grid {
@@ -6583,16 +6591,53 @@ body {
     }
 
     .home-work-step {
-        grid-template-columns: 76px minmax(0, 1fr);
-        gap: 10px 12px;
+        grid-template-columns: minmax(0, 1fr) 78px minmax(0, 1fr);
+        column-gap: 4px;
+        min-height: 118px;
+    }
+
+    .home-work-step__visual {
+        height: 118px;
+    }
+
+    .home-work-step__visual img {
+        width: 96px;
+        height: 96px;
+    }
+
+    .home-work-step:nth-child(odd) .home-work-step__visual::before,
+    .home-work-step:nth-child(even) .home-work-step__visual::before {
+        width: 94px;
+        height: 90px;
+    }
+
+    .home-work-step:nth-child(odd):not(:last-child)::after,
+    .home-work-step:nth-child(even):not(:last-child)::after {
+        width: 116px;
+        height: 54px;
+        bottom: -29px;
     }
 
     .home-work-step__title {
-        align-items: flex-start;
+        gap: 4px;
+        padding-inline: 0 !important;
+    }
+
+    .home-work-step__title span {
+        width: 20px;
+        height: 20px;
+        min-width: 20px;
+        font-size: 8px;
     }
 
     .home-work-step__title h3 {
-        font-size: 15px;
+        font-size: 8px;
+        line-height: 1.15;
+    }
+
+    .home-work-step__description {
+        font-size: 7px;
+        line-height: 1.3;
     }
 }
 
@@ -6966,8 +7011,8 @@ body {
 
 .ecosystem-section > img {
     display: block;
-    width: min(900px, 94%);
-    max-height: 410px;
+    width: min(1200px, 98%);
+    max-height: 500px;
     margin: 34px auto 0;
     object-fit: contain;
 }

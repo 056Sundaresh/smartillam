@@ -125,7 +125,7 @@
                     <article class="home-device-card"><img src="{{ $homeImageUrlFor($deviceCard['image'], $deviceCard['fallback']) }}" alt="{{ $homeContent[$deviceCard['alt']] ?? $deviceCard['fallback_alt'] }}" loading="lazy"></article>
                 @endforeach
             </div>
-            <a class="home-products-link" href="{{ $homeContent['home.devices_link_url'] ?? '#contact' }}">{{ $homeContent['home.devices_link'] ?? 'View All Products' }} <span aria-hidden="true">↗</span></a>
+            <a class="home-products-link" href="{{ route('products.index') }}">{{ $homeContent['home.devices_link'] ?? 'View All Products' }} <span aria-hidden="true">↗</span></a>
         </div>
     </section>
 

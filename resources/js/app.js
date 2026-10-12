@@ -136,50 +136,89 @@ document.querySelectorAll('[data-newsletter-form]').forEach((form) => {
 });
 
 document.querySelectorAll('[data-service-quote]').forEach((form) => {
-    form.addEventListener('submit', (event) => {
+    form.addEventListener('submit', async (event) => {
         event.preventDefault();
 
-        const values = new FormData(form);
-        const subject = encodeURIComponent(`Service quotation request from ${values.get('name')}`);
-        const body = encodeURIComponent([
-            `Name: ${values.get('name')}`,
-            `Contact number: ${values.get('phone')}`,
-            `Existing system: ${values.get('system')}`,
-        ].join('\n'));
-        const contactEmail = form.dataset.contactEmail || 'buildingcare09@gmail.com';
+        const notice = form.parentElement.querySelector('[data-quote-notice]');
+        const submitButton = form.querySelector('button[type="submit"]');
 
-        window.location.href = `mailto:${contactEmail}?subject=${subject}&body=${body}`;
-    });
-});
-
-document.querySelectorAll('[data-contact-form]').forEach((form) => {
-    form.addEventListener('submit', (event) => {
-        event.preventDefault();
-
-        const values = new FormData(form);
-        const firstName = values.get('first_name');
-        const subject = encodeURIComponent(`Smart Illam enquiry from ${firstName}`);
-        const body = encodeURIComponent([
-            `Name: ${firstName} ${values.get('last_name') || ''}`.trim(),
-            `Email: ${values.get('email')}`,
-            `Mobile: ${form.dataset.contactPhonePrefix || '+91'} ${values.get('phone')}`,
-            `Interested in: ${values.get('service')}`,
-            `Preferred contact method: ${values.get('contact_method') || 'Not specified'}`,
-            '',
-            `Requirement: ${values.get('requirements') || 'Not provided'}`,
-        ].join('\n'));
-
-        const note = form.parentElement.querySelector('[data-contact-form-note]');
-
-        if (note) {
-            note.hidden = false;
+        if (!notice || !submitButton) {
+            return;
         }
 
-        const contactEmail = form.dataset.contactEmail || 'buildingcare09@gmail.com';
+        submitButton.disabled = true;
+        notice.classList.remove('is-error');
+        notice.textContent = 'Sending your request…';
+        notice.hidden = false;
 
-        window.location.href = `mailto:${contactEmail}?subject=${subject}&body=${body}`;
+        try {
+            const response = await fetch(form.action, {
+                method: 'POST',
+                body: new FormData(form),
+                headers: {
+                    Accept: 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+            });
+            const result = await response.json().catch(() => ({}));
+
+            if (!response.ok) {
+                const firstValidationError = Object.values(result.errors ?? {}).flat()[0];
+
+                throw new Error(firstValidationError ?? result.message ?? 'We could not send your request. Please try again.');
+            }
+
+            notice.textContent = result.message ?? 'Your quote request has been sent successfully.';
+            form.reset();
+        } catch (error) {
+            notice.classList.add('is-error');
+            notice.textContent = error.message;
+        } finally {
+            submitButton.disabled = false;
+        }
     });
 });
+
+document.querySelectorAll('input[name="phone"]').forEach((input) => {
+    input.addEventListener('input', () => {
+        input.value = input.value.replace(/\D/g, '').slice(0, Number(input.maxLength) || 15);
+    });
+});
+
+const brochureModal = document.querySelector('[data-brochure-modal]');
+const brochureOpenButton = document.querySelector('[data-brochure-open]');
+const brochureCloseButtons = document.querySelectorAll('[data-brochure-close]');
+const brochureDialog = brochureModal?.querySelector('[role="dialog"]');
+
+if (brochureModal && brochureOpenButton && brochureDialog) {
+    const closeBrochureModal = () => {
+        brochureModal.hidden = true;
+        document.body.classList.remove('has-brochure-modal');
+        brochureOpenButton.focus();
+    };
+
+    brochureOpenButton.addEventListener('click', () => {
+        brochureModal.hidden = false;
+        document.body.classList.add('has-brochure-modal');
+        brochureDialog.focus();
+    });
+
+    brochureCloseButtons.forEach((button) => {
+        button.addEventListener('click', closeBrochureModal);
+    });
+
+    brochureModal.addEventListener('click', (event) => {
+        if (event.target === brochureModal) {
+            closeBrochureModal();
+        }
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && !brochureModal.hidden) {
+            closeBrochureModal();
+        }
+    });
+}
 
 const adminPageTabs = [...document.querySelectorAll('[data-admin-page-tab]')];
 

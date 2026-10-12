@@ -125,14 +125,22 @@
         </div>
     </section>
 
-    <section class="services-quote section-pad" style="--services-quote-image: url('{{ $serviceImage('quote_image', 'images/services/services-quote.png') }}')" aria-labelledby="services-quote-title">
+    <section class="services-quote section-pad" id="services-quote" style="--services-quote-image: url('{{ $serviceImage('quote_image', 'images/services/services-quote.png') }}')" aria-labelledby="services-quote-title">
         <div class="container">
-            <div class="services-quote__panel">
-                <h2 id="services-quote-title">{{ $cmsContent['services.quote_title'] ?? 'Request Quote' }}</h2>
-                <form class="services-quote-form" data-service-quote data-contact-email="{{ $cmsContent['contact.email'] ?? 'buildingcare09@gmail.com' }}">
-                    <label>{{ $cmsContent['services.quote_name_label'] ?? 'Full Name' }}<input name="name" type="text" autocomplete="name" required></label>
-                    <label>{{ $cmsContent['services.quote_phone_label'] ?? 'Contact Number' }}<input name="phone" type="tel" autocomplete="tel" required></label>
-                    <label>{{ $cmsContent['services.quote_system_label'] ?? 'Existing System' }}<select name="system">@foreach ($serviceQuoteOptions as $option)<option>{{ $option }}</option>@endforeach</select></label>
+            @if (session('quote_request_status'))
+                <div class="services-quote__toast" role="status" aria-live="polite">✓ {{ session('quote_request_status') }}</div>
+            @endif
+            @if ($errors->any())
+                <div class="services-quote__error" role="alert">{{ $errors->first() }}</div>
+            @endif
+                <div class="services-quote__panel">
+                    <h2 id="services-quote-title">{{ $cmsContent['services.quote_title'] ?? 'Request Quote' }}</h2>
+                    <p class="services-quote__notice" data-quote-notice role="status" aria-live="polite" hidden></p>
+                    <form class="services-quote-form" method="POST" action="{{ route('quote-requests.store') }}" data-service-quote>
+                    @csrf
+                    <label>{{ $cmsContent['services.quote_name_label'] ?? 'Full Name' }}<input name="name" type="text" autocomplete="name" value="{{ old('name') }}" maxlength="150" required></label>
+                    <label>{{ $cmsContent['services.quote_phone_label'] ?? 'Contact Number' }}<input name="phone" type="tel" inputmode="numeric" pattern="[0-9]{10,15}" autocomplete="tel" value="{{ old('phone') }}" maxlength="15" minlength="10" required></label>
+                    <label>{{ $cmsContent['services.quote_system_label'] ?? 'Existing System' }}<select name="system" required>@foreach ($serviceQuoteOptions as $option)<option value="{{ $option }}" @selected(old('system', $serviceQuoteOptions[0] ?? '') === $option)>{{ $option }}</option>@endforeach</select></label>
                     <button class="btn" type="submit">{{ $cmsContent['services.quote_submit_label'] ?? 'Request Quotation' }}</button>
                 </form>
             </div>

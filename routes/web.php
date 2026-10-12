@@ -1,7 +1,11 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminAuthController;
+use App\Http\Controllers\Admin\ContactSubmissionController as AdminContactSubmissionController;
 use App\Http\Controllers\Admin\ContentController;
+use App\Http\Controllers\Admin\QuoteRequestController as AdminQuoteRequestController;
+use App\Http\Controllers\ContactSubmissionController;
+use App\Http\Controllers\QuoteRequestController;
 use App\Services\ContentStore;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Route;
@@ -12,6 +16,7 @@ Route::get('/', function (): View {
 
 Route::view('/solutions', 'solutions')->name('solutions');
 Route::view('/services', 'services')->name('services');
+Route::post('/services/quote-requests', [QuoteRequestController::class, 'store'])->middleware('throttle:10,1')->name('quote-requests.store');
 
 Route::get('/admin/login', [AdminAuthController::class, 'create'])->name('admin.login');
 Route::post('/admin/login', [AdminAuthController::class, 'store'])->middleware('throttle:10,1')->name('admin.login.store');
@@ -19,6 +24,10 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function (): v
     Route::get('/content', [ContentController::class, 'edit'])->name('content.edit');
     Route::post('/content/preview-draft', [ContentController::class, 'previewDraft'])->name('content.preview-draft');
     Route::put('/content', [ContentController::class, 'update'])->name('content.update');
+    Route::get('/messages', [AdminContactSubmissionController::class, 'index'])->name('messages.index');
+    Route::delete('/messages/{contactSubmission}', [AdminContactSubmissionController::class, 'destroy'])->name('messages.destroy');
+    Route::get('/quotes', [AdminQuoteRequestController::class, 'index'])->name('quotes.index');
+    Route::delete('/quotes/{quoteRequest}', [AdminQuoteRequestController::class, 'destroy'])->name('quotes.destroy');
     Route::post('/logout', [AdminAuthController::class, 'destroy'])->name('logout');
 });
 
@@ -156,6 +165,9 @@ Route::get('/about', function (): View {
 Route::get('/contact', function (): View {
     return view('contact');
 })->name('contact');
+Route::post('/contact/messages', [ContactSubmissionController::class, 'store'])
+    ->middleware('throttle:10,1')
+    ->name('contact.submissions.store');
 
 $products = [
     'smart-touch-switches' => [
@@ -229,6 +241,18 @@ $products = [
         'hero_description' => 'Upgrade your property’s entrance with advanced gate automation systems designed for convenience, security, and reliable performance. From residential driveways to commercial and industrial entrances, our smart gate solutions deliver effortless access control with smooth, automated operation.',
     ],
 ];
+
+Route::get('/products', function () use ($products): View {
+    $content = app(ContentStore::class)->all();
+
+    foreach ($products as $productSlug => &$productDetails) {
+        foreach (['name', 'image', 'alt', 'hero_title', 'hero_description'] as $field) {
+            $productDetails[$field] = $content["products.{$productSlug}.{$field}"] ?? $productDetails[$field] ?? null;
+        }
+    }
+
+    return view('products.index', ['products' => $products]);
+})->name('products.index');
 
 foreach (array_keys($products) as $slug) {
     Route::get('/products/'.$slug, function () use ($products, $slug): View {

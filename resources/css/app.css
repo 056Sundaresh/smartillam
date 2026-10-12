@@ -852,22 +852,60 @@ body {
 .services-quote {
     position: relative;
     overflow: hidden;
-    background: linear-gradient(rgb(28 27 20 / 76%), rgb(28 27 20 / 76%)), var(--services-quote-image, url('/images/services/services-quote.png')) center / cover no-repeat;
+    background: radial-gradient(ellipse at center, rgb(255 185 20 / 16%) 0%, rgb(28 27 20 / 40%) 48%, rgb(28 27 20 / 76%) 100%), var(--services-quote-image, url('/images/services/services-quote.png')) center / cover no-repeat;
+}
+
+.services-page .services-quote.section-pad {
+    padding: 50px 0;
 }
 
 .services-quote__panel {
-    max-width: 570px;
+    max-width: 440px;
     margin: 0 auto;
-    padding: 30px 32px;
-    border-radius: 8px;
+    padding: 28px 30px;
+    border-radius: 6px;
     background: rgb(38 37 30 / 62%);
     color: #fff;
 }
 
+.services-quote__toast,
+.services-quote__error,
+.services-quote__notice {
+    width: min(100%, 440px);
+    margin: 0 auto 14px;
+    padding: 12px 15px;
+    border-radius: 7px;
+    background: #effbf2;
+    color: #205b35;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.services-quote__error {
+    background: #fff0f0;
+    color: #8c2929;
+}
+
+.services-quote__notice[hidden] {
+    display: none;
+}
+
+.services-quote__notice {
+    background: #effbf2;
+    color: #205b35;
+    font-size: 13px;
+    line-height: 1.45;
+}
+
+.services-quote__notice.is-error {
+    background: #fff0f0;
+    color: #8c2929;
+}
+
 .services-quote__panel h2 {
-    margin: 0 0 19px;
+    margin: 0 0 17px;
     text-align: center;
-    font-size: 23px;
+    font-size: 24px;
 }
 
 .services-quote-form {
@@ -879,20 +917,22 @@ body {
     display: grid;
     gap: 6px;
     color: #fff;
-    font-size: 11px;
+    font-size: 13px;
+    font-weight: 600;
     text-transform: uppercase;
 }
 
 .services-quote-form input,
 .services-quote-form select {
     width: 100%;
-    min-height: 41px;
-    padding: 8px 11px;
+    min-height: 44px;
+    padding: 9px 12px;
     border: 1px solid rgb(255 255 255 / 12%);
-    border-radius: 6px;
+    border-radius: 5px;
     outline-color: #ffb914;
     background: rgb(255 255 255 / 19%);
     color: #fff;
+    font-size: 15px;
 }
 
 .services-quote-form select option {
@@ -900,11 +940,11 @@ body {
 }
 
 .services-quote-form .btn {
-    min-height: 42px;
+    min-height: 46px;
     margin-top: 3px;
     background: #ffb914;
     color: #171717;
-    font-size: 13px;
+    font-size: 15px;
     font-weight: 700;
 }
 
@@ -1052,6 +1092,10 @@ body {
         padding: 56px 0;
     }
 
+    .services-page .services-quote.section-pad {
+        padding: 40px 0;
+    }
+
     .services-final-cta {
         margin: 20px 12px 55px;
     }
@@ -1077,7 +1121,7 @@ body {
     }
 
     .services-quote__panel {
-        padding: 24px 19px;
+        padding: 24px 20px;
     }
 
     .services-hero__actions > a {
@@ -1385,6 +1429,7 @@ body {
     background: none;
     font: inherit;
     font-size: 12px;
+    font-weight: 700;
     text-decoration: none;
     cursor: pointer;
 }
@@ -4797,16 +4842,226 @@ body {
     padding: 8px 18px;
     border: 1px solid rgb(255 255 255 / 75%);
     border-radius: 5px;
+    background: transparent;
     color: #fff;
     font-size: 12px;
     font-weight: 600;
     text-decoration: none;
+    cursor: pointer;
 }
 
 .contact-hero__secondary:hover,
 .contact-hero__secondary:focus-visible {
     background: #fff;
     color: #222;
+}
+
+.brochure-modal[hidden] {
+    display: none;
+}
+
+.brochure-modal {
+    position: fixed;
+    z-index: 2000;
+    inset: 0;
+    display: grid;
+    overflow-y: auto;
+    place-items: center;
+    padding: 20px;
+    background: rgb(0 0 0 / 76%);
+}
+
+.brochure-modal__dialog {
+    position: relative;
+    display: grid;
+    width: min(100%, 1060px);
+    min-height: 560px;
+    grid-template-columns: minmax(0, .95fr) minmax(0, 1.2fr);
+    align-items: center;
+    gap: clamp(28px, 5vw, 56px);
+    padding: clamp(48px, 7vw, 82px) clamp(28px, 7vw, 80px);
+    outline: none;
+    background: #292929;
+    color: #fff;
+}
+
+.brochure-modal__close {
+    position: absolute;
+    top: 18px;
+    right: 20px;
+    width: 36px;
+    height: 36px;
+    border: 0;
+    background: transparent;
+    color: #fff;
+    font-size: 29px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.brochure-modal__intro h2 {
+    margin: 0;
+    padding: 0 0 10px;
+    border-bottom: 1px solid #ffb914;
+    font-size: clamp(27px, 3.4vw, 38px);
+    font-weight: 600;
+    text-align: center;
+}
+
+.brochure-modal__intro > p {
+    margin: 26px 0 32px;
+    font-size: 15px;
+    line-height: 1.5;
+    text-align: center;
+}
+
+.brochure-modal__cards {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.brochure-modal__card {
+    display: flex;
+    min-height: 116px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+    border-radius: 9px;
+    background: #fff;
+    color: #333;
+    text-align: center;
+    text-decoration: none;
+}
+
+.brochure-modal__card > span {
+    margin-bottom: 8px;
+    color: #f4a900;
+    font-size: 22px;
+}
+
+.brochure-modal__card small {
+    font-size: 11px;
+}
+
+.brochure-modal__card p {
+    margin: 10px 0 0;
+    font-size: 11px;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+}
+
+.brochure-modal__brand img {
+    width: min(100%, 150px);
+    max-height: 54px;
+    object-fit: contain;
+}
+
+.brochure-modal__form {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: end;
+    gap: 20px 28px;
+}
+
+.brochure-modal__form label {
+    display: grid;
+    gap: 8px;
+    color: #f4f4f4;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.brochure-modal__form input {
+    width: 100%;
+    min-width: 0;
+    height: 42px;
+    padding: 0 11px;
+    border: 1px solid #e6e6e6;
+    border-radius: 5px;
+    background: #fff;
+    color: #252525;
+    font: inherit;
+    font-size: 12px;
+}
+
+.brochure-modal__form input::placeholder {
+    color: #999;
+}
+
+.brochure-modal__phone {
+    display: flex;
+    height: 42px;
+    align-items: center;
+    border-radius: 5px;
+    background: #fff;
+    color: #555;
+}
+
+.brochure-modal__phone > span {
+    padding: 0 10px;
+    font-size: 12px;
+}
+
+.brochure-modal__phone input {
+    border-radius: 0 5px 5px 0;
+}
+
+.brochure-modal__submit {
+    min-height: 44px;
+    grid-column: 1 / -1;
+    border: 0;
+    border-radius: 6px;
+    background: #ffb914;
+    color: #171717;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.brochure-modal__submit:hover,
+.brochure-modal__submit:focus-visible {
+    background: #eda900;
+}
+
+body.has-brochure-modal {
+    overflow: hidden;
+}
+
+@media (max-width: 760px) {
+    .brochure-modal__dialog {
+        width: min(100%, 560px);
+        min-height: 0;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 30px;
+        padding: 58px 28px 32px;
+    }
+
+    .brochure-modal__intro > p {
+        margin: 18px 0 22px;
+    }
+}
+
+@media (max-width: 480px) {
+    .brochure-modal {
+        padding: 10px;
+    }
+
+    .brochure-modal__dialog {
+        gap: 24px;
+        padding: 54px 18px 22px;
+    }
+
+    .brochure-modal__form {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 15px;
+    }
+
+    .brochure-modal__submit {
+        grid-column: auto;
+    }
 }
 
 .contact-form-section {
@@ -4933,10 +5188,45 @@ body {
     background: #eda900;
 }
 
-.contact-form__note {
-    margin: 14px 0 0;
-    color: #505050;
+.contact-form__toast {
+    position: fixed;
+    z-index: 1000;
+    top: 24px;
+    right: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: min(420px, calc(100vw - 32px));
+    padding: 16px 20px;
+    border: 1px solid #cce8d5;
+    border-radius: 12px;
+    background: #f0fff4;
+    box-shadow: 0 12px 32px rgb(0 0 0 / 14%);
+    color: #205b35;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.contact-form__toast-icon {
+    display: grid;
+    width: 28px;
+    height: 28px;
+    flex: 0 0 28px;
+    place-items: center;
+    border-radius: 50%;
+    background: #248447;
+    color: #fff;
+    font-size: 17px;
+}
+
+.contact-form-error {
+    margin: 0 0 18px;
+    padding: 12px 14px;
+    border-radius: 7px;
+    background: #fff0f0;
+    color: #8c2929;
     font-size: 13px;
+    text-align: left;
 }
 
 .contact-details {
@@ -7352,5 +7642,347 @@ body {
     .motion-hover {
         animation: none !important;
         transition: none !important;
+    }
+}
+
+.admin-messages-sidebar-link {
+    display: block;
+    margin-top: 14px;
+    color: #715300;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.45;
+    text-decoration: none;
+}
+
+.admin-message-list {
+    display: grid;
+    gap: 16px;
+}
+
+.admin-message-card {
+    padding: clamp(18px, 3vw, 26px);
+    border: 1px solid #e8eaed;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 5px 18px rgb(24 34 45 / 4%);
+}
+
+.admin-message-card__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.admin-message-number {
+    margin: 0 0 7px;
+    color: #8a8a8a;
+    font-size: 10px;
+}
+
+.admin-message-card__header h2 {
+    margin: 0;
+    color: #292929;
+    font-size: 19px;
+    font-weight: 600;
+}
+
+.admin-message-delete {
+    padding: 8px 12px;
+    border: 1px solid #e7caca;
+    border-radius: 6px;
+    background: #fff7f7;
+    color: #982d2d;
+    font: inherit;
+    font-size: 11px;
+    cursor: pointer;
+}
+
+.admin-message-delete:hover,
+.admin-message-delete:focus-visible {
+    background: #982d2d;
+    color: #fff;
+}
+
+.admin-message-contact {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 18px;
+    margin-top: 12px;
+}
+
+.admin-message-contact a {
+    color: #715300;
+    font-size: 12px;
+    text-decoration: none;
+}
+
+.admin-message-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 28px;
+    margin: 18px 0;
+    padding: 14px 0;
+    border-top: 1px solid #eceef0;
+    border-bottom: 1px solid #eceef0;
+}
+
+.admin-message-meta div {
+    display: grid;
+    gap: 4px;
+}
+
+.admin-message-meta dt {
+    color: #888;
+    font-size: 10px;
+    text-transform: uppercase;
+}
+
+.admin-message-meta dd {
+    margin: 0;
+    color: #333;
+    font-size: 12px;
+}
+
+.admin-message-requirement h3 {
+    margin: 0 0 6px;
+    color: #505050;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.admin-message-requirement p {
+    margin: 0;
+    color: #555;
+    font-size: 13px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.admin-message-empty {
+    padding: 48px 20px;
+    border: 1px dashed #d8dce1;
+    border-radius: 12px;
+    background: #fff;
+    text-align: center;
+}
+
+.admin-message-empty > span {
+    color: #c48e0b;
+    font-size: 28px;
+}
+
+.admin-message-empty h2 {
+    margin: 12px 0 6px;
+    color: #303030;
+    font-size: 18px;
+}
+
+.admin-message-empty p {
+    margin: 0;
+    color: #777;
+    font-size: 12px;
+}
+
+.admin-message-pagination {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 12px;
+    margin-top: 20px;
+    color: #777;
+    font-size: 12px;
+}
+
+.admin-message-pagination a {
+    color: #715300;
+    text-decoration: none;
+}
+
+.admin-message-pagination a:last-child {
+    justify-self: end;
+}
+
+.admin-inbox-page .admin-editor-heading > div > p:last-child {
+    font-size: 15px;
+}
+
+.admin-inbox-page .admin-live-pill {
+    font-size: 12px;
+}
+
+.admin-inbox-page .admin-message-number {
+    font-size: 13px;
+}
+
+.admin-inbox-page .admin-message-card__header h2 {
+    font-size: 22px;
+}
+
+.admin-inbox-page .admin-message-delete {
+    font-size: 14px;
+}
+
+.admin-inbox-page .admin-message-contact a {
+    font-size: 16px;
+}
+
+.admin-inbox-page .admin-message-meta dt {
+    font-size: 13px;
+}
+
+.admin-inbox-page .admin-message-meta dd {
+    font-size: 16px;
+}
+
+.admin-inbox-page .admin-message-requirement h3 {
+    font-size: 15px;
+}
+
+.admin-inbox-page .admin-message-requirement p {
+    font-size: 16px;
+}
+
+.admin-inbox-page .admin-message-empty h2 {
+    font-size: 21px;
+}
+
+.admin-inbox-page .admin-message-empty p,
+.admin-inbox-page .admin-message-pagination {
+    font-size: 14px;
+}
+
+.products-index-page {
+    background: #f7f7f5;
+}
+
+.products-index {
+    padding: 88px 0 100px;
+}
+
+.products-index__heading {
+    max-width: 720px;
+    margin: 0 auto 48px;
+    text-align: center;
+}
+
+.products-index__heading h1 {
+    margin: 0 0 14px;
+    color: #252525;
+    font-size: clamp(34px, 4vw, 52px);
+    font-weight: 700;
+}
+
+.products-index__heading > p:last-child {
+    margin: 0;
+    color: #666;
+    font-size: 17px;
+    line-height: 1.7;
+}
+
+.products-index__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+}
+
+.products-index__card {
+    overflow: hidden;
+    border: 1px solid #e8e6e0;
+    border-radius: 18px;
+    background: #fff;
+    color: inherit;
+    text-decoration: none;
+    box-shadow: 0 10px 30px rgb(28 28 28 / 6%);
+}
+
+.products-index__image-wrap {
+    display: grid;
+    min-height: 240px;
+    place-items: center;
+    padding: 22px;
+    background: #f1f1ef;
+}
+
+.products-index__image-wrap img {
+    width: 100%;
+    height: 220px;
+    object-fit: contain;
+}
+
+.products-index__card-content {
+    padding: 22px 24px 26px;
+}
+
+.products-index__card-content h2 {
+    margin: 0 0 10px;
+    color: #252525;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.products-index__card-content p {
+    display: -webkit-box;
+    overflow: hidden;
+    min-height: 52px;
+    margin: 0 0 18px;
+    color: #666;
+    font-size: 15px;
+    line-height: 1.65;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
+.products-index__card-content > span {
+    color: #a87500;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+@media (max-width: 991.98px) {
+    .products-index__grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 767.98px) {
+    .products-index {
+        padding: 60px 0 72px;
+    }
+
+    .products-index__grid {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .products-index__heading {
+        margin-bottom: 32px;
+    }
+
+    .products-index__heading > p:last-child {
+        font-size: 15px;
+    }
+
+    .products-index__image-wrap {
+        min-height: 210px;
+    }
+
+    .products-index__image-wrap img {
+        height: 190px;
+    }
+
+    .admin-topbar-actions {
+        gap: 10px;
+    }
+
+    .admin-topbar-actions a,
+    .admin-topbar-actions button {
+        font-size: 10px;
+    }
+
+    .admin-inbox-page .admin-message-card__header h2 {
+        font-size: 19px;
     }
 }

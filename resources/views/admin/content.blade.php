@@ -12,7 +12,7 @@
         <div class="admin-topbar-actions"><a href="{{ route('home') }}" target="_blank" rel="noopener">Preview website ↗</a><form method="POST" action="{{ route('admin.logout') }}">@csrf<button type="submit">Sign out</button></form></div>
     </header>
     <main class="admin-editor-shell">
-        <aside class="admin-sidebar"><span class="admin-avatar">{{ mb_substr(auth()->user()->name, 0, 1) }}</span><p class="admin-sidebar-overline">WORKSPACE</p><h2>Website</h2><p>Signed in as<br><strong>{{ auth()->user()->name }}</strong></p></aside>
+        <aside class="admin-sidebar"><span class="admin-avatar">{{ mb_substr(auth()->user()->name, 0, 1) }}</span><p class="admin-sidebar-overline">WORKSPACE</p><h2>Website</h2><a class="admin-messages-sidebar-link" href="{{ route('admin.content.edit') }}">▣ &nbsp; Site content</a><a class="admin-messages-sidebar-link" href="{{ route('admin.messages.index') }}">✉ &nbsp; Contact messages</a><a class="admin-messages-sidebar-link" href="{{ route('admin.quotes.index') }}">✉ &nbsp; Quote requests</a><p>Signed in as<br><strong>{{ auth()->user()->name }}</strong></p></aside>
         <section class="admin-editor-main">
             <div class="admin-editor-heading"><div><p class="admin-eyebrow">CONTENT MANAGEMENT</p><h1>Your website, <span>your way.</span></h1><p>Edit and save every page from this admin panel.</p></div><span class="admin-live-pill">ADMIN PANEL</span></div>
             @if (session('status'))<div class="admin-success" role="status">✓ {{ session('status') }}</div>@endif

@@ -7933,6 +7933,7 @@ body.has-brochure-modal {
     line-height: 1.65;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
+    line-clamp: 2;
 }
 
 .products-index__card-content > span {

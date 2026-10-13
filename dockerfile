@@ -89,8 +89,11 @@ RUN mkdir -p \
 RUN chown -R www-data:www-data storage bootstrap/cache \
     && chmod -R ug+rwX storage bootstrap/cache
 
-# Build Vite assets
-RUN npm run build
+# Build Vite assets. Remove any stale Vite dev-server marker so Laravel uses
+# the production manifest when rendering @vite() tags in the container.
+RUN rm -f public/hot \
+    && npm run build \
+    && test -s public/build/manifest.json
 
 # Regenerate Composer autoload files
 RUN composer dump-autoload \

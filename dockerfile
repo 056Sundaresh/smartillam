@@ -102,4 +102,4 @@ RUN composer dump-autoload \
 # Render web service port
 EXPOSE 10000
 
-CMD ["apache2-foreground"]
+CMD ["bash", "-lc", "php artisan migrate --force && exec apache2-foreground"]

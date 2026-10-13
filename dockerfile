@@ -105,4 +105,4 @@ RUN composer dump-autoload \
 # Render web service port
 EXPOSE 10000
 
-CMD ["bash", "-lc", "php artisan migrate --force && exec apache2-foreground"]
+CMD ["bash", "-lc", "php artisan migrate --force && if [ \"${SEED_ADMIN_ON_START:-false}\" = \"true\" ]; then php artisan db:seed --force; fi && exec apache2-foreground"]

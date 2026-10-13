@@ -6,11 +6,7 @@
         <title>@yield('title', 'Smart Illam')</title>
         <link rel="icon" type="image/png" href="{{ asset('images/smartillam-logo.png') }}">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-        @production
-            <link rel="stylesheet" href="{{ \Illuminate\Support\Facades\Vite::asset('resources/css/app.css') }}">
-        @else
-            @vite('resources/css/app.css')
-        @endproduction
+        <link rel="stylesheet" href="{{ \Illuminate\Support\Facades\Vite::asset('resources/css/app.css') }}">
         @vite('resources/js/app.js')
     </head>
     <body id="page-top" class="@yield('body-class')">

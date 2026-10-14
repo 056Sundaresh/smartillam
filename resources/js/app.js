@@ -17,6 +17,7 @@ document.querySelectorAll('[data-door-model]').forEach((button) => {
     button.addEventListener('click', () => {
         const modelGroup = button.parentElement;
         const selectedModelLabel = document.querySelector('[data-selected-door-model]');
+        const selectedModelImage = document.querySelector('[data-selected-door-model-image]');
 
         modelGroup.querySelectorAll('[data-door-model]').forEach((modelButton) => {
             const isSelected = modelButton === button;
@@ -28,6 +29,28 @@ document.querySelectorAll('[data-door-model]').forEach((button) => {
         if (selectedModelLabel) {
             selectedModelLabel.textContent = button.dataset.doorModel;
         }
+
+        if (selectedModelImage && button.dataset.modelImage) {
+            selectedModelImage.src = button.dataset.modelImage;
+            selectedModelImage.alt = `${button.dataset.doorModel} smart door lock`;
+        }
+    });
+});
+
+document.querySelectorAll('[data-door-model-step]').forEach((button) => {
+    button.addEventListener('click', () => {
+        const modelSection = button.closest('.door-models');
+        const modelButtons = [...(modelSection?.querySelectorAll('[data-door-model]') ?? [])];
+
+        if (modelButtons.length === 0) {
+            return;
+        }
+
+        const selectedIndex = modelButtons.findIndex((modelButton) => modelButton.getAttribute('aria-pressed') === 'true');
+        const currentIndex = selectedIndex >= 0 ? selectedIndex : 0;
+        const nextIndex = (currentIndex + Number(button.dataset.doorModelStep) + modelButtons.length) % modelButtons.length;
+
+        modelButtons[nextIndex].click();
     });
 });
 
@@ -35,6 +58,7 @@ document.querySelectorAll('[data-cctv-model]').forEach((button) => {
     button.addEventListener('click', () => {
         const modelGroup = button.parentElement;
         const selectedModelLabel = document.querySelector('[data-selected-cctv-model]');
+        const selectedModelImage = document.querySelector('[data-selected-cctv-model-image]');
 
         modelGroup.querySelectorAll('[data-cctv-model]').forEach((modelButton) => {
             const isSelected = modelButton === button;
@@ -46,6 +70,11 @@ document.querySelectorAll('[data-cctv-model]').forEach((button) => {
         if (selectedModelLabel) {
             selectedModelLabel.textContent = button.dataset.cctvModel;
         }
+
+        if (selectedModelImage && button.dataset.modelImage) {
+            selectedModelImage.src = button.dataset.modelImage;
+            selectedModelImage.alt = `${button.dataset.cctvModel} CCTV camera`;
+        }
     });
 });
 
@@ -54,6 +83,7 @@ document.querySelectorAll('[data-gate-model]').forEach((button) => {
         const modelGroup = button.parentElement;
         const modelSection = button.closest('.swing-gate-models');
         const selectedModelLabel = modelSection?.querySelector('[data-selected-gate-model]');
+        const selectedModelImage = modelSection?.querySelector('[data-selected-gate-model-image]');
 
         modelGroup.querySelectorAll('[data-gate-model]').forEach((modelButton) => {
             const isSelected = modelButton === button;
@@ -65,6 +95,28 @@ document.querySelectorAll('[data-gate-model]').forEach((button) => {
         if (selectedModelLabel) {
             selectedModelLabel.textContent = button.dataset.gateModel;
         }
+
+        if (selectedModelImage && button.dataset.modelImage) {
+            selectedModelImage.src = button.dataset.modelImage;
+            selectedModelImage.alt = `${button.dataset.gateModel} swing gate motor`;
+        }
+    });
+});
+
+document.querySelectorAll('[data-gate-model-step]').forEach((button) => {
+    button.addEventListener('click', () => {
+        const modelSection = button.closest('.swing-gate-models');
+        const modelButtons = [...(modelSection?.querySelectorAll('[data-gate-model]') ?? [])];
+
+        if (modelButtons.length === 0) {
+            return;
+        }
+
+        const selectedIndex = modelButtons.findIndex((modelButton) => modelButton.getAttribute('aria-pressed') === 'true');
+        const currentIndex = selectedIndex >= 0 ? selectedIndex : 0;
+        const nextIndex = (currentIndex + Number(button.dataset.gateModelStep) + modelButtons.length) % modelButtons.length;
+
+        modelButtons[nextIndex].click();
     });
 });
 

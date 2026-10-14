@@ -3584,6 +3584,48 @@ body {
     box-shadow: 0 3px 12px rgb(20 30 40 / 7%);
 }
 
+.door-model-carousel {
+    display: grid;
+    width: min(100%, 1000px);
+    grid-template-columns: 52px minmax(0, 1fr) 52px;
+    align-items: center;
+    gap: clamp(12px, 3vw, 32px);
+    margin: 0 auto;
+}
+
+.door-model-carousel .door-model-card {
+    min-width: 0;
+    max-width: none;
+    margin: 0;
+}
+
+.door-model-carousel__control {
+    display: grid;
+    width: 52px;
+    aspect-ratio: 1;
+    place-items: center;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+}
+
+.door-model-carousel__control img {
+    display: block;
+    width: 58px;
+    height: 58px;
+}
+
+.door-model-carousel__control--previous img {
+    transform: rotate(180deg);
+}
+
+.door-model-carousel__control:focus-visible {
+    border-radius: 50%;
+    outline: 2px solid var(--smartillam-gold);
+    outline-offset: 2px;
+}
+
 .door-model-card>img {
     display: block;
     width: 100%;
@@ -3691,6 +3733,20 @@ body {
 
     .door-model-card {
         grid-template-columns: minmax(0, 1fr);
+    }
+
+    .door-model-carousel {
+        grid-template-columns: 40px minmax(0, 1fr) 40px;
+        gap: 8px;
+    }
+
+    .door-model-carousel__control {
+        width: 40px;
+    }
+
+    .door-model-carousel__control img {
+        width: 48px;
+        height: 48px;
     }
 
     .door-model-card>img {
@@ -4386,6 +4442,14 @@ body {
     grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr);
 }
 
+.swing-gate-model-card__next {
+    position: absolute;
+    z-index: 2;
+    top: 50%;
+    right: -92px;
+    transform: translateY(-50%);
+}
+
 .swing-gate-model-card>img {
     aspect-ratio: 1 / 1;
     padding: 14px;
@@ -4656,6 +4720,19 @@ body {
 
     .swing-gate-model-card>img {
         max-height: 340px;
+    }
+
+    .swing-gate-model-card__next {
+        position: static;
+        width: 40px;
+        margin: 8px 0 0;
+        justify-self: end;
+        transform: none;
+    }
+
+    .swing-gate-model-card__next img {
+        width: 40px;
+        height: 40px;
     }
 
     .sliding-gate-specs .technical-list div {

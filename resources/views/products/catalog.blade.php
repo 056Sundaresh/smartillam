@@ -164,21 +164,41 @@
                     <h2 id="door-models-heading">{{ $productCms('models_heading', 'Choose Your Model') }}</h2>
                     <div class="door-models__tabs" role="group" aria-label="Choose a smart lock model">
                         @foreach ($productCmsLines('model_names') as $model)
-                            <button class="{{ $loop->first ? 'active' : '' }}" type="button" data-door-model="{{ $model }}" aria-pressed="{{ $loop->first ? 'true' : 'false' }}">{{ $model }}</button>
+                            @php
+                                $modelImageUrl = match (mb_strtoupper(trim($model))) {
+                                    'ULTRA' => asset('images/smart-door-locks/ultra-lock.webp'),
+                                    'NOVA' => asset('images/smart-door-locks/nova.webp'),
+                                    'DL10V1' => asset('images/smart-door-locks/dl10v1.jpg'),
+                                    'DL04V2' => asset('images/smart-door-locks/dl04v2.jpg'),
+                                    'DL05V3' => asset('images/smart-door-locks/dl05v3.webp'),
+                                    'DL01' => asset('images/smart-door-locks/dl01.webp'),
+                                    'DFS04' => asset('images/smart-door-locks/dfs04.jpg'),
+                                    default => $productCmsImage('model_image', 'images/smart-door-locks/model-lock.png'),
+                                };
+                            @endphp
+                            <button class="{{ $loop->first ? 'active' : '' }}" type="button" data-door-model="{{ $model }}" data-model-image="{{ $modelImageUrl }}" aria-pressed="{{ $loop->first ? 'true' : 'false' }}">{{ $model }}</button>
                         @endforeach
                     </div>
                 </div>
-                <div class="door-model-card">
-                    <img src="{{ $productCmsImage('model_image', 'images/smart-door-locks/model-lock.png') }}" alt="Smart door lock with keypad and handle">
-                    <div class="door-model-card__specs">
-                        <p class="technical-card__eyebrow">{{ $productCms('spec_heading', 'Specifications') }}</p>
-                        <p class="door-model-card__selected">Selected model: <strong data-selected-door-model>ULTRA</strong></p>
-                        <dl class="door-spec-list">
-                            @foreach ($productCmsLines('spec_labels') as $index => $label)
-                                <div><dt>{{ $label }}</dt><dd>{{ $productCmsLines('spec_values')[$index] ?? '' }}</dd></div>
-                            @endforeach
-                        </dl>
+                <div class="door-model-carousel" data-door-model-carousel>
+                    <button class="door-model-carousel__control door-model-carousel__control--previous" type="button" data-door-model-step="-1" aria-label="Previous lock model">
+                        <img src="{{ asset('images/smart-door-locks/model-arrow.svg') }}" alt="" aria-hidden="true">
+                    </button>
+                    <div class="door-model-card">
+                        <img src="{{ asset('images/smart-door-locks/ultra-lock.webp') }}" alt="Smart door lock with keypad and handle" data-selected-door-model-image>
+                        <div class="door-model-card__specs">
+                            <p class="technical-card__eyebrow">{{ $productCms('spec_heading', 'Specifications') }}</p>
+                            <p class="door-model-card__selected">Selected model: <strong data-selected-door-model>ULTRA</strong></p>
+                            <dl class="door-spec-list">
+                                @foreach ($productCmsLines('spec_labels') as $index => $label)
+                                    <div><dt>{{ $label }}</dt><dd>{{ $productCmsLines('spec_values')[$index] ?? '' }}</dd></div>
+                                @endforeach
+                            </dl>
+                        </div>
                     </div>
+                    <button class="door-model-carousel__control door-model-carousel__control--next" type="button" data-door-model-step="1" aria-label="Next lock model">
+                        <img src="{{ asset('images/smart-door-locks/model-arrow.svg') }}" alt="" aria-hidden="true">
+                    </button>
                 </div>
             </div>
         </section>
@@ -370,12 +390,16 @@
                     <h2 id="cctv-models-heading">{{ $productCms('models_heading', 'Choose Your Model') }}</h2>
                     <div class="door-models__tabs" role="group" aria-label="Choose a CCTV camera kit">
                         @foreach ($productCmsLines('model_names') as $model)
-                            <button class="{{ $loop->first ? 'active' : '' }}" type="button" data-cctv-model="{{ $model }}" aria-pressed="{{ $loop->first ? 'true' : 'false' }}">{{ $model }}</button>
+                            <button class="{{ $loop->first ? 'active' : '' }}" type="button" data-cctv-model="{{ $model }}" data-model-image="{{ match (mb_strtoupper(trim($model))) {
+                                'WIFI CAMERA' => asset('images/cctv-surveillance-system/wifi-camera.webp'),
+                                'IP CAMERA', 'IP CAMERA KIT' => asset('images/cctv-surveillance-system/ip-camera.jpg'),
+                                default => $productCmsImage('model_image', 'images/cctv-surveillance-system/dome-camera.png'),
+                            } }}" aria-pressed="{{ $loop->first ? 'true' : 'false' }}">{{ $model }}</button>
                         @endforeach
                     </div>
                 </div>
                 <div class="door-model-card cctv-model-card">
-                    <img src="{{ $productCmsImage('model_image', 'images/cctv-surveillance-system/dome-camera.png') }}" alt="White dome CCTV surveillance camera">
+                    <img src="{{ $productCmsImage('model_image', 'images/cctv-surveillance-system/dome-camera.png') }}" alt="White dome CCTV surveillance camera" data-selected-cctv-model-image>
                     <div class="door-model-card__specs">
                         <p class="door-model-card__selected">{{ $productCms('kit_label', 'Selected kit:') }} <strong data-selected-cctv-model>{{ $productCmsLines('model_names')[0] ?? 'ANALOG CAMERA KIT' }}</strong></p>
                         <h3>{{ $productCms('components_heading', 'Included Components') }}</h3>
@@ -622,12 +646,15 @@
                         <h2 id="swing-gate-models-heading">{{ $productCms('models_heading', 'Choose Your Model') }}</h2>
                         <div class="door-models__tabs" role="group" aria-label="Choose a swing gate motor type">
                             @foreach ($productCmsLines('model_names') as $model)
-                                <button class="{{ $loop->first ? 'active' : '' }}" type="button" data-gate-model="{{ $model }}" aria-pressed="{{ $loop->first ? 'true' : 'false' }}">{{ $model }}</button>
+                                <button class="{{ $loop->first ? 'active' : '' }}" type="button" data-gate-model="{{ $model }}" data-model-image="{{ mb_strtoupper(trim($model)) === 'ROLLER MOTOR TYPE' ? asset('images/gate-automation/roller-motor-type-detail.png') : $productCmsImage('model_image', 'images/gate-automation/swing-motor.png') }}" aria-pressed="{{ $loop->first ? 'true' : 'false' }}">{{ $model }}</button>
                             @endforeach
                         </div>
                     </div>
                     <div class="door-model-card swing-gate-model-card">
-                        <img src="{{ $productCmsImage('model_image', 'images/gate-automation/swing-motor.png') }}" alt="Pair of linear arm motors for swing gates">
+                        <img src="{{ $productCmsImage('model_image', 'images/gate-automation/swing-motor.png') }}" alt="Pair of linear arm motors for swing gates" data-selected-gate-model-image>
+                        <button class="door-model-carousel__control swing-gate-model-card__next" type="button" data-gate-model-step="1" aria-label="Next swing gate motor type">
+                            <img src="{{ asset('images/smart-door-locks/model-arrow.svg') }}" alt="" aria-hidden="true">
+                        </button>
                         <div class="swing-gate-model-card__details">
                             <p class="swing-gate-model-card__selected">{{ $productCms('model_label', 'Selected type:') }} <strong data-selected-gate-model>{{ $productCmsLines('model_names')[0] ?? 'Arm Type' }}</strong></p>
                             <h3>{{ $productCms('motor_heading', 'Swing Gate Motor') }}</h3>

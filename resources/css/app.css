@@ -4441,6 +4441,10 @@ body {
     max-width: 440px;
 }
 
+.sliding-gate-benefits {
+    padding: 64px 0 24px;
+}
+
 .sliding-gate-benefits__list {
     max-width: 560px;
     gap: 9px;
@@ -4464,10 +4468,78 @@ body {
 }
 
 .sliding-gate-overview__copy {
-    margin: 0 0 22px;
+    margin: 0 0 24px;
     color: #454545;
-    font-size: 14px;
-    line-height: 1.65;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+.sliding-gate-overview {
+    padding: 32px 0 88px;
+    background: #fff;
+}
+
+.sliding-gate-overview .water-detail__container {
+    max-width: 1064px;
+}
+
+.sliding-gate-overview .row {
+    display: grid;
+    grid-template-columns: minmax(0, .96fr) minmax(0, 1.04fr);
+    gap: 64px;
+    margin: 0;
+}
+
+.sliding-gate-overview .row>div {
+    width: auto;
+    padding: 0;
+}
+
+.sliding-gate-overview .water-detail__image {
+    width: 100%;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    border-radius: 12px;
+    object-fit: cover;
+}
+
+.sliding-gate-overview h2 {
+    margin: 0 0 26px;
+    color: #303030;
+    font-size: clamp(1.75rem, 2.8vw, 2.25rem);
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+@media (max-width: 767.98px) {
+    .sliding-gate-benefits {
+        padding: 48px 0 20px;
+    }
+
+    .sliding-gate-overview {
+        padding: 24px 0 56px;
+    }
+
+    .sliding-gate-overview .row {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 32px;
+    }
+
+    .sliding-gate-overview .water-detail__image {
+        width: min(100%, 480px);
+        margin-inline: auto;
+    }
+
+    .sliding-gate-overview h2 {
+        margin-bottom: 18px;
+        font-size: clamp(1.6rem, 6vw, 2rem);
+    }
+
+    .sliding-gate-overview__copy {
+        margin-bottom: 18px;
+        font-size: 14px;
+    }
 }
 
 .sliding-gate-motor {
@@ -7099,6 +7171,11 @@ body.has-brochure-modal {
     filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.16));
 }
 
+.home-work-step:first-child .home-work-step__visual img {
+    width: 124px;
+    height: 124px;
+}
+
 .home-work-step:nth-child(odd) .home-work-step__visual::before {
     content: '';
     position: absolute;
@@ -7152,7 +7229,7 @@ body.has-brochure-modal {
     min-width: 0;
     margin: 0;
     color: #222;
-    font-size: clamp(1rem, 1.4vw, 1.2rem);
+    font-size: clamp(1.1rem, 1.5vw, 1.3rem);
     font-weight: 700;
     line-height: 1.25;
     letter-spacing: -0.01em;
@@ -7178,7 +7255,7 @@ body.has-brochure-modal {
 .home-work-step__description {
     margin: 0;
     color: #666;
-    font-size: 12px;
+    font-size: 14px;
     line-height: 1.65;
     max-width: 270px;
     z-index: 2;
@@ -7385,6 +7462,11 @@ body.has-brochure-modal {
         height: 138px;
     }
 
+    .home-work-step:first-child .home-work-step__visual img {
+        width: 108px;
+        height: 108px;
+    }
+
     .home-work-step:nth-child(odd) .home-work-step__visual::before,
     .home-work-step:nth-child(even) .home-work-step__visual::before {
         width: 136px;
@@ -7467,6 +7549,7 @@ body.has-brochure-modal {
 
     .home-promise-stack {
         gap: 12px;
+        grid-template-rows: repeat(2, minmax(144px, auto));
     }
 
     .home-promise-card--reliability,
@@ -7547,6 +7630,11 @@ body.has-brochure-modal {
         height: 114px;
     }
 
+    .home-work-step:first-child .home-work-step__visual img {
+        width: 86px;
+        height: 86px;
+    }
+
     .home-work-step:nth-child(odd) .home-work-step__visual::before,
     .home-work-step:nth-child(even) .home-work-step__visual::before {
         width: 112px;
@@ -7607,13 +7695,13 @@ body.has-brochure-modal {
     }
 
     .home-promise-stack {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        grid-template-rows: minmax(150px, auto);
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-rows: repeat(2, minmax(150px, auto));
     }
 
     .home-promise-card--reliability,
     .home-promise-card--console {
-        min-height: 150px;
+        min-height: 180px;
     }
 
     .home-work-step {
@@ -7629,6 +7717,11 @@ body.has-brochure-modal {
     .home-work-step__visual img {
         width: 96px;
         height: 96px;
+    }
+
+    .home-work-step:first-child .home-work-step__visual img {
+        width: 72px;
+        height: 72px;
     }
 
     .home-work-step:nth-child(odd) .home-work-step__visual::before,
@@ -8600,16 +8693,16 @@ body.has-brochure-modal {
 
 .products-index__image-wrap {
     display: grid;
-    min-height: 240px;
+    aspect-ratio: 16 / 10;
     place-items: center;
-    padding: 22px;
+    overflow: hidden;
     background: #f1f1ef;
 }
 
 .products-index__image-wrap img {
     width: 100%;
-    height: 220px;
-    object-fit: contain;
+    height: 100%;
+    object-fit: cover;
 }
 
 .products-index__card-content {
@@ -8667,11 +8760,11 @@ body.has-brochure-modal {
     }
 
     .products-index__image-wrap {
-        min-height: 210px;
+        aspect-ratio: 16 / 10;
     }
 
     .products-index__image-wrap img {
-        height: 190px;
+        height: 100%;
     }
 
     .admin-topbar-actions {
@@ -8787,11 +8880,14 @@ body.product-catalog-page[class*="product-catalog-page--"] .catalog-hero__conten
     }
 }
 
-/* Large full-width heroes for the switch, door-lock, CCTV, and retrofit pages. */
+/* Large full-width heroes for the switch, door-lock, CCTV, retrofit, and gate pages. */
 body.product-catalog-page.product-catalog-page--smart-touch-switches .catalog-hero,
 body.product-catalog-page.product-catalog-page--smart-door-locks .catalog-hero,
 body.product-catalog-page.product-catalog-page--cctv-surveillance-system .catalog-hero,
-body.product-catalog-page.product-catalog-page--retrofit-switches .catalog-hero {
+body.product-catalog-page.product-catalog-page--retrofit-switches .catalog-hero,
+body.product-catalog-page.product-catalog-page--sliding-gate-automation .catalog-hero {
+    height: 100vh;
+    height: 100svh;
     min-height: 100vh;
     min-height: 100svh;
 }
@@ -8831,7 +8927,10 @@ body.product-catalog-page.product-catalog-page--water-level-controllers .catalog
     body.product-catalog-page.product-catalog-page--smart-touch-switches .catalog-hero,
     body.product-catalog-page.product-catalog-page--smart-door-locks .catalog-hero,
     body.product-catalog-page.product-catalog-page--cctv-surveillance-system .catalog-hero,
-    body.product-catalog-page.product-catalog-page--retrofit-switches .catalog-hero {
+    body.product-catalog-page.product-catalog-page--retrofit-switches .catalog-hero,
+    body.product-catalog-page.product-catalog-page--sliding-gate-automation .catalog-hero {
+        height: max(100vh, 560px);
+        height: max(100svh, 560px);
         min-height: max(100vh, 560px);
         min-height: max(100svh, 560px);
     }
@@ -9761,6 +9860,11 @@ body.product-catalog-page.product-catalog-page--smart-security-systems .door-int
         height: 78px;
     }
 
+    .home-work-step:first-child .home-work-step__visual img {
+        width: 60px;
+        height: 60px;
+    }
+
     .home-work-step:nth-child(odd) .home-work-step__visual::before,
     .home-work-step:nth-child(even) .home-work-step__visual::before {
         top: 50%;
@@ -9789,7 +9893,7 @@ body.product-catalog-page.product-catalog-page--smart-security-systems .door-int
     }
 
     .home-work-step__title h3 {
-        font-size: 12px;
+        font-size: 13px;
         line-height: 1.25;
         overflow-wrap: normal;
     }
@@ -9803,7 +9907,7 @@ body.product-catalog-page.product-catalog-page--smart-security-systems .door-int
         justify-self: stretch;
         margin: 0;
         padding: 0 !important;
-        font-size: 10px;
+        font-size: 11px;
         line-height: 1.45;
         text-align: left;
     }

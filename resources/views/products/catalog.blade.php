@@ -8,7 +8,21 @@
         $productDefaults = config('cms.defaults', []);
         $productCms = fn (string $field, string $fallback = ''): string => $cmsContent["products.{$slug}.{$field}"] ?? $productDefaults["products.{$slug}.{$field}"] ?? $fallback;
         $productCmsImage = fn (string $field, string $fallback): string => \Illuminate\Support\Str::startsWith($productCms($field, $fallback), ['http://', 'https://', 'data:']) ? $productCms($field, $fallback) : asset($productCms($field, $fallback));
-        $productHeroImage = $cmsContent['products.'.$slug.'.hero_image'] ?? $product['hero_image'] ?? 'images/product-hero.png';
+        $genericHeroTitle = 'Technology That Disappears Into Your Home.';
+        $genericHeroDescription = 'Elevate your living experience with hardware designed to complement luxury interiors, where intelligence is felt rather than seen.';
+        $genericHeroImage = 'images/product-hero.png';
+        $cmsHeroTitle = $cmsContent['products.'.$slug.'.hero_title'] ?? null;
+        $cmsHeroDescription = $cmsContent['products.'.$slug.'.hero_description'] ?? null;
+        $cmsHeroImage = $cmsContent['products.'.$slug.'.hero_image'] ?? null;
+        $productHeroTitle = $slug === 'sliding-gate-automation' && $cmsHeroTitle === $genericHeroTitle
+            ? ($product['hero_title'] ?? $genericHeroTitle)
+            : ($cmsHeroTitle ?? $product['hero_title'] ?? $genericHeroTitle);
+        $productHeroDescription = $slug === 'sliding-gate-automation' && $cmsHeroDescription === $genericHeroDescription
+            ? ($product['hero_description'] ?? $genericHeroDescription)
+            : ($cmsHeroDescription ?? $product['hero_description'] ?? $genericHeroDescription);
+        $productHeroImage = $slug === 'sliding-gate-automation' && $cmsHeroImage === $genericHeroImage
+            ? ($product['hero_image'] ?? $genericHeroImage)
+            : ($cmsHeroImage ?? $product['hero_image'] ?? $genericHeroImage);
         $productMobileHeroImage = $productCms('hero_mobile_image');
         $productImageUrl = fn (string $image): string => \Illuminate\Support\Str::startsWith($image, ['http://', 'https://', 'data:']) ? $image : asset($image);
         $productCmsLines = fn (string $field, string $fallback = ''): array => preg_split('/\r\n|\r|\n/', $productCms($field, $fallback), -1, PREG_SPLIT_NO_EMPTY);
@@ -34,11 +48,11 @@
             'images/icons/touch-switches/scene-automation.png',
         ];
     @endphp
-    <section class="catalog-hero" style="--catalog-hero-image: url('{{ $productImageUrl($productHeroImage) }}');{{ $productMobileHeroImage !== '' ? ' --catalog-hero-mobile-image: url(' . $productImageUrl($productMobileHeroImage) . ');' : '' }}" aria-labelledby="catalog-heading">
+    <section class="catalog-hero" style="--catalog-hero-image: url('{{ $productImageUrl($productHeroImage) }}');{{ $productMobileHeroImage !== '' ? ' --catalog-hero-mobile-image: url(' . $productImageUrl($productMobileHeroImage) . ');' : '' }}@if ($slug === 'sliding-gate-automation') height: 100vh; height: 100svh; min-height: 100vh; min-height: 100svh; margin-bottom: 0; background-size: cover; @endif" aria-labelledby="catalog-heading">
         <div class="catalog-hero__content">
             <p class="section-eyebrow">{{ $productCms('hero_eyebrow', 'Premium Ecosystem') }}</p>
-            <h1 id="catalog-heading">{{ $cmsContent['products.'.$slug.'.hero_title'] ?? $product['hero_title'] ?? 'Technology That Disappears Into Your Home.' }}</h1>
-            <p>{{ $cmsContent['products.'.$slug.'.hero_description'] ?? $product['hero_description'] ?? 'Elevate your living experience with hardware designed to complement luxury interiors, where intelligence is felt rather than seen.' }}</p>
+            <h1 id="catalog-heading">{{ $productHeroTitle }}</h1>
+            <p>{{ $productHeroDescription }}</p>
             <div class="catalog-hero__actions">
                 <a class="btn site-navbar__cta" href="{{ route('contact') }}#contact-form">Book Consultation</a>
                 <a class="btn catalog-hero__secondary" href="#solutions">{{ $productCms('hero_secondary_button', 'Explore Services') }}</a>

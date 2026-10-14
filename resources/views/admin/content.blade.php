@@ -47,7 +47,7 @@
                         <div class="admin-card-heading"><span class="admin-card-number">{{ $loop->iteration < 10 ? '0'.$loop->iteration : $loop->iteration }}</span><div><p class="admin-eyebrow">PAGE CONTENT</p><h2>{{ $page['label'] }}</h2><p>Update the content shown on the {{ strtolower($page['label']) }} pages.</p></div><span class="admin-field-count">{{ collect($page['groups'])->sum(fn ($group) => count($group['fields'])) }} editable items</span></div>
                         <fieldset class="admin-page-fieldset" @if ($selectedPage !== $pageKey) disabled @endif>
                         @foreach ($page['groups'] as $group)
-                            <details class="admin-content-group" @if ($loop->first) open @endif>
+                            <details class="admin-content-group" @if ($pageKey === 'home' || $loop->first) open @endif>
                                 <summary>{{ $group['label'] }}</summary>
                                 <div class="admin-fields-grid">
                                     @foreach ($group['fields'] as $field)

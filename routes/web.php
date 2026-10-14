@@ -257,10 +257,21 @@ Route::get('/products', function () use ($products): View {
 foreach (array_keys($products) as $slug) {
     Route::get('/products/'.$slug, function () use ($products, $slug): View {
         $content = app(ContentStore::class)->all();
+        $genericHeroValues = [
+            'hero_title' => 'Technology That Disappears Into Your Home.',
+            'hero_description' => 'Elevate your living experience with hardware designed to complement luxury interiors, where intelligence is felt rather than seen.',
+            'hero_image' => 'images/product-hero.png',
+        ];
 
         foreach ($products as $productSlug => &$productDetails) {
             foreach (['name', 'image', 'alt', 'hero_title', 'hero_description', 'hero_image'] as $field) {
-                $productDetails[$field] = $content["products.{$productSlug}.{$field}"] ?? $productDetails[$field] ?? null;
+                $contentValue = $content["products.{$productSlug}.{$field}"] ?? null;
+
+                if ($productSlug === 'sliding-gate-automation' && isset($genericHeroValues[$field]) && $contentValue === $genericHeroValues[$field]) {
+                    continue;
+                }
+
+                $productDetails[$field] = $contentValue ?? $productDetails[$field] ?? null;
             }
         }
 

@@ -31,7 +31,7 @@
             <p>{{ $cmsContent['solutions.hero_description'] ?? 'Transform your home into a smarter, safer, and more energy-efficient living space with seamless automation powered by Wi-Fi, Zigbee, and Matter protocols.' }}</p>
             <div class="solutions-hero-actions">
                 <a class="btn site-navbar__cta" href="{{ route('contact') }}#contact-form">Book Consultation</a>
-                <a class="btn solutions-secondary-button" href="#protocols">{{ $cmsContent['solutions.hero_secondary_button'] ?? 'Explore Services' }}</a>
+                <a class="btn solutions-secondary-button" href="{{ route('services') }}">{{ $cmsContent['solutions.hero_secondary_button'] ?? 'Explore Services' }}</a>
             </div>
         </div>
     </section>

@@ -8861,9 +8861,10 @@ body.product-catalog-page.product-catalog-page--water-level-controllers .catalog
         padding: 22px 8%;
         border-radius: 16px;
         background-color: #211a15;
+        background-image: linear-gradient(90deg, rgb(20 16 12 / 24%), rgb(20 16 12 / 8%)), var(--catalog-hero-mobile-image, var(--catalog-hero-image));
         background-position: center;
         background-repeat: no-repeat;
-        background-size: contain;
+        background-size: cover;
     }
 
     body.product-catalog-page.product-catalog-page--smart-curtain-control .catalog-hero__content {

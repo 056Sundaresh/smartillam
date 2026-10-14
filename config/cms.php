@@ -294,6 +294,11 @@ foreach ($products as $slug => $name) {
             ['key' => "products.{$slug}.hero_title", 'label' => 'Hero heading', 'type' => 'text'],
             ['key' => "products.{$slug}.hero_description", 'label' => 'Hero description', 'type' => 'textarea'],
             ['key' => "products.{$slug}.hero_image", 'label' => 'Hero image', 'type' => 'image'],
+            ...($slug === 'smart-curtain-control' ? [[
+                'key' => "products.{$slug}.hero_mobile_image",
+                'label' => 'Mobile hero image',
+                'type' => 'image',
+            ]] : []),
             ['key' => "products.{$slug}.hero_primary_button", 'label' => 'Hero primary button', 'type' => 'text'],
             ['key' => "products.{$slug}.hero_secondary_button", 'label' => 'Hero secondary button', 'type' => 'text'],
             ...(isset($extendedProductContent[$slug]['intro_eyebrow']) ? [[

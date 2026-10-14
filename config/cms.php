@@ -91,7 +91,7 @@ $smartTouchDefaults = [
     'related_heading' => 'Explore Smart Home Solutions',
     'related_hint' => 'Swipe or scroll to explore all products',
     'consultation_heading' => 'Make Your Home Respond To You',
-    'consultation_primary_button' => 'Book Consultation',
+    'consultation_primary_button' => 'Contact Us',
     'consultation_secondary_button' => 'Request a Site Visit',
     'consultation_image' => 'images/touch-switch/consultation-banner.png',
 ];
@@ -413,7 +413,7 @@ $productCmsDefaults = [];
 
 foreach ($productIntroDefaults as $slug => $intro) {
     $productCmsDefaults["products.{$slug}.hero_eyebrow"] = 'Premium Ecosystem';
-    $productCmsDefaults["products.{$slug}.hero_primary_button"] = 'Book Consultation';
+    $productCmsDefaults["products.{$slug}.hero_primary_button"] = 'Contact Us';
     $productCmsDefaults["products.{$slug}.hero_secondary_button"] = 'Explore Services';
     $productCmsDefaults["products.{$slug}.intro_title"] = $intro['title'];
     $productCmsDefaults["products.{$slug}.intro_description"] = str_replace('\\n', "\n", $intro['description']);
@@ -461,7 +461,7 @@ foreach (array_keys($productIntroDefaults) as $slug) {
     $productCmsDefaults["products.{$slug}.related_heading"] ??= 'Explore Smart Home Solutions';
     $productCmsDefaults["products.{$slug}.related_hint"] ??= 'Swipe or scroll to explore all products';
     $productCmsDefaults["products.{$slug}.consultation_heading"] ??= 'Make Your Home Respond To You';
-    $productCmsDefaults["products.{$slug}.consultation_primary_button"] ??= 'Book Consultation';
+    $productCmsDefaults["products.{$slug}.consultation_primary_button"] ??= 'Contact Us';
     $productCmsDefaults["products.{$slug}.consultation_secondary_button"] ??= 'Request a Site Visit';
     $productCmsDefaults["products.{$slug}.consultation_image"] ??= 'images/touch-switch/consultation-banner.png';
 }
@@ -513,13 +513,13 @@ return [
         'home.nav_blog' => 'Blog',
         'home.nav_about' => 'About',
         'home.nav_contact' => 'Contact',
-        'home.nav_consultation' => 'Book Consultation',
+        'home.nav_consultation' => 'Contact Us',
         'solutions.hero_eyebrow' => 'Smart Solutions',
         'solutions.hero_title' => 'Intelligent Spaces Designed Around Your Lifestyle',
         'solutions.hero_description' => 'Transform your home into a smarter, safer, and more energy-efficient living space with seamless automation powered by Wi-Fi, Zigbee, and Matter protocols.',
         'solutions.hero_image' => 'images/solutions/solutions-hero.png',
         'solutions.hero_image_alt' => 'Contemporary smart living room with integrated home controls',
-        'solutions.hero_primary_button' => 'Book Consultation',
+        'solutions.hero_primary_button' => 'Contact Us',
         'solutions.hero_secondary_button' => 'Explore Services',
         'solutions.intro_title' => "Smart Living Starts with\nIntelligent Solutions",
         'solutions.intro_tagline' => 'Your Trusted Building Solution Provider',
@@ -581,14 +581,14 @@ return [
         'solutions.cta_title' => 'Let’s Design the Perfect Smart Home for You.',
         'solutions.cta_description' => 'Consult with our expert engineers to discover how we can elevate your lifestyle through intelligent technology.',
         'solutions.cta_image' => 'images/solutions/solution-interior.jpg',
-        'solutions.cta_primary_button' => 'Book Consultation',
+        'solutions.cta_primary_button' => 'Contact Us',
         'solutions.cta_secondary_button' => 'Talk to an Expert',
         'services.hero_eyebrow' => 'Smart Solutions',
         'services.page_title' => 'Smart Home Services | Smart Illam',
         'services.hero_title' => "Complete Smart Home Services\nFrom Design to Lifetime Support",
         'services.hero_description' => 'We create bespoke automation ecosystems that blend seamlessly into your home or office, providing effortless control and unparalleled luxury.',
         'services.hero_image' => 'images/services/services-hero.png',
-        'services.hero_primary_button' => 'Book Consultation',
+        'services.hero_primary_button' => 'Contact Us',
         'services.hero_secondary_button' => 'Explore Services',
         'services.approach_eyebrow' => 'The Approach',
         'services.approach_title' => 'Every Detail, Expertly Managed.',
@@ -632,7 +632,7 @@ return [
         'services.faq_items' => "How long does a typical installation take?|Project timelines depend on the size of your property and the systems selected. We share a clear schedule after the site assessment and solution proposal.\nCan you automate an existing home?|Yes. We assess your wiring and existing devices, then recommend compatible solutions that can be installed with minimal disruption.\nIs training provided for the systems?|Yes. After installation and testing, our team walks you through the controls and helps your household feel comfortable using the system.\nDo the systems work without internet?|Core controls can continue to work locally depending on the selected system. Remote access and some connected services require an internet connection.\nAre your solutions compatible with Apple HomeKit?|Compatibility depends on the chosen devices and integration platform. We confirm the supported assistants and protocols during solution planning.\nWhat happens if the power goes out?|Devices resume their configured behavior when power returns. Backup power can be planned for selected network or security equipment where needed.",
         'services.final_cta_title' => "Let’s Create a Home That\nWorks Smarter.",
         'services.final_cta_image' => 'images/services/services-cta.png',
-        'services.final_cta_primary_button' => 'Book Consultation',
+        'services.final_cta_primary_button' => 'Contact Us',
         'services.final_cta_secondary_button' => 'Request a Site Visit',
         'home.hero_eyebrow' => 'Smart Illam',
         'home.hero_title' => "Smart Living Insights &\nHome Automation Guides",
@@ -733,7 +733,7 @@ return [
         'blog.hero_image_alt' => 'Warm, connected living room overlooking a city at dusk',
         'blog.hero_eyebrow' => 'Smart Illam Journal',
         'blog.hero_articles_button' => 'Explore Articles',
-        'blog.hero_consultation_button' => 'Book Consultation',
+        'blog.hero_consultation_button' => 'Contact Us',
         'blog.topics_section_label' => 'Browse article topics',
         'blog.topics_group_label' => 'Filter articles by topic',
         'blog.topic_all' => 'All Topics',
@@ -769,7 +769,7 @@ return [
         'blog.article_cta_title' => 'Ready to Experience Intelligent Living?',
         'blog.article_cta_description' => 'Whether you’re building a new home or upgrading your existing space, Smart Illam is here to help you embrace the future of connected living.',
         'blog.article_cta_image' => 'images/blog/article-cta.jpg',
-        'blog.article_cta_primary_button' => 'Book Consultation',
+        'blog.article_cta_primary_button' => 'Contact Us',
         'blog.article_cta_secondary_button' => 'Request a Site Visit',
         'brand.name' => 'Smart Illam',
         'brand.tagline' => 'Touch It Feel It',
@@ -781,7 +781,7 @@ return [
         'about.hero_image' => 'images/about/about-hero.png',
         'about.hero_image_alt' => 'Premium living room with integrated Smart Illam home controls',
         'about.hero_solutions_button' => 'Explore Solutions',
-        'about.hero_consultation_button' => 'Book Consultation',
+        'about.hero_consultation_button' => 'Contact Us',
         'about.intro_title' => 'Smart Illam',
         'about.tagline' => 'Redefining Modern Living',
         'about.intro_text' => 'Smart Illam is a leading provider of intelligent home automation and smart building solutions. We specialize in creating connected environments that combine innovation, security, luxury, and energy efficiency. From consultation to installation and ongoing support, we deliver end-to-end automation solutions tailored to the unique needs of homeowners, businesses, and developers. Every project is designed with precision, ensuring technology integrates naturally into everyday living.',
@@ -801,7 +801,7 @@ return [
         'contact.page_title' => 'Contact Smart Illam | Smart Home Consultation',
         'contact.hero_description' => 'Have questions about smart home automation, security, or connected living? Our team is here to help you find the right solution for your home or business.',
         'contact.hero_image' => 'images/contact/contact-hero.png',
-        'contact.hero_primary_button' => 'Book Consultation',
+        'contact.hero_primary_button' => 'Contact Us',
         'contact.hero_secondary_button' => 'Get Brochure',
         'contact.hero_image_description' => 'Warm, modern living room with smart home controls',
         'contact.brochure_modal_title' => 'Get Our Brochure',

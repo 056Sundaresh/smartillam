@@ -68,17 +68,6 @@ document.querySelectorAll('[data-gate-model]').forEach((button) => {
     });
 });
 
-document.querySelectorAll('[data-gate-model-next]').forEach((button) => {
-    button.addEventListener('click', () => {
-        const modelSection = button.closest('.swing-gate-models');
-        const models = modelSection ? [...modelSection.querySelectorAll('[data-gate-model]')] : [];
-        const currentModelIndex = models.findIndex((model) => model.getAttribute('aria-pressed') === 'true');
-        const nextModel = models[(currentModelIndex + 1) % models.length];
-
-        nextModel?.click();
-    });
-});
-
 document.querySelectorAll('[data-feature-image]').forEach((categoryButton) => {
     categoryButton.addEventListener('click', () => {
         const featureLink = document.querySelector('[data-product-feature]');

@@ -14,7 +14,11 @@
         $homeImage = $cmsContent['home.feature_image'] ?? 'images/home/home-smart-living-room.svg';
         $homeImageUrl = \Illuminate\Support\Str::startsWith($homeImage, ['http://', 'https://', 'data:']) ? $homeImage : asset($homeImage);
         $homeBenefits = preg_split('/\r\n|\r|\n/', $cmsContent['home.feature_benefits'] ?? '', -1, PREG_SPLIT_NO_EMPTY);
-        $homeHeroTitle = $cmsContent['home.hero_title'] ?? 'Smart Living Insights & Home Automation Guides';
+        $homeHeroTitle = preg_replace(
+            '/Smart Living Insights\s*&\s*Home Automation Guides/i',
+            "Smart Living Insights &\nHome Automation Guides",
+            $cmsContent['home.hero_title'] ?? 'Smart Living Insights & Home Automation Guides',
+        );
         $homePhilosophyTitle = $cmsContent['home.philosophy_title'] ?? 'Invisible Intelligence.';
         $homeImageUrlFor = static function (string $key, string $fallback) use ($homeContent): string {
             $image = $homeContent[$key] ?? $fallback;

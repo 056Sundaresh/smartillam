@@ -37,7 +37,7 @@
             <h1 id="catalog-heading">{{ $cmsContent['products.'.$slug.'.hero_title'] ?? $product['hero_title'] ?? 'Technology That Disappears Into Your Home.' }}</h1>
             <p>{{ $cmsContent['products.'.$slug.'.hero_description'] ?? $product['hero_description'] ?? 'Elevate your living experience with hardware designed to complement luxury interiors, where intelligence is felt rather than seen.' }}</p>
             <div class="catalog-hero__actions">
-                <a class="btn site-navbar__cta" href="{{ route('contact') }}#contact-form">{{ $productCms('hero_primary_button', 'Book Consultation') }}</a>
+                <a class="btn site-navbar__cta" href="{{ route('contact') }}#contact-form">Book Consultation</a>
                 <a class="btn catalog-hero__secondary" href="#solutions">{{ $productCms('hero_secondary_button', 'Explore Services') }}</a>
             </div>
         </div>
@@ -190,7 +190,19 @@
                     <div class="col-lg-6">
                         <p class="section-eyebrow">{{ $productCms('intro_eyebrow', 'Smart Security System') }}</p>
                         <h1 class="door-intro__title" id="security-heading">{{ $productCms('intro_title', 'Smarter Entry. Better Security.') }}</h1>
-                        <p class="door-intro__copy">{!! nl2br(e($productCms('intro_description', 'Our Smart Video Door Phone is designed to provide convenience and peace of mind by combining high-definition video monitoring, two-way communication, and mobile connectivity into one elegant security solution.' . "\n" . 'Whether you’re at home, at work, or traveling, you can monitor your entrance, answer visitors, and manage access directly from your mobile device.'))) !!}</p>
+                        @php
+                            $securityIntroText = $productCms('intro_description', 'Our Smart Video Door Phone is designed to provide convenience and peace of mind by combining high-definition video monitoring, two-way communication, and mobile connectivity into one elegant security solution.' . "\n\n" . 'Whether you’re at home, at work, or traveling, you can monitor your entrance, answer visitors, and manage access directly from your mobile device.');
+                            $securityIntroParas = preg_split('/\r\n\s*\r\n|\n\s*\n/', $securityIntroText);
+                            if (count($securityIntroParas) === 1 && str_contains($securityIntroText, "\n")) {
+                                $securityIntroParas = preg_split('/\r\n|\r|\n/', $securityIntroText);
+                            }
+                            $securityIntroParas = array_values(array_filter(array_map('trim', $securityIntroParas)));
+                        @endphp
+                        <div class="door-intro__copy">
+                            @foreach ($securityIntroParas as $paragraph)
+                                <p>{{ $paragraph }}</p>
+                            @endforeach
+                        </div>
                     </div>
                     <div class="col-lg-6">
                         <img class="door-intro__image" src="{{ $productCmsImage('intro_image', 'images/smart-security-systems/fingerprint-entry.png') }}" alt="Fingerprint access control for a secure home entrance">
@@ -239,7 +251,19 @@
                     <div class="col-lg-6">
                         <p class="section-eyebrow">{{ $productCms('intro_eyebrow', 'Voice Integrations') }}</p>
                         <h1 class="door-intro__title" id="voice-heading">{{ $productCms('intro_title', 'Intelligent Voice Control for Everyday Living') }}</h1>
-                        <p class="door-intro__copy">{!! nl2br(e($productCms('intro_description', 'Voice Integration brings convenience, comfort, and efficiency to your smart home by allowing you to control connected devices using natural voice commands. Whether you’re at home or multitasking, simply speak to your preferred voice assistant to operate lighting, curtains, switches, and other compatible smart devices.' . "\n" . 'Designed for effortless interaction, our smart home ecosystem integrates with leading voice assistants, ensuring a seamless and intuitive user experience.'))) !!}</p>
+                        @php
+                            $voiceIntroText = $productCms('intro_description', "Voice Integration brings convenience, comfort, and efficiency to your smart home by allowing you to control connected devices using natural voice commands. Whether you’re at home or multitasking, simply speak to your preferred voice assistant to operate lighting, curtains, switches, and other compatible smart devices.\n\nDesigned for effortless interaction, our smart home ecosystem integrates with leading voice assistants, ensuring a seamless and intuitive user experience.");
+                            $voiceIntroParas = preg_split('/\r\n\s*\r\n|\n\s*\n/', $voiceIntroText);
+                            if (count($voiceIntroParas) === 1 && str_contains($voiceIntroText, "\n")) {
+                                $voiceIntroParas = preg_split('/\r\n|\r|\n/', $voiceIntroText);
+                            }
+                            $voiceIntroParas = array_values(array_filter(array_map('trim', $voiceIntroParas)));
+                        @endphp
+                        <div class="door-intro__copy">
+                            @foreach ($voiceIntroParas as $paragraph)
+                                <p>{{ $paragraph }}</p>
+                            @endforeach
+                        </div>
                     </div>
                     <div class="col-lg-6">
                         <img class="door-intro__image" src="{{ $productCmsImage('intro_image', 'images/voice-integrations/voice-control.png') }}" alt="A person controlling a smart speaker with a voice command">
@@ -597,7 +621,6 @@
                                 @endforeach
                             </ul>
                         </div>
-                        <button class="swing-gate-model-card__next" type="button" data-gate-model-next aria-label="Select the next swing gate motor type">›</button>
                     </div>
                 </div>
             </section>
@@ -729,7 +752,7 @@
         <div class="container consultation-content">
             <h2 id="consultation-heading">{{ $productCms('consultation_heading', 'Make Your Home Respond To You') }}</h2>
             <div>
-                <a class="btn site-navbar__cta" href="{{ route('contact') }}#contact-form">{{ $productCms('consultation_primary_button', 'Book Consultation') }}</a>
+                <a class="btn site-navbar__cta" href="{{ route('contact') }}#contact-form">Book Consultation</a>
                 <a class="btn consultation-secondary" href="mailto:info@smartillam.in">{{ $productCms('consultation_secondary_button', 'Request a Site Visit') }}</a>
             </div>
         </div>

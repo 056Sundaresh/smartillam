@@ -94,6 +94,10 @@ body {
     color: var(--smartillam-ink);
 }
 
+.site-navbar__links:has(.site-navbar__product[aria-expanded="true"])>.nav-item>.nav-link.active:not(.site-navbar__product) {
+    background: transparent;
+}
+
 .site-navbar__links .site-navbar__product {
     padding: 7px 12px;
     border-radius: 999px;
@@ -194,7 +198,7 @@ body {
     padding: 20px 15px;
 }
 
-.site-products-menu__items .tab-pane > a {
+.site-products-menu__items .tab-pane>a {
     display: block;
     padding: 8px 10px;
     border-radius: 4px;
@@ -204,8 +208,8 @@ body {
     transition: background-color 150ms ease, color 150ms ease;
 }
 
-.site-products-menu__items .tab-pane > a:hover,
-.site-products-menu__items .tab-pane > a:focus-visible {
+.site-products-menu__items .tab-pane>a:hover,
+.site-products-menu__items .tab-pane>a:focus-visible {
     background: rgb(255 255 255 / 12%);
     color: var(--smartillam-gold);
 }
@@ -241,23 +245,37 @@ body {
     .site-navbar__collapse {
         position: static;
         width: 100%;
-        padding: 12px 0 8px;
+        padding: 10px 12px 14px;
         transform: none;
+        border-radius: 0 0 6px 6px;
+        background: #fff;
+        box-shadow: 0 12px 24px rgb(0 0 0 / 12%);
     }
 
     .site-navbar__links {
         align-items: stretch;
-        gap: 0;
+        gap: 2px;
     }
 
     .site-navbar__links .nav-link {
-        padding: 9px 0;
+        display: flex;
+        width: 100%;
+        min-height: 40px;
+        align-items: center;
+        padding: 9px 12px;
+        border-radius: 999px;
     }
 
     .site-navbar__links .site-navbar__product {
-        display: inline-flex;
-        align-self: flex-start;
-        padding: 7px 12px;
+        display: flex;
+        width: 100%;
+        align-self: stretch;
+        justify-content: flex-start;
+        padding: 9px 12px;
+    }
+
+    .site-navbar__product.dropdown-toggle::after {
+        margin-left: 10px;
     }
 
     .site-products-menu,
@@ -293,12 +311,14 @@ body {
     }
 
     .site-products-menu__categories .nav {
-        flex-direction: row !important;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 6px;
     }
 
     .site-products-menu__categories .nav-link {
-        flex: 1 1 0;
+        width: 100%;
+        min-width: 0;
         padding: 8px 10px;
         font-size: 12px;
         font-weight: 600;
@@ -306,7 +326,8 @@ body {
         border-radius: 8px;
         background: rgb(255 255 255 / 8%);
         color: #e0e0e0;
-        white-space: nowrap;
+        white-space: normal;
+        line-height: 1.25;
     }
 
     .site-products-menu__categories .nav-link.active {
@@ -318,9 +339,14 @@ body {
         padding: 10px 12px 12px;
         max-height: 340px;
         overflow-y: auto;
+        scrollbar-width: none;
     }
 
-    .site-products-menu__items .tab-pane > a {
+    .site-products-menu__items::-webkit-scrollbar {
+        display: none;
+    }
+
+    .site-products-menu__items .tab-pane>a {
         display: flex;
         align-items: center;
         padding: 10px 12px;
@@ -334,13 +360,13 @@ body {
         transition: background-color 150ms ease, color 150ms ease, padding-left 150ms ease;
     }
 
-    .site-products-menu__items .tab-pane > a:last-child {
+    .site-products-menu__items .tab-pane>a:last-child {
         margin-bottom: 0;
     }
 
-    .site-products-menu__items .tab-pane > a:hover,
-    .site-products-menu__items .tab-pane > a:active,
-    .site-products-menu__items .tab-pane > a:focus-visible {
+    .site-products-menu__items .tab-pane>a:hover,
+    .site-products-menu__items .tab-pane>a:active,
+    .site-products-menu__items .tab-pane>a:focus-visible {
         background: var(--smartillam-gold);
         color: var(--smartillam-ink);
         padding-left: 16px;
@@ -348,145 +374,844 @@ body {
 
     .site-navbar__cta {
         position: static;
-        margin: 12px 0 0;
+        display: inline-flex;
+        min-height: 36px;
+        align-items: center;
+        justify-content: center;
+        margin: 12px 10px 0 0;
         align-self: flex-start;
+        vertical-align: top;
+    }
+
+    .admin-entry-button {
+        display: inline-flex;
+        min-height: 36px;
+        align-items: center;
+        justify-content: center;
+        margin: 12px 0 0;
+        vertical-align: top;
     }
 }
 
 @media (min-width: 992px) and (max-width: 1199.98px) {
-    .site-navbar__inner { padding-right: 16px; padding-left: 16px; }
-    .site-navbar__links { gap: 0; }
-    .site-navbar__links .nav-link { padding-right: 6px; padding-left: 6px; font-size: 12px; }
-    .site-navbar__cta { right: 16px; margin-left: 10px; padding-right: 9px; padding-left: 9px; font-size: 11px; }
-    .admin-entry-button { right: 140px; padding: 0 10px; font-size: 11px; }
+    .site-navbar__inner {
+        padding-right: 16px;
+        padding-left: 16px;
+    }
+
+    .site-navbar__links {
+        gap: 0;
+    }
+
+    .site-navbar__links .nav-link {
+        padding-right: 6px;
+        padding-left: 6px;
+        font-size: 12px;
+    }
+
+    .site-navbar__cta {
+        right: 16px;
+        margin-left: 10px;
+        padding-right: 9px;
+        padding-left: 9px;
+        font-size: 11px;
+    }
+
+    .admin-entry-button {
+        right: 140px;
+        padding: 0 10px;
+        font-size: 11px;
+    }
 }
 
-.section-space { padding: 82px 0; }
-.section-eyebrow { margin: 0 0 12px; color: #d18d00; font-size: 11px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; }
-.section-heading { margin-bottom: 34px; text-align: center; }
-.section-heading h2 { margin: 0; color: #303030; font-size: clamp(1.55rem, 2.5vw, 2rem); font-weight: 500; }
-.touch-intro__title { margin-bottom: 22px; color: #2c2c2c; font-size: clamp(2rem, 3vw, 2.7rem); font-weight: 600; line-height: 1.25; }
-.touch-intro__copy { max-width: 560px; color: #555; font-size: 15px; line-height: 1.7; }
-.touch-benefits { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 24px; }
-.touch-benefits div { display: flex; min-height: 43px; align-items: center; gap: 10px; padding: 8px 10px; border: 1px solid #e7e9ed; border-radius: 6px; color: #333; font-size: 12px; box-shadow: 0 2px 6px rgb(25 35 45 / 4%); }
-.touch-benefits span { display: grid; width: 25px; height: 25px; flex: 0 0 25px; place-items: center; border-radius: 5px; background: #fff8e7; color: #e5a300; font-size: 17px; }
-.touch-benefits span > img { display: block; width: 100%; height: 100%; object-fit: contain; }
-.touch-intro__visual { position: relative; padding: 0 0 16px 18px; }
-.touch-intro__visual > img { display: block; width: 100%; aspect-ratio: 1 / 1; border-radius: 13px; object-fit: cover; transform: rotate(0deg); opacity: 1; }
-.touch-intro__note { position: absolute; bottom: 0; left: 0; width: min(220px, 60%); padding: 16px 18px; border: 1px solid rgb(255 255 255 / 28%); border-radius: 14px; background: rgb(42 42 42 / 74%); color: #fff; backdrop-filter: blur(10px); }
-.touch-intro__note .section-eyebrow { margin-bottom: 8px; color: var(--smartillam-gold); font-size: 9px; }
-.touch-intro__note p:last-child { margin: 0; font-size: 11px; line-height: 1.4; }
-.module-tabs { justify-content: center; gap: 12px; margin-top: 22px; }
-.module-tabs .nav-link { min-width: 58px; padding: 7px 12px; border: 1px solid #d7d7d7; border-radius: 5px; color: #333; font-size: 11px; font-weight: 700; }
-.module-tabs .nav-link.active { border-color: var(--smartillam-gold); background: var(--smartillam-gold); color: #222; }
-.module-content, .technical-card { max-width: 920px; margin-right: auto; margin-left: auto; }
-.module-card { display: grid; grid-template-columns: minmax(0, .7fr) minmax(0, 1fr); align-items: center; gap: clamp(60px, 7vw, 112px); padding: 40px; border: 1px solid #e4e6e9; border-radius: 18px; background: #f5f6f8; box-shadow: 0 2px 7px rgb(20 30 40 / 7%); }
-.module-card__image { width: 100%; aspect-ratio: 1; border-radius: 16px; object-fit: cover; }
-.module-card__details h3 { margin-bottom: 16px; color: #303030; font-size: 2rem; font-weight: 600; }
-.module-card__details > p:not(.section-eyebrow) { margin-bottom: 26px; color: #555; font-size: 14px; line-height: 1.5; }
-.module-feature-list { display: grid; gap: 11px; margin: 0; padding: 0; color: #414141; font-size: 14px; list-style: none; }
-.module-feature-list li::before { display: inline-grid; width: 16px; height: 16px; place-items: center; margin-right: 10px; border: 1px solid #eda900; border-radius: 50%; color: #eda900; content: '✓'; font-size: 10px; font-weight: 700; vertical-align: -2px; }
-.technical-card { display: grid; grid-template-columns: 1.2fr 1fr; align-items: center; gap: 48px; margin-top: 48px; padding: 48px; border-radius: 20px; background: #292929; color: #fff; box-shadow: 0 3px 8px rgb(0 0 0 / 12%); }
-.technical-card__eyebrow { margin-bottom: 22px; color: var(--smartillam-gold); font-size: 18px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
-.technical-list { margin: 0; font-size: 14px; }
-.technical-list div { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 9px 0; border-bottom: 1px solid rgb(255 255 255 / 35%); }
-.technical-list div:last-child { border-bottom: 0; }
-.technical-list dt, .technical-list dd { margin: 0; font-weight: 400; }
-.technical-card > img { width: 100%; aspect-ratio: 1.2 / 1; border-radius: 12px; object-fit: cover; }
-.features-section { padding: 52px 0; background: #f4f5f7; }
-.features-section .section-heading { margin-bottom: 28px; }
-.feature-grid { display: grid; max-width: 850px; grid-template-columns: repeat(10, minmax(0, 1fr)); justify-content: center; gap: 16px; margin: 0 auto; }
-.feature-tile { display: flex; min-height: 126px; grid-column: span 2; flex-direction: column; align-items: center; justify-content: center; gap: 4px; padding: 8px; border: 1px solid #e7e9ed; border-radius: 13px; background: #fff; box-shadow: 0 2px 8px rgb(20 30 40 / 7%); }
-.feature-tile:nth-child(6) { grid-column: 2 / span 2; }
-.feature-tile > img { display: block; width: 100%; height: 82px; object-fit: contain; }
-.feature-tile h3 { margin: 0; color: #303030; font-size: 11px; font-weight: 600; text-align: center; }
-.solutions-section { width: 100%; max-width: 1920px; margin: 0 auto; padding: clamp(64px, 7vw, 100px) clamp(24px, 7.8vw, 150px); box-sizing: border-box; overflow: hidden; background: #292929; color: #fff; }
-.solutions-section .section-heading h2 { color: #fff; }
-.solutions-section .section-heading .section-eyebrow { color: var(--smartillam-gold); }
-.solutions-container { max-width: none; padding-right: 0; padding-left: 0; }
-.solution-grid { display: flex; gap: 18px; padding: 0; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scrollbar-width: none; cursor: grab; }
-.solution-grid::-webkit-scrollbar { display: none; }
-.solution-grid:active { cursor: grabbing; }
-.solution-grid > .solution-card { flex: 0 0 254px; }
-.solution-grid > .solution-card { scroll-snap-align: start; }
-.solution-card { overflow: hidden; border: 1px solid #777; border-radius: 10px; background: #292929; }
-.solution-card > img { display: block; width: 100%; aspect-ratio: 1.48 / 1; object-fit: cover; }
-.solution-card__body { padding: 13px 12px; }
-.solution-card__body > span { color: var(--smartillam-gold); font-size: 18px; }
-.solution-card__body h3 { margin: 5px 0 7px; color: #fff; font-size: 13px; font-weight: 500; }
-.solution-card__body a { color: var(--smartillam-gold); font-size: 9px; text-decoration: none; text-transform: uppercase; }
-.solution-grid--second .solution-card--text { display: grid; min-height: 225px; align-items: center; border-color: #555; background: linear-gradient(145deg, #353535, #222); }
-.solutions-controls { position: relative; display: flex; min-height: 58px; align-items: center; justify-content: center; margin-top: 12px; }
-.solutions-controls .carousel-indicators { position: static; gap: 6px; width: auto; margin: 0; }
-.solutions-controls .carousel-indicators button { width: 7px; height: 7px; margin: 0; border: 0; border-radius: 50%; background: #fff; }
-.solutions-controls .carousel-indicators button.active { background: var(--smartillam-gold); }
-.consultation-section { width: 1920px; max-width: 100%; margin: 0 auto; padding: 100px 0; background: #fff; color: #fff; }
-.consultation-content { display: grid; width: min(1680px, calc(100% - 48px)); max-width: none; min-height: 382px; align-content: center; justify-items: center; margin: 0 auto; padding: 40px; border-radius: 24px; background-image: linear-gradient(90deg, rgb(15 15 15 / 45%), rgb(15 15 15 / 40%)), var(--consultation-image); background-position: center; background-size: cover; text-align: center; }
-.consultation-content h2 { margin-bottom: 22px; color: #fff; font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 600; }
-.consultation-content > div { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
-.consultation-content .site-navbar__cta { position: static; right: auto; margin: 0; padding: 10px 18px; border-radius: 30px; }
-.consultation-secondary { padding: 9px 17px; border: 1px solid #fff; border-radius: 30px; color: #fff; font-size: 12px; }
-.consultation-secondary:hover { background: #fff; color: #222; }
-.site-footer { position: relative; padding: 52px 0 18px; background-color: #252525; background-image: repeating-radial-gradient(ellipse at 18% 135%, transparent 0 35px, rgb(255 255 255 / 7%) 36px 37px, transparent 38px 58px), repeating-radial-gradient(ellipse at 88% -65%, transparent 0 38px, rgb(255 255 255 / 5%) 39px 40px, transparent 41px 64px); color: #eee; }
-.footer-main { padding-bottom: 34px; }
-.footer-brand { display: flex; align-items: center; }
-.footer-brand img { width: min(300px, 100%); height: auto; border-radius: 4px; }
-.site-footer h2 { margin-bottom: 16px; color: var(--smartillam-gold); font-size: 14px; font-weight: 600; }
-.site-footer p, .site-footer a { display: block; margin: 0 0 10px; color: #ddd; font-size: 11px; line-height: 1.5; text-decoration: none; }
-.site-footer a:hover { color: var(--smartillam-gold); }
-.site-footer .footer-icon-line { display: flex; align-items: flex-start; gap: 8px; }
-.footer-icon-line > span:first-child { flex: 0 0 16px; color: #ddd; font-size: 15px; line-height: 1.1; text-align: center; }
-.footer-icon-line > img:first-child { width: 16px; height: 20px; flex: 0 0 16px; object-fit: contain; }
-.social-icon { display: inline-grid; width: 17px; height: 17px; flex: 0 0 17px; place-items: center; border-radius: 3px; color: #fff !important; font-size: 13px; font-weight: 700; line-height: 1; }
-.social-icon--linkedin { background: #0a66c2; }
-.social-icon--facebook { background: #1877f2; font-family: Arial, sans-serif; font-size: 16px; }
-.social-icon--instagram { background: linear-gradient(35deg, #ffb700, #f52b69, #7446d7); font-size: 18px; }
-.social-icon--x { background: #050505; }
-.footer-copyright { padding-top: 16px; border-top: 1px solid rgb(255 255 255 / 40%); color: #ddd; font-size: 11px; text-align: center; }
-.site-footer .back-to-top, .site-footer .whatsapp-link { position: absolute; z-index: 2; right: 10px; display: block; width: 54px; height: 54px; text-decoration: none; }
-.site-footer .back-to-top { bottom: 62px; }
-.site-footer .whatsapp-link { bottom: 8px; }
-.site-footer .back-to-top img, .site-footer .whatsapp-link img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.section-space {
+    padding: 82px 0;
+}
+
+.section-eyebrow {
+    margin: 0 0 12px;
+    color: #d18d00;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+}
+
+.section-heading {
+    margin-bottom: 34px;
+    text-align: center;
+}
+
+.section-heading h2 {
+    margin: 0;
+    color: #303030;
+    font-size: clamp(1.55rem, 2.5vw, 2rem);
+    font-weight: 500;
+}
+
+.touch-intro__title {
+    margin-bottom: 22px;
+    color: #2c2c2c;
+    font-size: clamp(2rem, 3vw, 2.7rem);
+    font-weight: 600;
+    line-height: 1.25;
+}
+
+.touch-intro__copy {
+    max-width: 560px;
+    color: #555;
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+.touch-benefits {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: 24px;
+}
+
+.touch-benefits div {
+    display: flex;
+    min-height: 43px;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    border: 1px solid #e7e9ed;
+    border-radius: 6px;
+    color: #333;
+    font-size: 12px;
+    box-shadow: 0 2px 6px rgb(25 35 45 / 4%);
+}
+
+.touch-benefits span {
+    display: grid;
+    width: 25px;
+    height: 25px;
+    flex: 0 0 25px;
+    place-items: center;
+    border-radius: 5px;
+    background: #fff8e7;
+    color: #e5a300;
+    font-size: 17px;
+}
+
+.touch-benefits span>img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.touch-intro__visual {
+    position: relative;
+    padding: 0 0 16px 18px;
+}
+
+.touch-intro__visual>img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: 13px;
+    object-fit: cover;
+    transform: rotate(0deg);
+    opacity: 1;
+}
+
+.touch-intro__note {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: min(220px, 60%);
+    padding: 16px 18px;
+    border: 1px solid rgb(255 255 255 / 28%);
+    border-radius: 14px;
+    background: rgb(42 42 42 / 74%);
+    color: #fff;
+    backdrop-filter: blur(10px);
+}
+
+.touch-intro__note .section-eyebrow {
+    margin-bottom: 8px;
+    color: var(--smartillam-gold);
+    font-size: 9px;
+}
+
+.touch-intro__note p:last-child {
+    margin: 0;
+    font-size: 11px;
+    line-height: 1.4;
+}
+
+.module-tabs {
+    justify-content: center;
+    gap: 12px;
+    margin-top: 22px;
+}
+
+.module-tabs .nav-link {
+    min-width: 58px;
+    padding: 7px 12px;
+    border: 1px solid #d7d7d7;
+    border-radius: 5px;
+    color: #333;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.module-tabs .nav-link.active {
+    border-color: var(--smartillam-gold);
+    background: var(--smartillam-gold);
+    color: #222;
+}
+
+.module-content,
+.technical-card {
+    max-width: 920px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.module-card {
+    display: grid;
+    grid-template-columns: minmax(0, .7fr) minmax(0, 1fr);
+    align-items: center;
+    gap: clamp(60px, 7vw, 112px);
+    padding: 40px;
+    border: 1px solid #e4e6e9;
+    border-radius: 18px;
+    background: #f5f6f8;
+    box-shadow: 0 2px 7px rgb(20 30 40 / 7%);
+}
+
+.module-card__image {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 16px;
+    object-fit: cover;
+}
+
+.module-card__details h3 {
+    margin-bottom: 16px;
+    color: #303030;
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+.module-card__details>p:not(.section-eyebrow) {
+    margin-bottom: 26px;
+    color: #555;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.module-feature-list {
+    display: grid;
+    gap: 11px;
+    margin: 0;
+    padding: 0;
+    color: #414141;
+    font-size: 14px;
+    list-style: none;
+}
+
+.module-feature-list li::before {
+    display: inline-grid;
+    width: 16px;
+    height: 16px;
+    place-items: center;
+    margin-right: 10px;
+    border: 1px solid #eda900;
+    border-radius: 50%;
+    color: #eda900;
+    content: '✓';
+    font-size: 10px;
+    font-weight: 700;
+    vertical-align: -2px;
+}
+
+.technical-card {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    align-items: center;
+    gap: 48px;
+    margin-top: 48px;
+    padding: 48px;
+    border-radius: 20px;
+    background: #292929;
+    color: #fff;
+    box-shadow: 0 3px 8px rgb(0 0 0 / 12%);
+}
+
+.technical-card__eyebrow {
+    margin-bottom: 22px;
+    color: var(--smartillam-gold);
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.technical-list {
+    margin: 0;
+    font-size: 14px;
+}
+
+.technical-list div {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    padding: 9px 0;
+    border-bottom: 1px solid rgb(255 255 255 / 35%);
+}
+
+.technical-list div:last-child {
+    border-bottom: 0;
+}
+
+.technical-list dt,
+.technical-list dd {
+    margin: 0;
+    font-weight: 400;
+}
+
+.technical-card>img {
+    width: 100%;
+    aspect-ratio: 1.2 / 1;
+    border-radius: 12px;
+    object-fit: cover;
+}
+
+.features-section {
+    padding: 52px 0;
+    background: #f4f5f7;
+}
+
+.features-section .section-heading {
+    margin-bottom: 28px;
+}
+
+.feature-grid {
+    display: grid;
+    max-width: 850px;
+    grid-template-columns: repeat(10, minmax(0, 1fr));
+    justify-content: center;
+    gap: 16px;
+    margin: 0 auto;
+}
+
+.feature-tile {
+    display: flex;
+    min-height: 126px;
+    grid-column: span 2;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 8px;
+    border: 1px solid #e7e9ed;
+    border-radius: 13px;
+    background: #fff;
+    box-shadow: 0 2px 8px rgb(20 30 40 / 7%);
+}
+
+.feature-tile:nth-child(6) {
+    grid-column: 2 / span 2;
+}
+
+.feature-tile>img {
+    display: block;
+    width: 100%;
+    height: 82px;
+    object-fit: contain;
+}
+
+.feature-tile h3 {
+    margin: 0;
+    color: #303030;
+    font-size: 11px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.solutions-section {
+    width: 100%;
+    max-width: 1920px;
+    margin: 0 auto;
+    padding: clamp(64px, 7vw, 100px) clamp(24px, 7.8vw, 150px);
+    box-sizing: border-box;
+    overflow: hidden;
+    background: #292929;
+    color: #fff;
+}
+
+.solutions-section .section-heading h2 {
+    color: #fff;
+}
+
+.solutions-section .section-heading .section-eyebrow {
+    color: var(--smartillam-gold);
+}
+
+.solutions-container {
+    max-width: none;
+    padding-right: 0;
+    padding-left: 0;
+}
+
+.solution-grid {
+    display: flex;
+    gap: 18px;
+    padding: 0;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    cursor: grab;
+}
+
+.solution-grid::-webkit-scrollbar {
+    display: none;
+}
+
+.solution-grid:active {
+    cursor: grabbing;
+}
+
+.solution-grid>.solution-card {
+    flex: 0 0 254px;
+}
+
+.solution-grid>.solution-card {
+    scroll-snap-align: start;
+}
+
+.solution-card {
+    overflow: hidden;
+    border: 1px solid #777;
+    border-radius: 10px;
+    background: #292929;
+}
+
+.solution-card>img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1.48 / 1;
+    object-fit: cover;
+}
+
+.solution-card__body {
+    padding: 13px 12px;
+}
+
+.solution-card__body>span {
+    color: var(--smartillam-gold);
+    font-size: 18px;
+}
+
+.solution-card__body h3 {
+    margin: 5px 0 7px;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.solution-card__body a {
+    color: var(--smartillam-gold);
+    font-size: 9px;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+.solution-grid--second .solution-card--text {
+    display: grid;
+    min-height: 225px;
+    align-items: center;
+    border-color: #555;
+    background: linear-gradient(145deg, #353535, #222);
+}
+
+.solutions-controls {
+    position: relative;
+    display: flex;
+    min-height: 58px;
+    align-items: center;
+    justify-content: center;
+    margin-top: 12px;
+}
+
+.solutions-controls .carousel-indicators {
+    position: static;
+    gap: 6px;
+    width: auto;
+    margin: 0;
+}
+
+.solutions-controls .carousel-indicators button {
+    width: 7px;
+    height: 7px;
+    margin: 0;
+    border: 0;
+    border-radius: 50%;
+    background: #fff;
+}
+
+.solutions-controls .carousel-indicators button.active {
+    background: var(--smartillam-gold);
+}
+
+.consultation-section {
+    width: 1920px;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 100px 0;
+    background: #fff;
+    color: #fff;
+}
+
+.consultation-content {
+    display: grid;
+    width: min(1680px, calc(100% - 48px));
+    max-width: none;
+    min-height: 382px;
+    align-content: center;
+    justify-items: center;
+    margin: 0 auto;
+    padding: 40px;
+    border-radius: 24px;
+    background-image: linear-gradient(90deg, rgb(15 15 15 / 45%), rgb(15 15 15 / 40%)), var(--consultation-image);
+    background-position: center;
+    background-size: cover;
+    text-align: center;
+}
+
+.consultation-content h2 {
+    margin-bottom: 22px;
+    color: #fff;
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 600;
+}
+
+.consultation-content>div {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+
+.consultation-content .site-navbar__cta {
+    position: static;
+    right: auto;
+    margin: 0;
+    padding: 10px 18px;
+    border-radius: 30px;
+}
+
+.consultation-secondary {
+    padding: 9px 17px;
+    border: 1px solid #fff;
+    border-radius: 30px;
+    color: #fff;
+    font-size: 12px;
+}
+
+.consultation-secondary:hover {
+    background: #fff;
+    color: #222;
+}
+
+.site-footer {
+    position: relative;
+    padding: 52px 0 18px;
+    background-color: #252525;
+    background-image: repeating-radial-gradient(ellipse at 18% 135%, transparent 0 35px, rgb(255 255 255 / 7%) 36px 37px, transparent 38px 58px), repeating-radial-gradient(ellipse at 88% -65%, transparent 0 38px, rgb(255 255 255 / 5%) 39px 40px, transparent 41px 64px);
+    color: #eee;
+}
+
+.footer-main {
+    padding-bottom: 34px;
+}
+
+.footer-brand {
+    display: flex;
+    align-items: center;
+}
+
+.footer-brand img {
+    width: min(300px, 100%);
+    height: auto;
+    border-radius: 4px;
+}
+
+.site-footer h2 {
+    margin-bottom: 16px;
+    color: var(--smartillam-gold);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.site-footer p,
+.site-footer a {
+    display: block;
+    margin: 0 0 10px;
+    color: #ddd;
+    font-size: 11px;
+    line-height: 1.5;
+    text-decoration: none;
+}
+
+.site-footer a:hover {
+    color: var(--smartillam-gold);
+}
+
+.site-footer .footer-icon-line {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.footer-icon-line>span:first-child {
+    flex: 0 0 16px;
+    color: #ddd;
+    font-size: 15px;
+    line-height: 1.1;
+    text-align: center;
+}
+
+.footer-icon-line>img:first-child {
+    width: 16px;
+    height: 20px;
+    flex: 0 0 16px;
+    object-fit: contain;
+}
+
+.social-icon {
+    display: inline-grid;
+    width: 17px;
+    height: 17px;
+    flex: 0 0 17px;
+    place-items: center;
+    border-radius: 3px;
+    color: #fff !important;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.social-icon--linkedin {
+    background: #0a66c2;
+}
+
+.social-icon--facebook {
+    background: #1877f2;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+}
+
+.social-icon--instagram {
+    background: linear-gradient(35deg, #ffb700, #f52b69, #7446d7);
+    font-size: 18px;
+}
+
+.social-icon--x {
+    background: #050505;
+}
+
+.social-icon svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    fill: #fff;
+}
+
+.social-icon--instagram svg {
+    padding: 2px;
+    fill: none;
+    stroke: #fff;
+    stroke-width: 2;
+}
+
+.social-icon--instagram .social-icon__dot {
+    fill: #fff;
+    stroke: none;
+}
+
+.footer-copyright {
+    padding-top: 16px;
+    border-top: 1px solid rgb(255 255 255 / 40%);
+    color: #ddd;
+    font-size: 11px;
+    text-align: center;
+}
+
+.site-footer .back-to-top,
+.site-footer .whatsapp-link {
+    position: absolute;
+    z-index: 2;
+    right: 10px;
+    display: block;
+    width: 54px;
+    height: 54px;
+    text-decoration: none;
+}
+
+.site-footer .back-to-top {
+    bottom: 62px;
+}
+
+.site-footer .whatsapp-link {
+    bottom: 8px;
+}
+
+.site-footer .back-to-top img,
+.site-footer .whatsapp-link img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
 
 @media (max-width: 767.98px) {
-    .section-space { padding: 58px 0; }
-    .solutions-section { min-height: auto; padding: 64px 24px; }
-    .consultation-section { padding: 56px 0; }
-    .consultation-content { width: calc(100% - 32px); min-height: 270px; padding: 28px 20px; }
-    .features-section { padding: 42px 0; }
-    .feature-grid { max-width: 520px; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px; }
-    .feature-tile { min-height: 118px; grid-column: span 2; }
-    .feature-tile:nth-child(6) { grid-column: 2 / span 2; }
-    .feature-tile:nth-child(9) { grid-column: 3 / span 2; }
-    .feature-tile > img { height: 74px; }
-    .touch-intro__visual { padding-left: 0; }
-    .module-card, .technical-card { grid-template-columns: 1fr; }
-    .module-card__image { max-height: 320px; }
-    .technical-card { gap: 24px; padding: 22px; }
-    .technical-card > img { max-height: 260px; }
-    .solution-grid { gap: 12px; }
-    .solution-grid > .solution-card { flex-basis: min(72vw, 228px); }
-    .site-footer { padding-top: 38px; }
-    .footer-brand { padding-bottom: 12px; }
-    .footer-brand img { width: min(260px, 100%); }
-    .site-footer .back-to-top, .site-footer .whatsapp-link { right: 8px; width: 50px; height: 50px; }
-    .site-footer .back-to-top { bottom: 60px; }
-    .site-footer .whatsapp-link { bottom: 8px; }
+    .section-space {
+        padding: 58px 0;
+    }
+
+    .solutions-section {
+        min-height: auto;
+        padding: 64px 24px;
+    }
+
+    .consultation-section {
+        padding: 56px 0;
+    }
+
+    .consultation-content {
+        width: calc(100% - 32px);
+        min-height: 270px;
+        padding: 28px 20px;
+    }
+
+    .features-section {
+        padding: 42px 0;
+    }
+
+    .feature-grid {
+        max-width: 520px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+
+    .feature-tile {
+        min-height: 118px;
+        grid-column: auto;
+    }
+
+    .feature-tile:nth-child(6),
+    .feature-tile:nth-child(9) {
+        grid-column: auto;
+    }
+
+    .feature-tile>img {
+        height: 74px;
+    }
+
+    .touch-intro__visual {
+        padding-left: 0;
+    }
+
+    .module-card,
+    .technical-card {
+        grid-template-columns: 1fr;
+    }
+
+    .module-card__image {
+        max-height: 320px;
+    }
+
+    .technical-card {
+        gap: 24px;
+        padding: 22px;
+    }
+
+    .technical-card>img {
+        max-height: 260px;
+    }
+
+    .solution-grid {
+        gap: 12px;
+    }
+
+    .solution-grid>.solution-card {
+        flex-basis: min(72vw, 228px);
+    }
+
+    .site-footer {
+        padding-top: 38px;
+    }
+
+    .footer-brand {
+        padding-bottom: 12px;
+    }
+
+    .footer-brand img {
+        width: min(260px, 100%);
+    }
+
+    .site-footer .back-to-top,
+    .site-footer .whatsapp-link {
+        right: 8px;
+        width: 50px;
+        height: 50px;
+    }
+
+    .site-footer .back-to-top {
+        bottom: 60px;
+    }
+
+    .site-footer .whatsapp-link {
+        bottom: 8px;
+    }
 }
 
 @media (min-width: 768px) and (max-width: 1399.98px) {
-    .solutions-section { padding-right: 0; padding-left: 58px; }
+    .solutions-section {
+        padding-right: 0;
+        padding-left: 58px;
+    }
 }
 
 @media (max-width: 420px) {
-    .touch-benefits { grid-template-columns: 1fr; }
-    .module-tabs { gap: 5px; }
-    .module-tabs .nav-link { min-width: 48px; padding: 6px 8px; }
-    .feature-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
-    .feature-tile { min-height: 108px; grid-column: span 2; }
-    .feature-tile:nth-child(6) { grid-column: 2 / span 2; }
-    .feature-tile:nth-child(9) { grid-column: 2 / span 2; }
-    .feature-tile > img { height: 66px; }
+    .touch-benefits {
+        grid-template-columns: 1fr;
+    }
+
+    .module-tabs {
+        gap: 5px;
+    }
+
+    .module-tabs .nav-link {
+        min-width: 48px;
+        padding: 6px 8px;
+    }
+
+    .feature-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .feature-tile {
+        min-height: 108px;
+        grid-column: auto;
+    }
+
+    .feature-tile:nth-child(6),
+    .feature-tile:nth-child(9) {
+        grid-column: auto;
+    }
+
+    .feature-tile>img {
+        height: 66px;
+    }
 }
 
 /* Services landing page */
@@ -545,7 +1270,7 @@ body {
     line-height: 1.2;
 }
 
-.services-hero__content > p:not(.section-eyebrow) {
+.services-hero__content>p:not(.section-eyebrow) {
     max-width: 690px;
     margin: 0;
     color: rgb(255 255 255 / 90%);
@@ -609,7 +1334,7 @@ body {
     line-height: 1.25;
 }
 
-.services-approach__copy > p:not(.section-eyebrow) {
+.services-approach__copy>p:not(.section-eyebrow) {
     max-width: 580px;
     margin: 0 0 17px;
     color: #666;
@@ -689,7 +1414,7 @@ body {
     box-shadow: 0 8px 18px rgb(0 0 0 / 9%);
 }
 
-.services-specialty-card > a,
+.services-specialty-card>a,
 .services-specialty-card img,
 .services-specialty-card__shade {
     position: absolute;
@@ -699,7 +1424,7 @@ body {
     height: 100%;
 }
 
-.services-specialty-card > a {
+.services-specialty-card>a {
     color: #fff;
     text-decoration: none;
 }
@@ -787,7 +1512,7 @@ body {
     text-align: center;
 }
 
-.services-journey__steps li > span {
+.services-journey__steps li>span {
     display: grid;
     width: 31px;
     height: 31px;
@@ -822,7 +1547,7 @@ body {
     box-shadow: 0 4px 14px rgb(0 0 0 / 5%);
 }
 
-.services-values__grid article > span {
+.services-values__grid article>span {
     display: inline-flex;
     width: 20px;
     height: 22px;
@@ -830,7 +1555,7 @@ body {
     font-size: 21px;
 }
 
-.services-values__grid article > span img {
+.services-values__grid article>span img {
     width: 100%;
     height: 100%;
     object-fit: contain;
@@ -1102,6 +1827,7 @@ body {
 }
 
 @media (max-width: 480px) {
+
     .services-specialty-grid,
     .services-values__grid {
         display: grid;
@@ -1124,7 +1850,7 @@ body {
         padding: 24px 20px;
     }
 
-    .services-hero__actions > a {
+    .services-hero__actions>a {
         flex: 1 1 auto;
     }
 }
@@ -1139,7 +1865,7 @@ body {
     box-sizing: border-box;
 }
 
-.touch-intro > .container {
+.touch-intro>.container {
     max-width: none;
     padding-right: 0;
     padding-left: 0;
@@ -1317,7 +2043,7 @@ body {
 }
 
 .admin-login-form label,
-.admin-field > label:not(.admin-clear-field) {
+.admin-field>label:not(.admin-clear-field) {
     color: #333;
     font-size: 12px;
     font-weight: 600;
@@ -1467,7 +2193,7 @@ body {
     font-weight: 600;
 }
 
-.admin-sidebar > p:last-child {
+.admin-sidebar>p:last-child {
     margin: 35px 0 0;
     color: #777;
     font-size: 11px;
@@ -1488,7 +2214,7 @@ body {
     font-weight: 600;
 }
 
-.admin-editor-heading > div > p:last-child,
+.admin-editor-heading>div>p:last-child,
 .admin-card-heading p {
     margin: 0;
     color: #777;
@@ -1563,7 +2289,7 @@ body {
     font-weight: 600;
 }
 
-.admin-preview-heading > a {
+.admin-preview-heading>a {
     display: grid;
     width: 34px;
     height: 34px;
@@ -1738,7 +2464,7 @@ body {
     margin-top: 20px;
 }
 
-.admin-fields-grid > .admin-field {
+.admin-fields-grid>.admin-field {
     min-width: 0;
 }
 
@@ -1796,7 +2522,7 @@ body {
     gap: 8px;
 }
 
-.admin-image-controls > label:not(.admin-clear-field) {
+.admin-image-controls>label:not(.admin-clear-field) {
     color: #333;
     font-size: 12px;
     font-weight: 600;
@@ -2033,12 +2759,12 @@ body {
 }
 
 @media (min-width: 1920px) {
-    .touch-intro .row > .col-lg-6:first-child {
+    .touch-intro .row>.col-lg-6:first-child {
         flex: 0 0 calc(50% - 10px);
         width: calc(50% - 10px);
     }
 
-    .touch-intro .row > .col-lg-6:last-child {
+    .touch-intro .row>.col-lg-6:last-child {
         flex: 0 0 calc(50% + 10px);
         width: calc(50% + 10px);
     }
@@ -2047,7 +2773,7 @@ body {
         padding-left: 0;
     }
 
-    .touch-intro__visual > img {
+    .touch-intro__visual>img {
         width: 100%;
         height: auto;
         max-width: 680px;
@@ -2064,7 +2790,7 @@ body {
         box-sizing: border-box;
     }
 
-    .module-section > .container {
+    .module-section>.container {
         max-width: none;
         padding-right: 0;
         padding-left: 0;
@@ -2086,7 +2812,7 @@ body {
     }
 }
 
-.technical-card > img {
+.technical-card>img {
     border: 1px solid #e5e5e5;
     border-radius: 24px;
     transform: rotate(0deg);
@@ -2094,7 +2820,7 @@ body {
 }
 
 @media (min-width: 1600px) {
-    .technical-card > img {
+    .technical-card>img {
         width: 495px;
         height: 400px;
         max-width: 100%;
@@ -2104,12 +2830,13 @@ body {
 }
 
 @media (max-width: 1599.98px) {
-    .technical-card > img {
+    .technical-card>img {
         height: auto;
     }
 }
 
 @media (min-width: 1200px) {
+
     .module-section .module-content,
     .module-section .technical-card {
         width: 100%;
@@ -2118,6 +2845,7 @@ body {
 }
 
 @media (min-width: 1200px) {
+
     .module-section .module-content,
     .module-section .technical-card {
         max-width: 1120px;
@@ -2145,7 +2873,7 @@ body {
     aspect-ratio: 1620 / 762;
 }
 
-.curtain-intro__container > .row {
+.curtain-intro__container>.row {
     display: grid;
     height: 100%;
     grid-template-columns: minmax(0, 1fr) minmax(0, 43.58%);
@@ -2153,12 +2881,12 @@ body {
     margin: 0;
 }
 
-.curtain-intro__container > .row > .col-lg-6:first-child {
+.curtain-intro__container>.row>.col-lg-6:first-child {
     width: auto;
     padding: 0;
 }
 
-.curtain-intro__container > .row > .col-lg-6:last-child {
+.curtain-intro__container>.row>.col-lg-6:last-child {
     width: auto;
     padding: 0;
 }
@@ -2203,7 +2931,7 @@ body {
     box-shadow: 0 2px 7px rgb(25 35 45 / 5%);
 }
 
-.curtain-benefits li > span {
+.curtain-benefits li>span {
     display: grid;
     width: 26px;
     height: 26px;
@@ -2357,7 +3085,7 @@ body {
     padding: clamp(28px, 5vw, 64px);
 }
 
-.curtain-specs-card > img {
+.curtain-specs-card>img {
     width: 100%;
     height: clamp(240px, 28vw, 420px);
     padding: 16px;
@@ -2377,14 +3105,14 @@ body {
     margin: 0 auto;
 }
 
-.curtain-motion__container > h2 {
+.curtain-motion__container>h2 {
     margin: 0 0 8px;
     color: #303030;
     font-size: clamp(1.5rem, 2.2vw, 1.85rem);
     font-weight: 600;
 }
 
-.curtain-motion__container > p {
+.curtain-motion__container>p {
     margin: 0 0 22px;
     color: #686868;
     font-size: 14px;
@@ -2403,7 +3131,7 @@ body {
     box-shadow: 0 4px 12px rgb(0 0 0 / 14%);
 }
 
-.curtain-motion__stage > img {
+.curtain-motion__stage>img {
     display: block;
     width: 100%;
     height: 100%;
@@ -2515,7 +3243,7 @@ body {
     line-height: 1.15;
 }
 
-.catalog-hero__content > p:not(.section-eyebrow) {
+.catalog-hero__content>p:not(.section-eyebrow) {
     max-width: 560px;
     margin-bottom: 24px;
     color: rgb(255 255 255 / 92%);
@@ -2567,7 +3295,7 @@ body {
     gap: 18px;
 }
 
-.catalog-solutions .solution-grid > .solution-card {
+.catalog-solutions .solution-grid>.solution-card {
     flex-basis: 254px;
 }
 
@@ -2597,7 +3325,7 @@ body {
         padding: 56px 20px;
     }
 
-    .catalog-solutions .solution-grid > .solution-card {
+    .catalog-solutions .solution-grid>.solution-card {
         flex-basis: min(76vw, 254px);
     }
 }
@@ -2616,7 +3344,7 @@ body {
         width: calc(100% - 32px);
     }
 
-    .curtain-intro__container > .row {
+    .curtain-intro__container>.row {
         height: auto;
         grid-template-columns: minmax(0, 1fr);
         gap: 24px;
@@ -2660,7 +3388,7 @@ body {
         grid-template-columns: minmax(0, 1fr);
     }
 
-    .curtain-specs-card > img {
+    .curtain-specs-card>img {
         height: 240px;
     }
 
@@ -2787,7 +3515,7 @@ body {
     box-shadow: 0 2px 7px rgb(25 35 45 / 5%);
 }
 
-.door-benefits li > span {
+.door-benefits li>span {
     display: grid;
     width: 26px;
     height: 26px;
@@ -2856,7 +3584,7 @@ body {
     box-shadow: 0 3px 12px rgb(20 30 40 / 7%);
 }
 
-.door-model-card > img {
+.door-model-card>img {
     display: block;
     width: 100%;
     aspect-ratio: 1 / 1;
@@ -2881,7 +3609,7 @@ body {
     font-size: 12px;
 }
 
-.door-spec-list > div {
+.door-spec-list>div {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     gap: 16px;
@@ -2889,7 +3617,7 @@ body {
     border-bottom: 1px solid #d2d4d7;
 }
 
-.door-spec-list > div:last-child {
+.door-spec-list>div:last-child {
     border-bottom: 0;
 }
 
@@ -2950,6 +3678,7 @@ body {
 }
 
 @media (max-width: 767.98px) {
+
     .door-intro,
     .door-models,
     .door-methods {
@@ -2964,7 +3693,7 @@ body {
         grid-template-columns: minmax(0, 1fr);
     }
 
-    .door-model-card > img {
+    .door-model-card>img {
         max-height: 360px;
     }
 
@@ -2993,7 +3722,7 @@ body {
     margin-bottom: 32px;
 }
 
-.security-specifications .door-model-card > img {
+.security-specifications .door-model-card>img {
     aspect-ratio: 1.4 / 1;
     background: #fff;
     object-fit: contain;
@@ -3024,7 +3753,7 @@ body {
     font-weight: 600;
 }
 
-.security-features .section-heading > p {
+.security-features .section-heading>p {
     margin: 0;
     color: #666;
     font-size: 14px;
@@ -3068,6 +3797,7 @@ body {
 }
 
 @media (max-width: 767.98px) {
+
     .security-specifications,
     .security-features {
         padding: 52px 0;
@@ -3094,14 +3824,14 @@ body {
     padding: 72px 0;
 }
 
-.cctv-model-card > img {
+.cctv-model-card>img {
     aspect-ratio: 1 / 1;
     padding: 12px;
     background: #fff;
     object-fit: contain;
 }
 
-.cctv-model-card__specs > h3 {
+.cctv-model-card__specs>h3 {
     margin: 0 0 10px;
     color: var(--smartillam-gold);
     font-size: 14px;
@@ -3155,7 +3885,7 @@ body {
     box-shadow: 0 1px 4px rgb(20 30 40 / 4%);
 }
 
-.cctv-feature-card > span {
+.cctv-feature-card>span {
     display: grid;
     width: 26px;
     height: 26px;
@@ -3176,6 +3906,7 @@ body {
 }
 
 @media (max-width: 767.98px) {
+
     .cctv-models,
     .cctv-features {
         padding: 52px 0;
@@ -3293,7 +4024,7 @@ body {
     padding: 7px 0;
 }
 
-.retrofit-specifications .technical-card > img {
+.retrofit-specifications .technical-card>img {
     aspect-ratio: 1.2 / 1;
     background: #fff;
     object-fit: contain;
@@ -3315,7 +4046,7 @@ body {
     font-weight: 600;
 }
 
-.retrofit-features .section-heading > p {
+.retrofit-features .section-heading>p {
     margin: 0;
     color: #666;
     font-size: 14px;
@@ -3359,6 +4090,7 @@ body {
 }
 
 @media (max-width: 767.98px) {
+
     .retrofit-specifications,
     .retrofit-features {
         padding: 52px 0;
@@ -3368,7 +4100,7 @@ body {
         grid-template-columns: minmax(0, 1fr);
     }
 
-    .retrofit-specifications .technical-card > img {
+    .retrofit-specifications .technical-card>img {
         max-height: 280px;
     }
 
@@ -3498,6 +4230,7 @@ body {
 }
 
 @media (max-width: 767.98px) {
+
     .water-detail,
     .water-indicator {
         padding: 48px 0 56px;
@@ -3653,7 +4386,7 @@ body {
     grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr);
 }
 
-.swing-gate-model-card > img {
+.swing-gate-model-card>img {
     aspect-ratio: 1 / 1;
     padding: 14px;
     background: #fff;
@@ -3667,7 +4400,7 @@ body {
     font-weight: 500;
 }
 
-.swing-gate-model-card__details > p:not(.swing-gate-model-card__selected) {
+.swing-gate-model-card__details>p:not(.swing-gate-model-card__selected) {
     margin: 0 0 22px;
     color: #454545;
     font-size: 14px;
@@ -3704,37 +4437,6 @@ body {
     line-height: 1;
 }
 
-.swing-gate-model-card__next {
-    position: absolute;
-    top: 50%;
-    right: -60px;
-    display: grid;
-    width: 44px;
-    height: 44px;
-    place-items: center;
-    transform: translateY(-50%);
-    border: 1px solid #e7e9ed;
-    border-radius: 50%;
-    background: #f5f6f8;
-    color: #666;
-    font-size: 28px;
-    line-height: 1;
-}
-
-.swing-gate-model-card__next:hover,
-.swing-gate-model-card__next:focus-visible {
-    border-color: var(--smartillam-gold);
-    color: #222;
-}
-
-@media (max-width: 991.98px) {
-    .swing-gate-model-card__next {
-        top: 28px;
-        right: 28px;
-        transform: none;
-    }
-}
-
 .sliding-gate-benefits .door-intro__title {
     max-width: 440px;
 }
@@ -3750,7 +4452,7 @@ body {
     font-size: 12px;
 }
 
-.sliding-gate-benefits__list li > span {
+.sliding-gate-benefits__list li>span {
     width: 24px;
     height: 24px;
     flex-basis: 24px;
@@ -3880,14 +4582,8 @@ body {
         grid-template-columns: minmax(0, 1fr);
     }
 
-    .swing-gate-model-card > img {
+    .swing-gate-model-card>img {
         max-height: 340px;
-    }
-
-    .swing-gate-model-card__next {
-        top: 28px;
-        right: 28px;
-        transform: none;
     }
 
     .sliding-gate-specs .technical-list div {
@@ -3896,6 +4592,7 @@ body {
 }
 
 @media (max-width: 575.98px) {
+
     .gate-features,
     .gate-demo {
         padding: 52px 0;
@@ -4001,7 +4698,7 @@ body {
     line-height: 1.12;
 }
 
-.blog-hero__content > p:not(.section-eyebrow) {
+.blog-hero__content>p:not(.section-eyebrow) {
     max-width: 650px;
     margin: 0;
     color: rgb(255 255 255 / 90%);
@@ -4093,7 +4790,7 @@ body {
     box-shadow: 0 4px 18px rgb(20 30 40 / 7%);
 }
 
-.blog-featured-card > img {
+.blog-featured-card>img {
     display: block;
     width: 100%;
     height: 100%;
@@ -4126,7 +4823,7 @@ body {
     line-height: 1.25;
 }
 
-.blog-featured-copy > p:not(.blog-category) {
+.blog-featured-copy>p:not(.blog-category) {
     margin: 0;
     color: #666;
     font-size: 12px;
@@ -4182,7 +4879,7 @@ body {
     line-height: 1.1;
 }
 
-.latest-articles-heading > p {
+.latest-articles-heading>p {
     max-width: 560px;
     justify-self: end;
     margin: 0 0 3px;
@@ -4218,7 +4915,7 @@ body {
     display: none;
 }
 
-.blog-article-card > img {
+.blog-article-card>img {
     display: block;
     width: 100%;
     aspect-ratio: 1.85 / 1;
@@ -4249,7 +4946,7 @@ body {
     line-height: 1.35;
 }
 
-.blog-article-copy > p {
+.blog-article-copy>p {
     margin: 0;
     color: #666;
     font-size: 11px;
@@ -4314,7 +5011,7 @@ body {
     font-weight: 600;
 }
 
-.blog-newsletter-panel > p:not(.blog-category) {
+.blog-newsletter-panel>p:not(.blog-category) {
     max-width: 800px;
     margin: 0 auto 16px;
     color: rgb(255 255 255 / 83%);
@@ -4394,7 +5091,7 @@ body {
         grid-template-columns: minmax(0, 1fr);
     }
 
-    .blog-featured-card > img {
+    .blog-featured-card>img {
         min-height: 0;
         aspect-ratio: 1.5 / 1;
     }
@@ -4408,7 +5105,7 @@ body {
         gap: 14px;
     }
 
-    .latest-articles-heading > p {
+    .latest-articles-heading>p {
         justify-self: start;
     }
 }
@@ -4494,7 +5191,7 @@ body {
     line-height: 1.12;
 }
 
-.about-hero__content > p:not(.section-eyebrow) {
+.about-hero__content>p:not(.section-eyebrow) {
     max-width: 430px;
     margin: 0;
     color: rgb(255 255 255 / 90%);
@@ -4555,8 +5252,8 @@ body {
     font-weight: 600;
 }
 
-.about-intro-copy > p:last-child,
-.purpose-copy > p:last-child {
+.about-intro-copy>p:last-child,
+.purpose-copy>p:last-child {
     margin: 0;
     color: #5b5b5b;
     font-size: 14px;
@@ -4622,7 +5319,7 @@ body {
     gap: clamp(32px, 5vw, 60px);
 }
 
-.purpose-row > img {
+.purpose-row>img {
     display: block;
     width: 100%;
     aspect-ratio: 1 / 1;
@@ -4647,7 +5344,7 @@ body {
     border-bottom: 1px solid var(--smartillam-gold);
 }
 
-.purpose-copy > p:last-child {
+.purpose-copy>p:last-child {
     max-width: 520px;
     margin: 0 auto;
 }
@@ -4677,8 +5374,8 @@ body {
     box-shadow: 0 8px 26px rgb(20 30 40 / 7%);
 }
 
-.values-card > div,
-.values-card > ul {
+.values-card>div,
+.values-card>ul {
     position: relative;
     z-index: 1;
     padding: 20px;
@@ -4749,7 +5446,7 @@ body {
         order: 1;
     }
 
-    .purpose-row > img {
+    .purpose-row>img {
         max-height: 360px;
     }
 
@@ -4815,7 +5512,7 @@ body {
     line-height: 1.18;
 }
 
-.contact-hero__content > p {
+.contact-hero__content>p {
     max-width: 660px;
     margin: 0 0 25px;
     font-size: 14px;
@@ -4908,7 +5605,7 @@ body {
     text-align: center;
 }
 
-.brochure-modal__intro > p {
+.brochure-modal__intro>p {
     margin: 26px 0 32px;
     font-size: 15px;
     line-height: 1.5;
@@ -4935,7 +5632,7 @@ body {
     text-decoration: none;
 }
 
-.brochure-modal__card > span {
+.brochure-modal__card>span {
     margin-bottom: 8px;
     color: #f4a900;
     font-size: 22px;
@@ -4999,7 +5696,7 @@ body {
     color: #555;
 }
 
-.brochure-modal__phone > span {
+.brochure-modal__phone>span {
     padding: 0 10px;
     font-size: 12px;
 }
@@ -5039,7 +5736,7 @@ body.has-brochure-modal {
         padding: 58px 28px 32px;
     }
 
-    .brochure-modal__intro > p {
+    .brochure-modal__intro>p {
         margin: 18px 0 22px;
     }
 }
@@ -5382,17 +6079,18 @@ body.has-brochure-modal {
     font-size: clamp(2rem, 3.3vw, 2.4rem);
 }
 
-.product-catalog-page--smart-curtain-control .catalog-hero__content > p:not(.section-eyebrow),
-.product-catalog-page--retrofit-switches .catalog-hero__content > p:not(.section-eyebrow),
-.product-catalog-page--smart-security-systems .catalog-hero__content > p:not(.section-eyebrow),
-.product-catalog-page--voice-integrations .catalog-hero__content > p:not(.section-eyebrow),
-.product-catalog-page--swing-gate-automation .catalog-hero__content > p:not(.section-eyebrow),
-.product-catalog-page--water-level-controllers .catalog-hero__content > p:not(.section-eyebrow) {
+.product-catalog-page--smart-curtain-control .catalog-hero__content>p:not(.section-eyebrow),
+.product-catalog-page--retrofit-switches .catalog-hero__content>p:not(.section-eyebrow),
+.product-catalog-page--smart-security-systems .catalog-hero__content>p:not(.section-eyebrow),
+.product-catalog-page--voice-integrations .catalog-hero__content>p:not(.section-eyebrow),
+.product-catalog-page--swing-gate-automation .catalog-hero__content>p:not(.section-eyebrow),
+.product-catalog-page--water-level-controllers .catalog-hero__content>p:not(.section-eyebrow) {
     max-width: 660px;
     font-size: 14px;
 }
 
 @media (max-width: 767.98px) {
+
     .product-catalog-page--smart-curtain-control .catalog-hero,
     .product-catalog-page--retrofit-switches .catalog-hero,
     .product-catalog-page--smart-security-systems .catalog-hero,
@@ -5718,7 +6416,7 @@ body.has-brochure-modal {
     line-height: 1.55;
 }
 
-.article-cta__content > div {
+.article-cta__content>div {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -5839,11 +6537,11 @@ body.has-brochure-modal {
     line-height: 1.12;
 }
 
-.product-catalog-page--smart-touch-switches .catalog-hero__content > p:not(.section-eyebrow),
-.product-catalog-page--smart-door-locks .catalog-hero__content > p:not(.section-eyebrow),
-.product-catalog-page--cctv-surveillance-system .catalog-hero__content > p:not(.section-eyebrow),
-.product-catalog-page--retrofit-switches .catalog-hero__content > p:not(.section-eyebrow),
-.product-catalog-page--sliding-gate-automation .catalog-hero__content > p:not(.section-eyebrow) {
+.product-catalog-page--smart-touch-switches .catalog-hero__content>p:not(.section-eyebrow),
+.product-catalog-page--smart-door-locks .catalog-hero__content>p:not(.section-eyebrow),
+.product-catalog-page--cctv-surveillance-system .catalog-hero__content>p:not(.section-eyebrow),
+.product-catalog-page--retrofit-switches .catalog-hero__content>p:not(.section-eyebrow),
+.product-catalog-page--sliding-gate-automation .catalog-hero__content>p:not(.section-eyebrow) {
     max-width: 430px;
     margin: 0;
     font-size: 13px;
@@ -5860,6 +6558,7 @@ body.has-brochure-modal {
 }
 
 @media (max-width: 767.98px) {
+
     .product-catalog-page--smart-touch-switches .catalog-hero,
     .product-catalog-page--smart-door-locks .catalog-hero,
     .product-catalog-page--cctv-surveillance-system .catalog-hero,
@@ -5921,7 +6620,7 @@ body.has-brochure-modal {
 }
 
 .home-panel__intro,
-.home-section-heading > p:not(.home-eyebrow) {
+.home-section-heading>p:not(.home-eyebrow) {
     max-width: 700px;
     margin: 0 auto;
     color: #696969;
@@ -5968,7 +6667,7 @@ body.has-brochure-modal {
     line-height: 1.2;
 }
 
-.home-feature-card__content > p:not(.home-eyebrow) {
+.home-feature-card__content>p:not(.home-eyebrow) {
     margin: 0 0 20px;
     color: #565656;
     font-size: 14px;
@@ -6118,7 +6817,7 @@ body.has-brochure-modal {
     object-fit: contain;
 }
 
-.home-promise-card--device > div {
+.home-promise-card--device>div {
     position: absolute;
     top: 28px;
     right: 14px;
@@ -6161,7 +6860,7 @@ body.has-brochure-modal {
     font-style: italic;
 }
 
-.home-philosophy-copy > p:not(.home-eyebrow) {
+.home-philosophy-copy>p:not(.home-eyebrow) {
     max-width: 420px;
     margin: 0 0 26px;
     color: #525252;
@@ -6233,8 +6932,8 @@ body.has-brochure-modal {
 }
 
 .home-devices-heading p,
-.home-work-heading > p,
-.home-results-heading > p {
+.home-work-heading>p,
+.home-results-heading>p {
     max-width: 430px;
     margin: 8px 0 0;
     color: #d0d0d0;
@@ -6321,7 +7020,7 @@ body.has-brochure-modal {
     line-height: 1.1;
 }
 
-.home-work-heading > p {
+.home-work-heading>p {
     max-width: 330px;
     margin: 0;
     color: #666;
@@ -6347,7 +7046,7 @@ body.has-brochure-modal {
     position: relative;
 }
 
-.home-work-step > * {
+.home-work-step>* {
     min-width: 0;
 }
 
@@ -6513,7 +7212,7 @@ body.has-brochure-modal {
     margin-bottom: 40px;
 }
 
-.home-results-heading > p {
+.home-results-heading>p {
     color: #666;
 }
 
@@ -6537,7 +7236,7 @@ body.has-brochure-modal {
     box-shadow: 0 8px 24px rgb(25 36 48 / 6%);
 }
 
-.home-results-stat > p {
+.home-results-stat>p {
     margin: 0;
     color: #303030;
     font-size: 16px;
@@ -6545,7 +7244,7 @@ body.has-brochure-modal {
     text-align: center;
 }
 
-.home-results-stat > div {
+.home-results-stat>div {
     display: grid;
     gap: 4px;
 }
@@ -6591,7 +7290,7 @@ body.has-brochure-modal {
     box-shadow: 0 0 12px #ffb914;
 }
 
-.home-results-feature > img {
+.home-results-feature>img {
     display: block;
     width: 100%;
     min-height: 264px;
@@ -6612,7 +7311,7 @@ body.has-brochure-modal {
     line-height: .8;
 }
 
-.home-testimonial > p {
+.home-testimonial>p {
     margin: 14px 0 20px;
     font-size: 15px;
     line-height: 1.55;
@@ -6624,7 +7323,7 @@ body.has-brochure-modal {
     justify-content: space-between;
 }
 
-.home-testimonial footer > span:first-child {
+.home-testimonial footer>span:first-child {
     display: grid;
     gap: 2px;
 }
@@ -6715,7 +7414,7 @@ body.has-brochure-modal {
     }
 
     .home-panel__intro,
-    .home-section-heading > p:not(.home-eyebrow) {
+    .home-section-heading>p:not(.home-eyebrow) {
         font-size: 14px;
     }
 
@@ -6824,7 +7523,7 @@ body.has-brochure-modal {
         font-size: clamp(1.15rem, 4vw, 1.5rem);
     }
 
-    .home-work-heading > p {
+    .home-work-heading>p {
         max-width: 190px;
         font-size: 9px;
     }
@@ -7041,7 +7740,7 @@ body.has-brochure-modal {
     line-height: 1.12;
 }
 
-.solutions-hero-content > p:not(.solutions-eyebrow) {
+.solutions-hero-content>p:not(.solutions-eyebrow) {
     max-width: 660px;
     margin: 0;
     color: rgb(255 255 255 / 92%);
@@ -7142,8 +7841,8 @@ body.has-brochure-modal {
     line-height: 1.2;
 }
 
-.protocols-section > p:not(.solutions-eyebrow),
-.solutions-section-heading > p {
+.protocols-section>p:not(.solutions-eyebrow),
+.solutions-section-heading>p {
     max-width: 900px;
     margin: 0 auto;
     color: #575757;
@@ -7231,7 +7930,7 @@ body.has-brochure-modal {
     font-weight: 600;
 }
 
-.solution-copy > p {
+.solution-copy>p {
     margin: 0 0 24px;
     color: #454545;
     font-size: 16px;
@@ -7307,12 +8006,12 @@ body.has-brochure-modal {
     color: #fff;
 }
 
-.app-control-section .solutions-section-heading > p,
-.scene-creation-section .solutions-section-heading > p {
+.app-control-section .solutions-section-heading>p,
+.scene-creation-section .solutions-section-heading>p {
     color: rgb(255 255 255 / 83%);
 }
 
-.app-control-section > img {
+.app-control-section>img {
     display: block;
     width: min(440px, 85%);
     max-height: 340px;
@@ -7339,19 +8038,18 @@ body.has-brochure-modal {
     content: '';
 }
 
-.ecosystem-section .solutions-section-heading > p {
+.ecosystem-section .solutions-section-heading>p {
     max-width: 980px;
     font-size: 12px;
     line-height: 1.5;
 }
 
-.ecosystem-section > img {
+.ecosystem-section>img {
     display: block;
     width: min(900px, 100%);
-    aspect-ratio: 3 / 1;
     height: auto;
     margin: 34px auto 0;
-    object-fit: cover;
+    object-fit: contain;
 }
 
 .automation-pillars-section {
@@ -7413,7 +8111,7 @@ body.has-brochure-modal {
     background: #555;
 }
 
-.scene-cards article > span {
+.scene-cards article>span {
     color: #f8b51b;
     font-size: 11px;
     font-weight: 700;
@@ -7531,7 +8229,7 @@ body.has-brochure-modal {
         padding: 60px 0;
     }
 
-    .solutions-hero-content > p:not(.solutions-eyebrow) {
+    .solutions-hero-content>p:not(.solutions-eyebrow) {
         font-size: 14px;
     }
 
@@ -7594,6 +8292,7 @@ body.has-brochure-modal {
 }
 
 @media (max-width: 420px) {
+
     .solutions-hero-actions .btn,
     .solutions-cta-actions .btn {
         width: 100%;
@@ -7638,6 +8337,7 @@ body.has-brochure-modal {
 }
 
 @media (prefers-reduced-motion: reduce) {
+
     .motion-reveal,
     .motion-hover {
         animation: none !important;
@@ -7769,7 +8469,7 @@ body.has-brochure-modal {
     text-align: center;
 }
 
-.admin-message-empty > span {
+.admin-message-empty>span {
     color: #c48e0b;
     font-size: 28px;
 }
@@ -7805,7 +8505,7 @@ body.has-brochure-modal {
     justify-self: end;
 }
 
-.admin-inbox-page .admin-editor-heading > div > p:last-child {
+.admin-inbox-page .admin-editor-heading>div>p:last-child {
     font-size: 15px;
 }
 
@@ -7875,7 +8575,7 @@ body.has-brochure-modal {
     font-weight: 700;
 }
 
-.products-index__heading > p:last-child {
+.products-index__heading>p:last-child {
     margin: 0;
     color: #666;
     font-size: 17px;
@@ -7936,7 +8636,7 @@ body.has-brochure-modal {
     line-clamp: 2;
 }
 
-.products-index__card-content > span {
+.products-index__card-content>span {
     color: #a87500;
     font-size: 15px;
     font-weight: 700;
@@ -7962,7 +8662,7 @@ body.has-brochure-modal {
         margin-bottom: 32px;
     }
 
-    .products-index__heading > p:last-child {
+    .products-index__heading>p:last-child {
         font-size: 15px;
     }
 
@@ -7985,5 +8685,1125 @@ body.has-brochure-modal {
 
     .admin-inbox-page .admin-message-card__header h2 {
         font-size: 19px;
+    }
+}
+
+/* Keep entry text aligned and sized consistently without changing hero layouts. */
+body.home-page .home-panel__heading,
+body.solutions-page .solutions-hero-content,
+body.product-catalog-page[class*="product-catalog-page--"] .catalog-hero__content,
+body.services-page .services-hero__content,
+body.blog-page .blog-hero__content,
+body.about-page .about-hero__content,
+body.contact-page .contact-hero__content,
+body.blog-article-page .article-hero__content,
+body.products-index-page .products-index__heading {
+    text-align: left;
+}
+
+body.home-page .home-panel__heading h1,
+body.solutions-page .solutions-hero-content h1,
+body.product-catalog-page[class*="product-catalog-page--"] .catalog-hero__content h1,
+body.services-page .services-hero h1,
+body.blog-page .blog-hero__content h1,
+body.about-page .about-hero__content h1,
+body.contact-page .contact-hero__content h1,
+body.blog-article-page .article-hero h1,
+body.products-index-page .products-index__heading h1 {
+    font-size: clamp(2rem, 3vw, 2.8rem);
+    text-align: left;
+}
+
+body.home-page .home-panel__heading .home-eyebrow,
+body.solutions-page .solutions-hero-content .solutions-eyebrow,
+body.product-catalog-page[class*="product-catalog-page--"] .catalog-hero__content .section-eyebrow,
+body.services-page .services-hero .section-eyebrow,
+body.blog-page .blog-hero__content .section-eyebrow,
+body.about-page .about-hero__content .section-eyebrow,
+body.blog-article-page .article-hero__eyebrow,
+body.products-index-page .products-index__heading .section-eyebrow {
+    font-size: 11px;
+    text-align: left;
+}
+
+body.home-page .home-panel__intro,
+body.solutions-page .solutions-hero-content>p:not(.solutions-eyebrow),
+body.product-catalog-page[class*="product-catalog-page--"] .catalog-hero__content>p:not(.section-eyebrow),
+body.services-page .services-hero__content>p:not(.section-eyebrow),
+body.blog-page .blog-hero__content>p:not(.section-eyebrow),
+body.about-page .about-hero__content>p:not(.section-eyebrow),
+body.contact-page .contact-hero__content>p,
+body.products-index-page .products-index__heading>p:last-child {
+    font-size: 14px;
+    text-align: left;
+}
+
+body.home-page .home-panel__heading {
+    text-align: center;
+}
+
+body.home-page .home-panel__heading h1 {
+    font-size: clamp(1.9rem, 2.6vw, 2.35rem);
+    text-align: center;
+}
+
+body.home-page .home-panel__heading .home-eyebrow,
+body.home-page .home-panel__intro {
+    text-align: center;
+}
+
+@media (min-width: 768px) {
+    body.home-page .home-feature-card {
+        grid-template-columns: 0.94fr 1.06fr;
+    }
+}
+
+/* Keep the text treatment consistent across every product detail hero. */
+body.product-catalog-page[class*="product-catalog-page--"] .catalog-hero__content {
+    width: min(100%, 900px);
+    max-width: 900px;
+    text-align: left;
+}
+
+body.product-catalog-page[class*="product-catalog-page--"] .catalog-hero__content h1 {
+    max-width: 900px;
+    font-size: clamp(2rem, 3.2vw, 3.5rem);
+    line-height: 1.15;
+    text-align: left;
+}
+
+body.product-catalog-page[class*="product-catalog-page--"] .catalog-hero__content>p:not(.section-eyebrow) {
+    max-width: 780px;
+    font-size: 14px;
+    text-align: left;
+}
+
+@media (min-width: 768px) {
+    body.product-catalog-page[class*="product-catalog-page--"] .catalog-hero__content {
+        width: 80vw;
+        max-width: none;
+        margin-right: auto;
+        margin-left: auto;
+    }
+}
+
+/* Large full-width heroes for the switch, door-lock, CCTV, and retrofit pages. */
+body.product-catalog-page.product-catalog-page--smart-touch-switches .catalog-hero,
+body.product-catalog-page.product-catalog-page--smart-door-locks .catalog-hero,
+body.product-catalog-page.product-catalog-page--cctv-surveillance-system .catalog-hero,
+body.product-catalog-page.product-catalog-page--retrofit-switches .catalog-hero {
+    min-height: 100vh;
+    min-height: 100svh;
+}
+
+/* Compact inset heroes for curtain, security, voice, and water-level pages. */
+body.product-catalog-page.product-catalog-page--smart-curtain-control .catalog-hero,
+body.product-catalog-page.product-catalog-page--smart-security-systems .catalog-hero,
+body.product-catalog-page.product-catalog-page--voice-integrations .catalog-hero,
+body.product-catalog-page.product-catalog-page--water-level-controllers .catalog-hero {
+    width: auto;
+    min-height: 405px;
+    margin: 20px 30px 0;
+    padding: 52px 8%;
+    border-radius: 24px;
+}
+
+body.product-catalog-page.product-catalog-page--smart-curtain-control .catalog-hero {
+    min-height: 520px;
+}
+
+body.product-catalog-page.product-catalog-page--smart-curtain-control .catalog-hero+section,
+body.product-catalog-page.product-catalog-page--smart-security-systems .catalog-hero+section,
+body.product-catalog-page.product-catalog-page--voice-integrations .catalog-hero+section,
+body.product-catalog-page.product-catalog-page--water-level-controllers .catalog-hero+section {
+    padding-top: 64px;
+}
+
+body.product-catalog-page.product-catalog-page--smart-curtain-control .catalog-hero+section .row,
+body.product-catalog-page.product-catalog-page--smart-security-systems .catalog-hero+section .row,
+body.product-catalog-page.product-catalog-page--voice-integrations .catalog-hero+section .row,
+body.product-catalog-page.product-catalog-page--water-level-controllers .catalog-hero+section .row {
+    align-items: flex-start !important;
+}
+
+@media (max-width: 767.98px) {
+
+    body.product-catalog-page.product-catalog-page--smart-touch-switches .catalog-hero,
+    body.product-catalog-page.product-catalog-page--smart-door-locks .catalog-hero,
+    body.product-catalog-page.product-catalog-page--cctv-surveillance-system .catalog-hero,
+    body.product-catalog-page.product-catalog-page--retrofit-switches .catalog-hero {
+        min-height: max(100vh, 560px);
+        min-height: max(100svh, 560px);
+    }
+
+    body.product-catalog-page.product-catalog-page--smart-curtain-control .catalog-hero,
+    body.product-catalog-page.product-catalog-page--smart-security-systems .catalog-hero,
+    body.product-catalog-page.product-catalog-page--voice-integrations .catalog-hero,
+    body.product-catalog-page.product-catalog-page--water-level-controllers .catalog-hero {
+        min-height: 440px;
+        margin: 12px 12px 0;
+        padding: 42px 26px;
+        border-radius: 18px;
+    }
+
+    body.product-catalog-page.product-catalog-page--smart-curtain-control .catalog-hero+section,
+    body.product-catalog-page.product-catalog-page--smart-security-systems .catalog-hero+section,
+    body.product-catalog-page.product-catalog-page--voice-integrations .catalog-hero+section,
+    body.product-catalog-page.product-catalog-page--water-level-controllers .catalog-hero+section {
+        padding-top: 48px;
+    }
+}
+
+@media (max-width: 767.98px) {
+    body.product-catalog-page.product-catalog-page--smart-curtain-control .catalog-hero {
+        min-height: 280px;
+        margin: 12px 12px 0;
+        padding: 22px 8%;
+        border-radius: 16px;
+        background-color: #211a15;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+    }
+
+    body.product-catalog-page.product-catalog-page--smart-curtain-control .catalog-hero__content {
+        width: 100%;
+        max-width: none;
+        padding: 0;
+    }
+
+    body.product-catalog-page.product-catalog-page--smart-curtain-control .catalog-hero__content .section-eyebrow {
+        margin-bottom: 6px;
+        font-size: 8px;
+    }
+
+    body.product-catalog-page.product-catalog-page--smart-curtain-control .catalog-hero__content h1 {
+        max-width: 360px;
+        margin-bottom: 8px;
+        font-size: clamp(1.1rem, 4.5vw, 1.35rem);
+        line-height: 1.08;
+    }
+
+    body.product-catalog-page.product-catalog-page--smart-curtain-control .catalog-hero__content>p:not(.section-eyebrow) {
+        max-width: 390px;
+        font-size: 9px;
+        line-height: 1.35;
+    }
+
+    body.product-catalog-page.product-catalog-page--smart-curtain-control .catalog-hero__actions {
+        gap: 6px;
+        margin-top: 10px;
+    }
+
+    body.product-catalog-page.product-catalog-page--smart-curtain-control .catalog-hero__actions .btn {
+        min-height: 24px;
+        padding: 5px 9px;
+        font-size: 8px;
+    }
+}
+
+/* Align full-width page hero content to one shared desktop gutter. */
+body.solutions-page .solutions-hero,
+body.services-page .services-hero,
+body.blog-page .blog-hero,
+body.about-page .about-hero,
+body.blog-article-page .article-hero {
+    min-height: 100vh;
+    min-height: 100svh;
+}
+
+body.contact-page .contact-hero {
+    min-height: max(405px, calc(100vh - 84px));
+    min-height: max(405px, calc(100svh - 84px));
+}
+
+@media (min-width: 768px) {
+
+    body.solutions-page .solutions-hero-content,
+    body.services-page .services-hero__content,
+    body.blog-page .blog-hero__content,
+    body.about-page .about-hero__content,
+    body.blog-article-page .article-hero__content {
+        width: 80vw;
+        max-width: none;
+        margin-right: auto;
+        margin-left: auto;
+        padding-right: 0;
+        padding-left: 0;
+    }
+
+    body.contact-page .contact-hero__content {
+        width: 80vw;
+        margin-right: auto;
+        margin-left: auto;
+        padding-right: 0;
+        padding-left: 0;
+    }
+}
+
+/* Keep CCTV product introduction compact and balanced. */
+body.product-catalog-page--cctv-surveillance-system .door-intro {
+    padding: clamp(48px, 5.5vw, 88px) 0;
+}
+
+body.product-catalog-page--cctv-surveillance-system .door-intro__container {
+    max-width: 1280px;
+}
+
+body.product-catalog-page--cctv-surveillance-system .door-intro__title {
+    max-width: 560px;
+    margin-bottom: 18px;
+    font-size: clamp(1.75rem, 2.35vw, 2.45rem);
+    line-height: 1.16;
+}
+
+body.product-catalog-page--cctv-surveillance-system .door-intro__copy {
+    max-width: 560px;
+    margin-bottom: 0;
+    font-size: 14px;
+    line-height: 1.65;
+}
+
+body.product-catalog-page--cctv-surveillance-system .door-intro__image {
+    max-width: 450px;
+    aspect-ratio: 1 / 1;
+    border-radius: 14px;
+}
+
+@media (min-width: 768px) {
+    body.product-catalog-page--cctv-surveillance-system .door-intro__container .row>div:first-child {
+        order: 2;
+    }
+
+    body.product-catalog-page--cctv-surveillance-system .door-intro__container .row>div:last-child {
+        order: 1;
+    }
+}
+
+/* ==========================================================================
+   Smart Security Systems Page (Matches Reference Image: Font Size & Alignment)
+   ========================================================================== */
+body.product-catalog-page.product-catalog-page--smart-security-systems .catalog-hero {
+    width: auto;
+    min-height: clamp(380px, 32vw, 480px);
+    margin: 20px 30px 0;
+    padding-top: clamp(60px, 6vw, 90px);
+    padding-right: 50px;
+    padding-bottom: clamp(50px, 5vw, 70px);
+    padding-left: 50px;
+    border-radius: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+body.product-catalog-page.product-catalog-page--smart-security-systems .catalog-hero__content {
+    width: 100% !important;
+    max-width: 580px !important;
+    margin-right: auto !important;
+    margin-left: 0 !important;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+body.product-catalog-page.product-catalog-page--smart-security-systems .catalog-hero__content .section-eyebrow {
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    margin: 0 0 12px;
+}
+
+body.product-catalog-page.product-catalog-page--smart-security-systems .catalog-hero__content h1 {
+    max-width: 540px;
+    margin: 0 0 16px;
+    color: #fff;
+    font-size: clamp(2rem, 3.2vw, 2.85rem);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+}
+
+body.product-catalog-page.product-catalog-page--smart-security-systems .catalog-hero__content>p:not(.section-eyebrow),
+body.product-catalog-page.product-catalog-page--smart-security-systems .catalog-hero__content>p {
+    max-width: 500px;
+    margin: 0 0 24px;
+    color: rgba(255, 255, 255, 0.92);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+body.product-catalog-page.product-catalog-page--smart-security-systems .catalog-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+body.product-catalog-page.product-catalog-page--smart-security-systems .catalog-hero__actions .site-navbar__cta {
+    padding: 10px 18px;
+    font-size: 12px;
+}
+
+body.product-catalog-page.product-catalog-page--smart-security-systems .catalog-hero__secondary {
+    padding: 9px 17px;
+    border: 1px solid rgba(255, 255, 255, 0.85);
+    border-radius: 5px;
+    color: #fff;
+    font-size: 12px;
+    background: transparent;
+}
+
+body.product-catalog-page.product-catalog-page--smart-security-systems .catalog-hero__secondary:hover {
+    background: #fff;
+    color: #222;
+}
+
+body.product-catalog-page.product-catalog-page--smart-security-systems .door-intro {
+    padding: clamp(64px, 7vw, 104px) 0;
+    background: #fff;
+}
+
+body.product-catalog-page.product-catalog-page--smart-security-systems .door-intro__container {
+    max-width: 1240px;
+    width: 100%;
+    margin: 0 auto;
+    padding-left: clamp(1rem, 2.5vw, 2rem);
+    padding-right: clamp(1rem, 2.5vw, 2rem);
+}
+
+body.product-catalog-page--smart-security-systems .door-intro .row {
+    align-items: center;
+}
+
+body.product-catalog-page--smart-security-systems .door-intro .section-eyebrow {
+    color: #e5a93c;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin: 0 0 16px;
+    display: inline-block;
+}
+
+body.product-catalog-page--smart-security-systems .door-intro__title {
+    max-width: 540px;
+    margin: 0 0 24px;
+    color: #22252a;
+    font-size: clamp(2.1rem, 2.85vw, 2.75rem);
+    font-weight: 700;
+    line-height: 1.22;
+    letter-spacing: -0.02em;
+}
+
+body.product-catalog-page--smart-security-systems .door-intro__copy {
+    max-width: 540px;
+    margin: 0;
+}
+
+body.product-catalog-page--smart-security-systems .door-intro__copy p {
+    margin: 0 0 20px;
+    color: #4b5563;
+    font-size: 16px;
+    line-height: 1.7;
+    font-weight: 400;
+}
+
+body.product-catalog-page--smart-security-systems .door-intro__copy p:last-child {
+    margin-bottom: 0;
+}
+
+body.product-catalog-page--smart-security-systems .door-intro__image {
+    display: block;
+    width: 100%;
+    max-width: 560px;
+    aspect-ratio: 1.18 / 1;
+    object-fit: cover;
+    border-radius: 24px;
+    margin: 0 auto;
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.08);
+}
+
+/* ==========================================================================
+   Voice Integrations Page (Matches Reference Image: Font Size & Alignment)
+   ========================================================================== */
+body.product-catalog-page--voice-integrations .voice-intro {
+    padding: clamp(64px, 7vw, 104px) 0;
+    background: #fff;
+}
+
+body.product-catalog-page--voice-integrations .voice-intro .door-intro__container {
+    max-width: 1240px;
+    width: 100%;
+    margin: 0 auto;
+    padding-left: clamp(1rem, 2.5vw, 2rem);
+    padding-right: clamp(1rem, 2.5vw, 2rem);
+}
+
+body.product-catalog-page--voice-integrations .voice-intro .row {
+    align-items: center;
+}
+
+body.product-catalog-page--voice-integrations .voice-intro .section-eyebrow {
+    color: #e5a93c;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin: 0 0 16px;
+    display: inline-block;
+}
+
+body.product-catalog-page--voice-integrations .voice-intro .door-intro__title {
+    max-width: 540px;
+    margin: 0 0 24px;
+    color: #22252a;
+    font-size: clamp(2.1rem, 2.85vw, 2.75rem);
+    font-weight: 700;
+    line-height: 1.22;
+    letter-spacing: -0.02em;
+}
+
+body.product-catalog-page--voice-integrations .voice-intro .door-intro__copy {
+    max-width: 540px;
+    margin: 0;
+}
+
+body.product-catalog-page--voice-integrations .voice-intro .door-intro__copy p {
+    margin: 0 0 20px;
+    color: #4b5563;
+    font-size: 16px;
+    line-height: 1.7;
+    font-weight: 400;
+}
+
+body.product-catalog-page--voice-integrations .voice-intro .door-intro__copy p:last-child {
+    margin-bottom: 0;
+}
+
+body.product-catalog-page--voice-integrations .voice-intro .door-intro__image {
+    display: block;
+    width: 100%;
+    max-width: 560px;
+    aspect-ratio: 1.18 / 1;
+    object-fit: cover;
+    border-radius: 24px;
+    margin: 0 auto;
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.08);
+}
+
+/* Voice Platform Sections Typography & Alignment */
+body.product-catalog-page--voice-integrations .voice-platform {
+    padding: clamp(60px, 7vw, 96px) 0;
+}
+
+body.product-catalog-page--voice-integrations .voice-platform .container {
+    max-width: 1240px;
+    padding-left: clamp(1rem, 2.5vw, 2rem);
+    padding-right: clamp(1rem, 2.5vw, 2rem);
+}
+
+body.product-catalog-page--voice-integrations .voice-platform__copy {
+    max-width: 680px;
+    font-size: 16px;
+    line-height: 1.7;
+    color: #4b5563;
+    margin-bottom: 24px;
+}
+
+body.product-catalog-page--voice-integrations .voice-platform__eyebrow {
+    color: #e5a93c;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+}
+
+body.product-catalog-page--voice-integrations .voice-platform__features {
+    font-size: 15px;
+    gap: 12px;
+    color: #374151;
+}
+
+body.product-catalog-page--voice-integrations .voice-platform__image {
+    max-width: 320px;
+}
+
+/* Match the requested product heroes to the Smart Curtain banner dimensions. */
+body.product-catalog-page.product-catalog-page--smart-security-systems .catalog-hero,
+body.product-catalog-page.product-catalog-page--voice-integrations .catalog-hero,
+body.product-catalog-page.product-catalog-page--water-level-controllers .catalog-hero,
+body.product-catalog-page.product-catalog-page--swing-gate-automation .catalog-hero {
+    width: auto;
+    min-height: 520px;
+    margin: 20px 30px 0;
+    padding: 52px 8%;
+    border-radius: 24px;
+}
+
+/* Match the Smart Security introduction layout and image proportions to Smart Curtain. */
+body.product-catalog-page--smart-security-systems .door-intro {
+    padding: clamp(56px, 7vw, 104px) 0;
+}
+
+body.product-catalog-page--smart-security-systems .door-intro__container {
+    width: min(1240px, calc(100% - 48px));
+    aspect-ratio: 1620 / 762;
+    padding: 0;
+}
+
+body.product-catalog-page.product-catalog-page--smart-security-systems .door-intro__container > .row {
+    display: grid;
+    height: 100%;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 43.58%);
+    gap: clamp(32px, 5.93vw, 96px);
+    margin: 0;
+}
+
+body.product-catalog-page.product-catalog-page--smart-security-systems .door-intro__container > .row > .col-lg-6 {
+    width: auto;
+    padding: 0;
+}
+
+body.product-catalog-page.product-catalog-page--smart-security-systems .door-intro__title {
+    max-width: 650px;
+    margin-bottom: 20px;
+    color: #303030;
+    font-size: clamp(2rem, 3.2vw, 2.8rem);
+    font-weight: 600;
+    line-height: 1.22;
+}
+
+body.product-catalog-page.product-catalog-page--smart-security-systems .door-intro__copy {
+    max-width: 620px;
+}
+
+body.product-catalog-page.product-catalog-page--smart-security-systems .door-intro__copy p {
+    color: #555;
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+body.product-catalog-page--smart-security-systems .door-intro__image {
+    max-width: 620px;
+    aspect-ratio: 706 / 762;
+    border: 1px solid #e5e5e5;
+    border-radius: 16px;
+    box-shadow: 0 12px 30px rgb(23 23 23 / 10%);
+}
+
+body.product-catalog-page.product-catalog-page--smart-security-systems .catalog-hero {
+    width: min(1920px, calc(100% - 52px));
+    height: 950px;
+    min-height: 950px;
+    margin: 20px auto 0;
+    padding: 150px 50px 100px;
+    gap: 50px;
+    background-position: center;
+    background-size: cover;
+}
+
+body.product-catalog-page.product-catalog-page--smart-security-systems .catalog-hero__content {
+    width: min(100%, 900px) !important;
+    max-width: 900px !important;
+    margin-left: 0 !important;
+    gap: 0;
+}
+
+body.product-catalog-page.product-catalog-page--smart-security-systems .catalog-hero__content h1 {
+    max-width: 900px;
+    margin-bottom: 18px;
+    font-size: clamp(2rem, 3.2vw, 3.5rem);
+    line-height: 1.15;
+}
+
+body.product-catalog-page.product-catalog-page--smart-security-systems .catalog-hero__content > p:not(.section-eyebrow) {
+    max-width: 780px;
+    margin-bottom: 24px;
+    font-size: 14px;
+}
+
+@media (max-width: 767.98px) {
+    body.product-catalog-page.product-catalog-page--smart-security-systems .catalog-hero,
+    body.product-catalog-page.product-catalog-page--voice-integrations .catalog-hero,
+    body.product-catalog-page.product-catalog-page--water-level-controllers .catalog-hero,
+    body.product-catalog-page.product-catalog-page--swing-gate-automation .catalog-hero {
+        min-height: 280px;
+        margin: 12px 12px 0;
+        padding: 22px 8%;
+        border-radius: 16px;
+    }
+
+    body.product-catalog-page--smart-security-systems .door-intro {
+        padding: 48px 0;
+    }
+
+    body.product-catalog-page--smart-security-systems .door-intro__container {
+        width: calc(100% - 32px);
+        aspect-ratio: auto;
+    }
+
+    body.product-catalog-page--smart-security-systems .door-intro__container > .row {
+        height: auto;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 24px;
+    }
+
+    body.product-catalog-page--smart-security-systems .door-intro__image {
+        max-width: 500px;
+        max-height: 500px;
+    }
+
+    body.product-catalog-page.product-catalog-page--smart-security-systems .catalog-hero {
+        height: 280px;
+        min-height: 280px;
+        padding: 22px 8%;
+    }
+}
+
+/* Match the Contact hero to the requested Smart Security design dimensions. */
+body.contact-page .contact-hero {
+    width: auto;
+    height: auto;
+    min-height: 520px;
+    margin: 20px 30px 0;
+    padding: 52px 8%;
+    border-radius: 24px;
+}
+
+body.contact-page .contact-hero__image {
+    background-position: center;
+    background-size: cover;
+}
+
+body.contact-page .contact-hero__content {
+    display: flex;
+    width: min(100%, 900px);
+    max-width: 900px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    text-align: left;
+}
+
+body.contact-page .contact-hero__content h1 {
+    max-width: 660px;
+    margin: 0 0 18px;
+    font-size: clamp(2rem, 3.3vw, 2.4rem);
+    line-height: 1.15;
+    text-align: left;
+}
+
+body.contact-page .contact-hero__content > p {
+    max-width: 660px;
+    margin: 0;
+    margin-bottom: 24px;
+    font-size: 14px;
+    line-height: 1.6;
+    text-align: left;
+}
+
+body.contact-page .contact-hero__actions {
+    gap: 12px;
+}
+
+@media (max-width: 767.98px) {
+    body.contact-page .contact-hero {
+        width: auto;
+        height: auto;
+        min-height: 280px;
+        margin: 12px 12px 0;
+        padding: 22px 8%;
+        border-radius: 16px;
+    }
+
+    body.contact-page .contact-hero__content {
+        gap: 0;
+    }
+
+    body.contact-page .contact-hero__content h1 {
+        font-size: clamp(2rem, 8vw, 2.4rem);
+    }
+}
+
+/* Match Smart Security hero and intro sizing to Water Level Controllers. */
+body.product-catalog-page.product-catalog-page--smart-security-systems .catalog-hero {
+    width: auto;
+    height: auto;
+    min-height: 520px;
+    margin: 20px 30px 0;
+    padding: 52px 8%;
+    border-radius: 24px;
+}
+
+body.product-catalog-page.product-catalog-page--smart-security-systems .catalog-hero__content {
+    width: min(100%, 900px) !important;
+    max-width: 900px !important;
+    margin: 0 !important;
+}
+
+body.product-catalog-page.product-catalog-page--smart-security-systems .catalog-hero__content h1 {
+    max-width: 660px;
+    font-size: clamp(2rem, 3.3vw, 2.4rem);
+}
+
+body.product-catalog-page.product-catalog-page--smart-security-systems .catalog-hero__content > p:not(.section-eyebrow) {
+    max-width: 660px;
+    font-size: 14px;
+}
+
+body.product-catalog-page--smart-security-systems .door-intro__container {
+    width: auto;
+    max-width: 1440px;
+    aspect-ratio: auto;
+    padding-right: var(--bs-gutter-x, 0.75rem);
+    padding-left: var(--bs-gutter-x, 0.75rem);
+}
+
+body.product-catalog-page--smart-security-systems .door-intro__container > .row {
+    display: flex;
+    height: auto;
+    grid-template-columns: none;
+    gap: 0;
+}
+
+body.product-catalog-page--smart-security-systems .door-intro__container > .row > .col-lg-6 {
+    width: 50%;
+    padding-right: calc(var(--bs-gutter-x, 1.5rem) * 0.5);
+    padding-left: calc(var(--bs-gutter-x, 1.5rem) * 0.5);
+}
+
+body.product-catalog-page--smart-security-systems .door-intro__title {
+    max-width: 590px;
+    color: #303030;
+    font-size: clamp(2rem, 3.2vw, 2.8rem);
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+body.product-catalog-page--smart-security-systems .door-intro__copy {
+    max-width: 620px;
+    margin: 0 0 22px;
+    color: #555;
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+body.product-catalog-page--smart-security-systems .door-intro__copy p {
+    color: inherit;
+    font-size: inherit;
+    line-height: inherit;
+}
+
+body.product-catalog-page--smart-security-systems .door-intro__image {
+    max-width: 520px;
+    max-height: none;
+    aspect-ratio: 1 / 1.08;
+    border: 0;
+    border-radius: 12px;
+    box-shadow: none;
+}
+
+body.product-catalog-page.product-catalog-page--smart-security-systems .catalog-hero__content {
+    text-align: left;
+}
+
+body.product-catalog-page.product-catalog-page--smart-security-systems .catalog-hero__content .section-eyebrow {
+    font-size: 12px;
+}
+
+body.product-catalog-page.product-catalog-page--smart-security-systems .catalog-hero__content h1 {
+    font-size: clamp(2.5rem, 4vw, 3rem);
+    line-height: 1.12;
+}
+
+body.product-catalog-page.product-catalog-page--smart-security-systems .catalog-hero__content > p:not(.section-eyebrow) {
+    max-width: 700px;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+@media (max-width: 767.98px) {
+    body.product-catalog-page.product-catalog-page--smart-security-systems .catalog-hero {
+        min-height: 280px;
+        margin: 12px 12px 0;
+        padding: 22px 8%;
+        border-radius: 16px;
+    }
+
+    body.product-catalog-page--smart-security-systems .door-intro__container > .row > .col-lg-6 {
+        width: 100%;
+    }
+
+    body.product-catalog-page.product-catalog-page--smart-security-systems .catalog-hero__content h1 {
+        font-size: clamp(2rem, 8vw, 2.5rem);
+    }
+
+    body.product-catalog-page.product-catalog-page--smart-security-systems .catalog-hero__content > p:not(.section-eyebrow) {
+        font-size: 14px;
+    }
+}
+
+/* Match the Water Level Controllers introduction to the Smart Curtain layout. */
+body.product-catalog-page--water-level-controllers .water-intro {
+    padding: clamp(56px, 7vw, 104px) 0;
+}
+
+body.product-catalog-page--water-level-controllers .water-intro .door-intro__container {
+    width: min(1075px, calc(100% - 48px));
+    max-width: 1075px;
+    aspect-ratio: 1075 / 512;
+    padding: 0;
+}
+
+body.product-catalog-page--water-level-controllers .water-intro .row {
+    display: grid;
+    height: 100%;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 47%);
+    gap: clamp(32px, 7.5vw, 90px);
+    margin: 0;
+}
+
+body.product-catalog-page--water-level-controllers .water-intro .row > .col-lg-6 {
+    width: auto;
+    padding: 0;
+}
+
+body.product-catalog-page--water-level-controllers .water-intro .row > .col-lg-6:first-child {
+    transform: translateY(60px);
+}
+
+body.product-catalog-page--water-level-controllers .water-intro .door-intro__title {
+    max-width: 440px;
+    margin-bottom: 20px;
+    font-size: 2rem;
+    line-height: 1.22;
+}
+
+body.product-catalog-page--water-level-controllers .water-intro .door-intro__copy {
+    max-width: 620px;
+    margin-bottom: 24px;
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+body.product-catalog-page--water-level-controllers .water-intro .door-intro__image {
+    max-width: 620px;
+    aspect-ratio: 1 / 1;
+    border: 1px solid #e5e5e5;
+    border-radius: 16px;
+    box-shadow: 0 12px 30px rgb(23 23 23 / 10%);
+}
+
+@media (max-width: 991.98px) {
+    body.product-catalog-page--water-level-controllers .water-intro {
+        padding: 48px 0;
+    }
+
+    body.product-catalog-page--water-level-controllers .water-intro .door-intro__container {
+        width: calc(100% - 32px);
+        aspect-ratio: auto;
+    }
+
+    body.product-catalog-page--water-level-controllers .water-intro .row {
+        height: auto;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 24px;
+    }
+
+    body.product-catalog-page--water-level-controllers .water-intro .row > .col-lg-6 {
+        width: 100%;
+    }
+
+    body.product-catalog-page--water-level-controllers .water-intro .row > .col-lg-6:first-child {
+        transform: none;
+    }
+
+    body.product-catalog-page--water-level-controllers .water-intro .door-intro__image {
+        max-width: 500px;
+        max-height: 500px;
+    }
+}
+
+/* Match the Smart Security introduction to the compact reference layout. */
+body.product-catalog-page.product-catalog-page--smart-security-systems .door-intro {
+    padding: clamp(56px, 7vw, 104px) 0;
+}
+
+body.product-catalog-page.product-catalog-page--smart-security-systems .door-intro__container {
+    width: min(1075px, 84vw);
+    max-width: 1075px;
+    aspect-ratio: 1075 / 512;
+    padding: 0;
+}
+
+body.product-catalog-page.product-catalog-page--smart-security-systems .door-intro .door-intro__container > .row {
+    display: grid;
+    height: 100%;
+    align-items: center !important;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 43.5%);
+    gap: clamp(32px, 6vw, 64px);
+    margin: 0;
+}
+
+body.product-catalog-page.product-catalog-page--smart-security-systems .door-intro__container > .row > .col-lg-6 {
+    width: auto;
+    padding: 0;
+}
+
+body.product-catalog-page.product-catalog-page--smart-security-systems .door-intro__title {
+    max-width: 520px;
+    margin-bottom: 18px;
+    font-size: clamp(1.5rem, 2.5vw, 2rem);
+    line-height: 1.2;
+}
+
+body.product-catalog-page.product-catalog-page--smart-security-systems .door-intro__copy {
+    max-width: 520px;
+    margin-bottom: 0;
+    font-size: clamp(11px, 1.25vw, 15px);
+    line-height: 1.6;
+}
+
+body.product-catalog-page.product-catalog-page--smart-security-systems .door-intro__copy p {
+    margin-bottom: 18px;
+    font-size: inherit;
+    line-height: inherit;
+}
+
+body.product-catalog-page.product-catalog-page--smart-security-systems .door-intro__copy p:last-child {
+    margin-bottom: 0;
+}
+
+body.product-catalog-page.product-catalog-page--smart-security-systems .door-intro__image {
+    width: 100%;
+    max-width: none;
+    aspect-ratio: 1 / 1;
+    border-radius: 12px;
+    object-fit: cover;
+}
+
+@media (max-width: 767.98px) {
+    body.product-catalog-page.product-catalog-page--smart-security-systems .door-intro__container {
+        width: calc(100% - 32px);
+        aspect-ratio: auto;
+    }
+
+    body.product-catalog-page.product-catalog-page--smart-security-systems .door-intro .door-intro__container > .row {
+        height: auto;
+        align-items: start !important;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 24px;
+    }
+
+    body.product-catalog-page.product-catalog-page--smart-security-systems .door-intro__container > .row > .col-lg-6 {
+        width: 100%;
+    }
+
+    body.product-catalog-page.product-catalog-page--smart-security-systems .door-intro__title {
+        font-size: clamp(1.5rem, 6vw, 2rem);
+    }
+
+    body.product-catalog-page.product-catalog-page--smart-security-systems .door-intro__copy {
+        font-size: 14px;
+    }
+
+    body.product-catalog-page.product-catalog-page--smart-security-systems .door-intro__image {
+        max-width: 500px;
+        margin-inline: auto;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .home-work-steps {
+        gap: 24px;
+        padding-left: 0;
+    }
+
+    .home-work-steps::before {
+        position: absolute;
+        top: 48px;
+        bottom: 48px;
+        left: 43px;
+        width: 2px;
+        background: #e5a300;
+        content: '';
+    }
+
+    .home-work-step {
+        min-height: 116px;
+        grid-template-columns: 88px minmax(0, 1fr);
+        align-items: center;
+        column-gap: 14px;
+        row-gap: 6px;
+    }
+
+    .home-work-step:nth-child(odd):not(:last-child)::after,
+    .home-work-step:nth-child(even):not(:last-child)::after {
+        display: none;
+    }
+
+    .home-work-step__visual {
+        width: 88px;
+        height: 100px;
+        grid-column: 1;
+        grid-row: 1 / 3;
+    }
+
+    .home-work-step__visual img {
+        width: 78px;
+        height: 78px;
+    }
+
+    .home-work-step:nth-child(odd) .home-work-step__visual::before,
+    .home-work-step:nth-child(even) .home-work-step__visual::before {
+        top: 50%;
+        left: 50%;
+        width: 88px;
+        height: 84px;
+        transform: translate(-50%, -50%);
+    }
+
+    .home-work-step__title,
+    .home-work-step:nth-child(odd) .home-work-step__title,
+    .home-work-step:nth-child(even) .home-work-step__title {
+        grid-column: 2;
+        grid-row: 1;
+        justify-content: flex-start;
+        gap: 8px;
+        padding: 0 !important;
+        text-align: left;
+    }
+
+    .home-work-step__title span {
+        width: 26px;
+        height: 26px;
+        min-width: 26px;
+        font-size: 10px;
+    }
+
+    .home-work-step__title h3 {
+        font-size: 12px;
+        line-height: 1.25;
+        overflow-wrap: normal;
+    }
+
+    .home-work-step__description,
+    .home-work-step:nth-child(odd) .home-work-step__description,
+    .home-work-step:nth-child(even) .home-work-step__description {
+        max-width: none;
+        grid-column: 2;
+        grid-row: 2;
+        justify-self: stretch;
+        margin: 0;
+        padding: 0 !important;
+        font-size: 10px;
+        line-height: 1.45;
+        text-align: left;
     }
 }
